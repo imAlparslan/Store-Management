@@ -14,4 +14,11 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CatalogManagement.Application\CatalogManagement.Application.csproj" />
+    <ProjectReference Include="..\CatalogManagement.Contracts\CatalogManagement.Contracts.csproj" />
+    <ProjectReference Include="..\CatalogManagement.Domain\CatalogManagement.Domain.csproj" />
+    <ProjectReference Include="..\CatalogManagement.Infrastructure\CatalogManagement.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -5,15 +5,19 @@ VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BF235CD3-1EA0-4718-BCD9-37E2FE2896D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogManagement.Api", "src\CatalogManagement.Api\CatalogManagement.Api.csproj", "{8233EC02-8F4A-41DB-90C7-DBDBDC94C4B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogManagement.Api", "src\CatalogManagement.Api\CatalogManagement.Api.csproj", "{8233EC02-8F4A-41DB-90C7-DBDBDC94C4B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogManagement.Application", "src\CatalogManagement.Application\CatalogManagement.Application.csproj", "{3AD454C0-CD37-4824-BE7B-980B60CB92B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogManagement.Application", "src\CatalogManagement.Application\CatalogManagement.Application.csproj", "{3AD454C0-CD37-4824-BE7B-980B60CB92B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogManagement.Infrastructure", "src\CatalogManagement.Infrastructure\CatalogManagement.Infrastructure.csproj", "{5587EBFE-47E6-4635-888E-F50B7271573C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogManagement.Infrastructure", "src\CatalogManagement.Infrastructure\CatalogManagement.Infrastructure.csproj", "{5587EBFE-47E6-4635-888E-F50B7271573C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogManagement.Domain", "src\CatalogManagement.Domain\CatalogManagement.Domain.csproj", "{70A7C588-32D0-4962-80E5-5AD17983E5A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogManagement.Domain", "src\CatalogManagement.Domain\CatalogManagement.Domain.csproj", "{70A7C588-32D0-4962-80E5-5AD17983E5A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogManagement.Contracts", "src\CatalogManagement.Contracts\CatalogManagement.Contracts.csproj", "{283E07D7-656C-4EC4-9389-A040C91DE6B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogManagement.Contracts", "src\CatalogManagement.Contracts\CatalogManagement.Contracts.csproj", "{283E07D7-656C-4EC4-9389-A040C91DE6B0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{33C615A6-5A18-4C8B-AC45-DCB706F7B0B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogManagement.Architecture.Tests", "tests\CatalogManagement.Architecture.Tests\CatalogManagement.Architecture.Tests.csproj", "{52D17E26-BE6C-42F9-84CC-47D5B550F713}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +45,10 @@ Global
 		{283E07D7-656C-4EC4-9389-A040C91DE6B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{283E07D7-656C-4EC4-9389-A040C91DE6B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{283E07D7-656C-4EC4-9389-A040C91DE6B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52D17E26-BE6C-42F9-84CC-47D5B550F713}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52D17E26-BE6C-42F9-84CC-47D5B550F713}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52D17E26-BE6C-42F9-84CC-47D5B550F713}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52D17E26-BE6C-42F9-84CC-47D5B550F713}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -51,6 +59,7 @@ Global
 		{5587EBFE-47E6-4635-888E-F50B7271573C} = {BF235CD3-1EA0-4718-BCD9-37E2FE2896D8}
 		{70A7C588-32D0-4962-80E5-5AD17983E5A2} = {BF235CD3-1EA0-4718-BCD9-37E2FE2896D8}
 		{283E07D7-656C-4EC4-9389-A040C91DE6B0} = {BF235CD3-1EA0-4718-BCD9-37E2FE2896D8}
+		{52D17E26-BE6C-42F9-84CC-47D5B550F713} = {33C615A6-5A18-4C8B-AC45-DCB706F7B0B9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4BEDC9FB-576B-42B2-B346-5661A0D3024C}
