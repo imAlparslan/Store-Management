@@ -1,5 +1,5 @@
-﻿namespace CatalogManagement.Domain.Common;
-public abstract class ValueObject
+﻿namespace CatalogManagement.Domain.Common.Models;
+public abstract class ValueObject : IEquatable<ValueObject>
 {
     public abstract IEnumerable<object> GetEqualityComponents();
 
@@ -22,4 +22,17 @@ public abstract class ValueObject
             .Aggregate((x, y) => x ^ y);
     }
 
+    public bool Equals(ValueObject? other)
+    {
+        return Equals((object?)other);
+    }
+
+    public static bool operator ==(ValueObject left, ValueObject right)
+    {
+        return Equals(left, right);
+    }
+    public static bool operator !=(ValueObject left, ValueObject right)
+    {
+        return !Equals(left, right);
+    }
 }
