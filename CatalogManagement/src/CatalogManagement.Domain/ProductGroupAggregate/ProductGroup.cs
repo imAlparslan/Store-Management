@@ -10,7 +10,7 @@ public sealed class ProductGroup : AggregateRoot<ProductGroupId>
     public ProductGroup(ProductGroupName name,
                         ProductGroupDescription description,
                         ProductGroupId? id = null)
-        : base(id ?? ProductGroupId.CreateUnique())
+                        : base(id ?? ProductGroupId.CreateUnique())
     {
         Description = description;
         Name = name;

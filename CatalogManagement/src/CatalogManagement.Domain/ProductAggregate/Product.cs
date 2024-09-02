@@ -11,7 +11,7 @@ public sealed class Product : AggregateRoot<ProductId>
                    ProductCode code,
                    ProductDefinition definition,
                    ProductId? id = null)
-        : base(id ?? ProductId.CreateUnique())
+                   : base(id ?? ProductId.CreateUnique())
     {
         Name = name;
         Code = code;
