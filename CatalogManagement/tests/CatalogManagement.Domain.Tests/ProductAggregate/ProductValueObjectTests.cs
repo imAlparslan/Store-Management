@@ -1,3 +1,6 @@
+using CatalogManagement.Domain.Common.Exceptions;
+using CatalogManagement.Domain.ProductAggregate.Errors;
+using CatalogManagement.Domain.ProductAggregate.Exceptions;
 using CatalogManagement.Domain.ProductAggregate.ValueObjects;
 using CatalogManagement.Domain.Tests.ProductAggregate.Factories;
 
@@ -13,7 +16,9 @@ public class ProductValueObjectTests
     {
         var productName = () => new ProductName(name);
 
-        productName.Should().Throw<Exception>();
+        productName.Should().ThrowExactly<ProductException>()
+            .Which.Should().BeAssignableTo<DomainException>()
+            .Which.Code.Should().Be(ProductError.InvalidName.Code);
 
     }
 
@@ -25,7 +30,9 @@ public class ProductValueObjectTests
     {
         var productCode = () => new ProductCode(code);
 
-        productCode.Should().Throw<Exception>();
+        productCode.Should().ThrowExactly<ProductException>()
+            .Which.Should().BeAssignableTo<DomainException>()
+            .Which.Code.Should().Be(ProductError.InvalidCode.Code);
 
     }
     [Theory]
@@ -36,7 +43,9 @@ public class ProductValueObjectTests
     {
         var productDefinition = () => new ProductDefinition(definition);
 
-        productDefinition.Should().Throw<Exception>();
+        productDefinition.Should().ThrowExactly<ProductException>()
+            .Which.Should().BeAssignableTo<DomainException>()
+            .Which.Code.Should().Be(ProductError.InvalidDefinition.Code);
     }
 
     [Fact]

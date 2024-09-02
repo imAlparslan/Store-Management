@@ -1,5 +1,7 @@
 ﻿using Ardalis.GuardClauses;
 using CatalogManagement.Domain.Common.Models;
+using CatalogManagement.Domain.ProductAggregate.Errors;
+using CatalogManagement.Domain.ProductAggregate.Exceptions;
 
 namespace CatalogManagement.Domain.ProductAggregate.ValueObjects;
 public class ProductCode : ValueObject
@@ -8,7 +10,9 @@ public class ProductCode : ValueObject
 
     public ProductCode(string code)
     {
-        Value = Guard.Against.NullOrWhiteSpace(code);
+        Value = Guard.Against.NullOrWhiteSpace(
+            code,
+            exceptionCreator: () => ProductException.Create(ProductError.InvalidCode));
     }
 
     public override IEnumerable<object> GetEqualityComponents()

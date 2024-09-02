@@ -1,4 +1,8 @@
-﻿using CatalogManagement.Domain.ProductGroupAggregate.ValueObjects;
+﻿using CatalogManagement.Domain.Common.Exceptions;
+using CatalogManagement.Domain.ProductAggregate.Errors;
+using CatalogManagement.Domain.ProductGroupAggregate.Errors;
+using CatalogManagement.Domain.ProductGroupAggregate.Exceptions;
+using CatalogManagement.Domain.ProductGroupAggregate.ValueObjects;
 using CatalogManagement.Domain.Tests.ProductGroupAggregate.Factories;
 
 namespace CatalogManagement.Domain.Tests.ProductGroupAggregate;
@@ -12,7 +16,9 @@ public class ProductGroupValueObjectTests
     {
         var productGroupName = () => new ProductGroupName(name);
 
-        productGroupName.Should().Throw<Exception>();
+        productGroupName.Should().ThrowExactly<ProductGroupException>()
+            .Which.Should().BeAssignableTo<DomainException>()
+            .Which.Code.Should().Be(ProductGroupError.InvalidName.Code);
     }
 
     [Theory]
@@ -23,7 +29,9 @@ public class ProductGroupValueObjectTests
     {
         var productGroupDescription = () => new ProductGroupDescription(description);
 
-        productGroupDescription.Should().Throw<Exception>();
+        productGroupDescription.Should().ThrowExactly<ProductGroupException>()
+            .Which.Should().BeAssignableTo<DomainException>()
+            .Which.Code.Should().Be(ProductGroupError.InvalidDescription.Code);
     }
     [Fact]
     public void Product_Should_Have_ProductGroupId_After_Creating()
