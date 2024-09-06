@@ -1,0 +1,18 @@
+version: '3.9'
+
+
+services:
+  catalog-db:
+    container_name: catalog_mssql_db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - 14330:1433
+    environment:
+       ACCEPT_EULA: Y
+       MSSQL_SA_PASSWORD: Passw0r!d
+       MSSQL_PID: Developer
+    volumes:
+      - catalog-db-volume:/var/opt/mssql/ 
+
+volumes:
+  catalog-db-volume:
