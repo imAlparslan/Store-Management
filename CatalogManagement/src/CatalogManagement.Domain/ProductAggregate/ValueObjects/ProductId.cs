@@ -9,6 +9,7 @@ public sealed class ProductId : ValueObject
     {
         Value = Id;
     }
+
     public static ProductId CreateUnique()
     {
         return new ProductId(Guid.NewGuid());
@@ -18,5 +19,6 @@ public sealed class ProductId : ValueObject
         yield return Value;
     }
     public static implicit operator Guid(ProductId Id) => Id.Value;
+    public static implicit operator ProductId(Guid Id) => new ProductId(Id);
 
 }

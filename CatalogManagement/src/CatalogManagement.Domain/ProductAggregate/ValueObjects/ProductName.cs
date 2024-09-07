@@ -14,6 +14,10 @@ public class ProductName : ValueObject
             name,
             exceptionCreator: () => ProductException.Create(ProductError.InvalidName));
     }
+    private ProductName()
+    {
+        
+    }
     public override IEnumerable<object> GetEqualityComponents()
     {
         yield return Value;
