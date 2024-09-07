@@ -17,4 +17,8 @@ public sealed class ProductGroupId : ValueObject
     {
         yield return Value;
     }
+
+
+    public static implicit operator Guid(ProductGroupId productGroupId) => productGroupId.Value;
+    public static implicit operator ProductGroupId(Guid productGroupId) => new ProductGroupId(productGroupId);
 }

@@ -15,5 +15,9 @@ public sealed class ProductGroup : AggregateRoot<ProductGroupId>
         Description = description;
         Name = name;
     }
+    private ProductGroup()
+    {
+
+    }
 
 }

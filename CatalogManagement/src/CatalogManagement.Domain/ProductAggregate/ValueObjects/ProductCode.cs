@@ -15,6 +15,11 @@ public class ProductCode : ValueObject
             exceptionCreator: () => ProductException.Create(ProductError.InvalidCode));
     }
 
+    private ProductCode()
+    {
+        
+    }
+
     public override IEnumerable<object> GetEqualityComponents()
     {
         yield return Value;

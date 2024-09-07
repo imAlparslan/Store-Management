@@ -10,8 +10,13 @@ public class ProductGroupName : ValueObject
     public ProductGroupName(string name)
     {
         Value = Guard.Against.NullOrWhiteSpace(
-            name, 
+            name,
             exceptionCreator: () => ProductGroupException.Create(ProductGroupError.InvalidName));
+    }
+
+    private ProductGroupName()
+    {
+
     }
     public override IEnumerable<object> GetEqualityComponents()
     {

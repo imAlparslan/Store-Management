@@ -13,6 +13,10 @@ public sealed class ProductGroupDescription : ValueObject
             description,
             exceptionCreator: () => ProductGroupException.Create(ProductGroupError.InvalidDescription));
     }
+    private ProductGroupDescription()
+    {
+
+    }
     public override IEnumerable<object> GetEqualityComponents()
     {
         yield return Value;

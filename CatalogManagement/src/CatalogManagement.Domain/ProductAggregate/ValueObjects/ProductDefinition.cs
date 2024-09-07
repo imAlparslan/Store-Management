@@ -13,6 +13,10 @@ public sealed class ProductDefinition : ValueObject
             definition,
             exceptionCreator: () => ProductException.Create(ProductError.InvalidDefinition));
     }
+    private ProductDefinition()
+    {
+        
+    }
     public override IEnumerable<object> GetEqualityComponents()
     {
         yield return Value;

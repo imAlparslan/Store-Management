@@ -17,5 +17,10 @@ public sealed class Product : AggregateRoot<ProductId>
         Code = code;
         Definition = definition;
     }
+
+    private Product()
+    {
+
+    }
 }
 
