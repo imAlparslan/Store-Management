@@ -1,10 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CatalogManagement.Application.Common;
 
 namespace CatalogManagement.Infrastructure.Persistence;
-internal class UnitOfWorkManager
+internal class UnitOfWorkManager : IUnitOfWorkManager
 {
+    private bool _isUnitOfWorkStarted = false;
+
+    private readonly CatalogDbContext _catalogDbContext;
+
+    public UnitOfWorkManager(CatalogDbContext catalogDbContext)
+    {
+        _catalogDbContext = catalogDbContext;
+    }
+
+    public bool IsUnitOfWorkManagerStarted() => _isUnitOfWorkStarted;
+
+    public async Task SaveChangesAsync(CancellationToken cancellationToken)
+    {
+        await _catalogDbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public void StartUnitOfWork()
+    {
+        _isUnitOfWorkStarted = true;
+    }
 }
