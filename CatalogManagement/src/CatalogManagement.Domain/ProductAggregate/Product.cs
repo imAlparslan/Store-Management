@@ -18,6 +18,22 @@ public sealed class Product : AggregateRoot<ProductId>
         Definition = definition;
     }
 
+    public Product ChangeName(ProductName name)
+    {
+        Name = name;
+        return this;
+    }
+    public Product ChangeCode(ProductCode code)
+    {
+        Code = code;
+        return this;
+    }
+    public Product ChangeDefinition(ProductDefinition definition)
+    {
+        Definition = definition;
+        return this;
+    }
+
     private Product()
     {
 

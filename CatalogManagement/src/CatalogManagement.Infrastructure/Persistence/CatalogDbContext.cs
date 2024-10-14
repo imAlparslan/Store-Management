@@ -6,7 +6,6 @@ using System.Reflection;
 namespace CatalogManagement.Infrastructure.Persistence;
 public class CatalogDbContext : DbContext
 {
-
     public DbSet<Product> Products => Set<Product>();
     public DbSet<ProductGroup> ProductGroups => Set<ProductGroup>();
 
