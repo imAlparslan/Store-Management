@@ -1,5 +1,5 @@
-﻿using CatalogManagement.Domain.Common.Errors;
-using CatalogManagement.Domain.Common.Exceptions;
+﻿using CatalogManagement.Domain.Common.Exceptions;
+using CatalogManagement.SharedKernel;
 
 namespace CatalogManagement.Domain.ProductGroupAggregate.Exceptions;
 public class ProductGroupException : DomainException

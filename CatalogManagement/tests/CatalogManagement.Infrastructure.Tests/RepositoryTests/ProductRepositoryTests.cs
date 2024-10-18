@@ -68,14 +68,14 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>
         var newName = ProductNameFactory.CreateRandom();
 
         var inserted = await _productRepository.InsertAsync(product);
-        var updatedProduct = inserted.ChangeName(newName);
-        Product result = await _productRepository.UpdateAsync(updatedProduct);
+        inserted.ChangeName(newName);
+        Product result = await _productRepository.UpdateAsync(inserted);
 
         using (new AssertionScope())
         {
             result.Name.Should().NotBe(oldName);
             result.Name.Should().Be(newName);
-            updatedProduct.Name.Should().Be(result.Name);
+            inserted.Name.Should().Be(result.Name);
 
         }
     }
@@ -88,14 +88,14 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>
         var newCode = ProductCodeFactory.CreateRandom();
 
         var inserted = await _productRepository.InsertAsync(product);
-        var updatedProduct = inserted.ChangeCode(newCode);
-        Product result = await _productRepository.UpdateAsync(updatedProduct);
+        inserted.ChangeCode(newCode);
+        Product result = await _productRepository.UpdateAsync(inserted);
 
         using (new AssertionScope())
         {
             result.Code.Should().NotBe(oldCode);
             result.Code.Should().Be(newCode);
-            updatedProduct.Code.Should().Be(result.Code);
+            inserted.Code.Should().Be(result.Code);
 
         }
     }
@@ -108,14 +108,14 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>
         var newDefinition = ProductDefinitionFactory.CreateRandom();
 
         var inserted = await _productRepository.InsertAsync(product);
-        var updatedProduct = inserted.ChangeDefinition(newDefinition);
-        Product result = await _productRepository.UpdateAsync(updatedProduct);
+        inserted.ChangeDefinition(newDefinition);
+        Product result = await _productRepository.UpdateAsync(inserted);
 
         using (new AssertionScope())
         {
             result.Definition.Should().NotBe(oldDefinition);
             result.Definition.Should().Be(newDefinition);
-            updatedProduct.Definition.Should().Be(result.Definition);
+            inserted.Definition.Should().Be(result.Definition);
 
         }
     }

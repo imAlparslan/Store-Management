@@ -1,12 +1,12 @@
-﻿using CatalogManagement.Domain.Common.Errors;
-using CatalogManagement.Domain.Common.Exceptions;
+﻿using CatalogManagement.Domain.Common.Exceptions;
+using CatalogManagement.SharedKernel;
 
 namespace CatalogManagement.Domain.ProductAggregate.Exceptions;
 public class ProductException : DomainException
 {
-    private ProductException(string code, string? description):base(code, description)
+    private ProductException(string code, string? description) : base(code, description)
     {
-        
+
     }
     public static DomainException Create(Error error)
     {
