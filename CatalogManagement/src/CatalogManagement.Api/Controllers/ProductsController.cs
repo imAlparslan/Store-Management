@@ -1,8 +1,4 @@
-﻿using CatalogManagement.Application.Products.Commands.CreateProduct;
-using CatalogManagement.Application.Products.Commands.DeleteProductById;
-using CatalogManagement.Application.Products.Commands.UpdateProduct;
-using CatalogManagement.Application.Products.Queries.GetAllProducts;
-using CatalogManagement.Application.Products.Queries.GetProductById;
+﻿using CatalogManagement.Application.Products;
 using CatalogManagement.Contracts.Products;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -71,7 +67,7 @@ public class ProductsController : BaseApiController
         return result.Match(suc => Ok(), fail => Problem(fail));
     }
 
-    
+
     [HttpPut(ProductEndpoints.Update)]
     [ProducesResponseType(typeof(ProductResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Update([FromBody] UpdateProductRequest request, Guid id)

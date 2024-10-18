@@ -3,7 +3,7 @@ using CatalogManagement.Domain.ProductAggregate.Errors;
 using CatalogManagement.SharedKernel;
 using MediatR;
 
-namespace CatalogManagement.Application.Products.Commands.DeleteProductById;
+namespace CatalogManagement.Application.Products;
 internal class DeleteProductByIdCommandHandler : IRequestHandler<DeleteProductByIdCommand, Result<bool>>
 {
     private readonly IProductRepository productRepository;

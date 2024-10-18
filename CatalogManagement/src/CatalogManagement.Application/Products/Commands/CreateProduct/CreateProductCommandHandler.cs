@@ -4,7 +4,7 @@ using CatalogManagement.Domain.ProductAggregate.ValueObjects;
 using CatalogManagement.SharedKernel;
 using MediatR;
 
-namespace CatalogManagement.Application.Products.Commands.CreateProduct;
+namespace CatalogManagement.Application.Products;
 internal class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Result<Product>>
 {
     private readonly IProductRepository productRepository;

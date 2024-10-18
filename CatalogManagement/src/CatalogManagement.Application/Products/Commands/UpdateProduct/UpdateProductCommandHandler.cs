@@ -4,7 +4,7 @@ using CatalogManagement.Domain.ProductAggregate.Errors;
 using CatalogManagement.SharedKernel;
 using MediatR;
 
-namespace CatalogManagement.Application.Products.Commands.UpdateProduct;
+namespace CatalogManagement.Application.Products;
 internal class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, Result<Product>>
 {
     private readonly IProductRepository productRepository;

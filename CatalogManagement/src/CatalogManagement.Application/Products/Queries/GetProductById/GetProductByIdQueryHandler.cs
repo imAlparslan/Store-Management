@@ -4,7 +4,7 @@ using CatalogManagement.Domain.ProductAggregate.Errors;
 using CatalogManagement.SharedKernel;
 using MediatR;
 
-namespace CatalogManagement.Application.Products.Queries.GetProductById;
+namespace CatalogManagement.Application.Products;
 internal class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, Result<Product>>
 {
     private readonly IProductRepository productRepository;

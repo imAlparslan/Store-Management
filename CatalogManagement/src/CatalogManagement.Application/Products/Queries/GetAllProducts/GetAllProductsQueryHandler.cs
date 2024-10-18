@@ -3,7 +3,7 @@ using CatalogManagement.Domain.ProductAggregate;
 using CatalogManagement.SharedKernel;
 using MediatR;
 
-namespace CatalogManagement.Application.Products.Queries.GetAllProducts;
+namespace CatalogManagement.Application.Products;
 internal class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, Result<IEnumerable<Product>>>
 {
     private readonly IProductRepository productRepository;
