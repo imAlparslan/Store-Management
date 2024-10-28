@@ -2,47 +2,59 @@
 
 public class Result<TValue>
 {
+    public TValue? Value { get; private set; }
+    public bool IsSuccess { get; private set; }
+    public List<Error>? Errors { get; }
 
-    public TValue? Value { get; }
-    public bool IsSucces { get; }
-    public Error? Error { get; }
-
-    private Result(bool isSuccess, Error? error = null, TValue? value = default)
+    private Result(bool isSuccess, List<Error>? errors = null, TValue? value = default)
     {
-        
         if (isSuccess && value is null)
         {
-            throw new ArgumentNullException(nameof(error));
+            throw new ArgumentNullException(nameof(errors));
         }
 
-        if (!isSuccess && error is null)
+        if (!isSuccess && (errors is null || errors.Count < 1))
         {
-            throw new ArgumentNullException(nameof(error));
+            throw new ArgumentNullException(nameof(errors));
         }
 
-        IsSucces = isSuccess;
-        Error = error;
+        IsSuccess = isSuccess;
+        Errors = errors;
         Value = value;
     }
 
-    public TNext Match<TNext>(Func<TValue, TNext> onSuccess, Func<Error, TNext> onFail)
+    public TNext Match<TNext>(Func<TValue, TNext> onSuccess, Func<List<Error>, TNext> onFail)
     {
-        if (IsSucces)
+        if (IsSuccess)
         {
-            return onSuccess(Value);
+            return onSuccess(Value!);
         }
 
-        return onFail(Error);
+        return onFail(Errors!);
     }
-
 
     public static Result<TValue> Success(TValue value)
     {
         return new Result<TValue>(true, default, value);
     }
+
     public static Result<TValue> Fail(Error error)
     {
-        return new Result<TValue>(false, error, default);
+        return new Result<TValue>(false, [error], default);
     }
 
+    public static Result<TValue> Fail(List<Error> errors)
+    {
+        return new Result<TValue>(false, errors, default);
+    }
+
+    public static implicit operator Result<TValue>(TValue value)
+    {
+        return Result<TValue>.Success(value);
+    }
+
+    public static implicit operator Result<TValue>(List<Error> errs)
+    {
+        return Result<TValue>.Fail(errs);
+    }
 }

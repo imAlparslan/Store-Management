@@ -1,0 +1,11 @@
+@hostname = localhost
+@port = 7177
+@base = https://{{hostname}}:{{port}}/api
+
+@productId = 8e150420-bb7f-43cf-bf21-894b155dc42f
+
+GET {{base}}/products
+
+###
+
+GET {{base}}/products/{{productId}}

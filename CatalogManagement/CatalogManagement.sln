@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogManagement.Domain.Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogManagement.Infrastructure.Tests", "tests\CatalogManagement.Infrastructure.Tests\CatalogManagement.Infrastructure.Tests.csproj", "{8903840A-E043-4775-8C7E-9741C74985B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogManagement.SharedKernel", "src\CatalogManagement.SharedKernel\CatalogManagement.SharedKernel.csproj", "{E74C13EC-50B7-4B35-B2A3-6D48BDFF7B7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogManagement.SharedKernel", "src\CatalogManagement.SharedKernel\CatalogManagement.SharedKernel.csproj", "{E74C13EC-50B7-4B35-B2A3-6D48BDFF7B7F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,24 @@
+# https://localhost:7177/api/products
+@hostname = localhost
+@port = 7177
+@base = https://{{hostname}}:{{port}}/api
+
+POST {{base}}/products
+Content-Type: application/json
+
+{
+  "productName": "Product Name",
+  "productCode": "ProductCode",
+  "productDefinition": "Product definition"
+}
+
+###
+
+POST {{base}}/products
+Content-Type: application/json
+
+{
+  "productName": "",
+  "productCode": "",
+  "productDefinition": ""
+}

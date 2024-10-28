@@ -24,8 +24,6 @@ internal class CreateProductCommandHandler : IRequestHandler<CreateProductComman
 
         await productRepository.InsertAsync(product, cancellationToken);
 
-
         return Result<Product>.Success(product);
-
     }
 }

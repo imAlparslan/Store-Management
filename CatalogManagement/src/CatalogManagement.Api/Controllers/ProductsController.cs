@@ -8,20 +8,16 @@ namespace CatalogManagement.Api.Controllers;
 
 public class ProductsController : BaseApiController
 {
-
     private readonly IMediator mediator;
-
     public ProductsController(IMediator mediator)
     {
         this.mediator = mediator;
     }
 
     [HttpPost(ProductEndpoints.Create)]
-    [ProducesResponseType(typeof(ProductResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] CreateProductRequest request)
     {
-        var command = new CreateProductCommand(request.ProductName, request.ProductCode, request.ProductDefinition);
+        CreateProductCommand command = new CreateProductCommand(request.ProductName, request.ProductCode, request.ProductDefinition);
 
         var result = await mediator.Send(command);
 
@@ -32,8 +28,6 @@ public class ProductsController : BaseApiController
     }
 
     [HttpGet(ProductEndpoints.GetAll)]
-    [ProducesResponseType(typeof(ProductResponse), StatusCodes.Status200OK)]
-
     public async Task<IActionResult> GetAll()
     {
         var query = new GetAllProductsQuery();
@@ -45,7 +39,6 @@ public class ProductsController : BaseApiController
     }
 
     [HttpGet(ProductEndpoints.GetById)]
-    [ProducesResponseType(typeof(ProductResponse), StatusCodes.Status200OK)]
 
     public async Task<IActionResult> GetById(Guid id)
     {
@@ -69,7 +62,6 @@ public class ProductsController : BaseApiController
 
 
     [HttpPut(ProductEndpoints.Update)]
-    [ProducesResponseType(typeof(ProductResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> Update([FromBody] UpdateProductRequest request, Guid id)
     {
         var command = new UpdateProductCommand(id, request.ProductName, request.ProductCode, request.ProductDefinition);

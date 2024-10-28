@@ -12,7 +12,7 @@ public class InfrastructureLayerDependencyTests : ArchUnitBase
         ArchRuleDefinition
             .Types()
             .That()
-            .Are(PresentationLayer)
+            .Are(InfrastructureLayer)
             .Should()
             .NotDependOnAny(PresentationLayer)
             .Check(Architecture);
