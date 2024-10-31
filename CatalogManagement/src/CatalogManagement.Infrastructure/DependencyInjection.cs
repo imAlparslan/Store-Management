@@ -13,7 +13,7 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.AddDbContext<CatalogDbContext>(
-            opt => 
+            opt =>
                 opt.UseSqlServer(connectionString: configuration.GetConnectionString("MSSQL")
             ));
 

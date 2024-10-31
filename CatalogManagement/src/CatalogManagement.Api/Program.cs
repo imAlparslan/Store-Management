@@ -1,5 +1,5 @@
-using CatalogManagement.Infrastructure;
 using CatalogManagement.Application.Extensions;
+using CatalogManagement.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 
 

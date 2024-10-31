@@ -17,7 +17,7 @@ public class ProductCode : ValueObject
 
     private ProductCode()
     {
-        
+
     }
 
     public override IEnumerable<object> GetEqualityComponents()

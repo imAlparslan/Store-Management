@@ -1,5 +1,4 @@
 ﻿using CatalogManagement.Domain.Common.Exceptions;
-using CatalogManagement.Domain.ProductAggregate.Errors;
 using CatalogManagement.Domain.ProductGroupAggregate.Errors;
 using CatalogManagement.Domain.ProductGroupAggregate.Exceptions;
 using CatalogManagement.Domain.ProductGroupAggregate.ValueObjects;

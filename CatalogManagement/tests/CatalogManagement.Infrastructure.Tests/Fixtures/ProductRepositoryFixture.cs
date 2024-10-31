@@ -15,7 +15,6 @@ public class ProductRepositoryFixture : IAsyncLifetime
             .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
             .WithEnvironment("ACCEPT_EULA", "Y")
             .WithEnvironment("MSSQL_PID", "Developer")
-            .WithName("test_db")
             .WithPassword("test_pWd")
             .Build();
     public async Task InitializeAsync()

@@ -2,6 +2,7 @@
 
 [assembly: InternalsVisibleTo("CatalogManagement.Architecture.Tests")]
 [assembly: InternalsVisibleTo("CatalogManagement.Infrastructure.Tests")]
+[assembly: InternalsVisibleTo("CatalogManagement.Api.Tests")]
 namespace CatalogManagement.Infrastructure;
 internal static class AssemblyInfo
 {

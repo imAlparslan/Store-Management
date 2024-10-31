@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogManagement.Infrastru
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogManagement.SharedKernel", "src\CatalogManagement.SharedKernel\CatalogManagement.SharedKernel.csproj", "{E74C13EC-50B7-4B35-B2A3-6D48BDFF7B7F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogManagement.Api.Tests", "tests\CatalogManagement.Api.Tests\CatalogManagement.Api.Tests.csproj", "{E26DBE33-B43E-4963-8639-CF25A755C1B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{E74C13EC-50B7-4B35-B2A3-6D48BDFF7B7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E74C13EC-50B7-4B35-B2A3-6D48BDFF7B7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E74C13EC-50B7-4B35-B2A3-6D48BDFF7B7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E26DBE33-B43E-4963-8639-CF25A755C1B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E26DBE33-B43E-4963-8639-CF25A755C1B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E26DBE33-B43E-4963-8639-CF25A755C1B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E26DBE33-B43E-4963-8639-CF25A755C1B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,6 +87,7 @@ Global
 		{E1F868FC-BF78-4B3F-BCA8-BD7720A0F68C} = {33C615A6-5A18-4C8B-AC45-DCB706F7B0B9}
 		{8903840A-E043-4775-8C7E-9741C74985B8} = {33C615A6-5A18-4C8B-AC45-DCB706F7B0B9}
 		{E74C13EC-50B7-4B35-B2A3-6D48BDFF7B7F} = {BF235CD3-1EA0-4718-BCD9-37E2FE2896D8}
+		{E26DBE33-B43E-4963-8639-CF25A755C1B9} = {33C615A6-5A18-4C8B-AC45-DCB706F7B0B9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4BEDC9FB-576B-42B2-B346-5661A0D3024C}

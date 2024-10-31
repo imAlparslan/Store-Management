@@ -15,7 +15,7 @@ public sealed class ProductDefinition : ValueObject
     }
     private ProductDefinition()
     {
-        
+
     }
     public override IEnumerable<object> GetEqualityComponents()
     {

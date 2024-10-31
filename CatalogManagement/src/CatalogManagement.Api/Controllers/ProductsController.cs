@@ -22,7 +22,7 @@ public class ProductsController : BaseApiController
         var result = await mediator.Send(command);
 
         return result.Match(
-            suc => CreatedAtAction(nameof(GetById), new { Id = suc.Id.Value }, new ProductResponse(suc.Name, suc.Code, suc.Definition)),
+            suc => CreatedAtAction(nameof(GetById), new { Id = suc.Id.Value }, new ProductResponse(suc.Id, suc.Name, suc.Code, suc.Definition)),
             fail => Problem(fail));
 
     }
@@ -34,19 +34,18 @@ public class ProductsController : BaseApiController
 
         var result = await mediator.Send(query);
 
-        return result.Match(suc => Ok(suc.Select(product => new ProductResponse(product.Name, product.Code, product.Definition))),
+        return result.Match(suc => Ok(suc.Select(product => new ProductResponse(product.Id, product.Name, product.Code, product.Definition))),
             fail => Problem(fail));
     }
 
     [HttpGet(ProductEndpoints.GetById)]
-
     public async Task<IActionResult> GetById(Guid id)
     {
         var query = new GetProductByIdQuery(id);
 
         var result = await mediator.Send(query);
 
-        return result.Match(suc => Ok(new ProductResponse(suc.Name, suc.Code, suc.Definition)),
+        return result.Match(suc => Ok(new ProductResponse(suc.Id, suc.Name, suc.Code, suc.Definition)),
             fail => Problem(fail));
     }
 
@@ -68,6 +67,6 @@ public class ProductsController : BaseApiController
 
         var result = await mediator.Send(command);
 
-        return result.Match(suc => Ok(new ProductResponse(suc.Name, suc.Code, suc.Definition)), fail => Problem(fail));
+        return result.Match(suc => Ok(new ProductResponse(suc.Id, suc.Name, suc.Code, suc.Definition)), fail => Problem(fail));
     }
 }
