@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 
 namespace CatalogManagement.Application.Products.Commands.DeleteProductById;
-internal class DeleteProductCommandValidator : AbstractValidator<DeleteProductByIdCommand>
+internal class DeleteProductByIdCommandValidator : AbstractValidator<DeleteProductByIdCommand>
 {
-    public DeleteProductCommandValidator()
+    public DeleteProductByIdCommandValidator()
     {
         RuleFor(x => x.Id)
             .NotEmpty();

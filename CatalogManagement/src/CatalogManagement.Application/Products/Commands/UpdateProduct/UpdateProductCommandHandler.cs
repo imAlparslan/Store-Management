@@ -27,7 +27,7 @@ internal class UpdateProductCommandHandler : IRequestHandler<UpdateProductComman
         product.ChangeCode(new(request.ProductCode));
         product.ChangeDefinition(new(request.ProductDefinition));
 
-        var result = await productRepository.UpdateAsync(product);
+        var result = await productRepository.UpdateAsync(product, cancellationToken);
 
         return Result<Product>.Success(result);
 
