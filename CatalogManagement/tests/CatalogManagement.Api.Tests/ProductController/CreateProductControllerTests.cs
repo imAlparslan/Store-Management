@@ -23,7 +23,7 @@ public class CreateProductControllerTests : IClassFixture<ProductApiFactory>
     }
 
     [Fact]
-    public async Task Create_CreatesProduct_WhenDataValid()
+    public async Task Create_ReturnsCreatedProduct_WhenDataValid()
     {
         CreateProductRequest request = CreateProductRequestFactory.CreateValid();
 
@@ -43,7 +43,7 @@ public class CreateProductControllerTests : IClassFixture<ProductApiFactory>
     [InlineData("")]
     [InlineData(" ")]
     [InlineData(null)]
-    public async Task Create_ReturnsError_WhenProdoctNameNullOrEmpty(string productName)
+    public async Task Create_ReturnsValidationError_WhenProdoctNameNullOrEmpty(string productName)
     {
         var request = CreateProductRequestFactory.CreateWithName(productName);
 
@@ -63,7 +63,7 @@ public class CreateProductControllerTests : IClassFixture<ProductApiFactory>
     [InlineData("")]
     [InlineData(" ")]
     [InlineData(null)]
-    public async Task Create_ReturnsError_WhenProdoctCodeNullOrEmpty(string productCode)
+    public async Task Create_ReturnsValidationError_WhenProdoctCodeNullOrEmpty(string productCode)
     {
         var request = CreateProductRequestFactory.CreateWithCode(productCode);
 
@@ -83,7 +83,7 @@ public class CreateProductControllerTests : IClassFixture<ProductApiFactory>
     [InlineData("")]
     [InlineData(" ")]
     [InlineData(null)]
-    public async Task Create_ReturnsError_WhenProdoctDefinitionNullOrEmpty(string productDefinition)
+    public async Task Create_ReturnsValidationError_WhenProdoctDefinitionNullOrEmpty(string productDefinition)
     {
         var request = CreateProductRequestFactory.CreateWithDefinition(productDefinition);
 
@@ -100,7 +100,7 @@ public class CreateProductControllerTests : IClassFixture<ProductApiFactory>
     }
 
     [Fact]
-    public async Task Create_ReturnsError_WhenDataInValid()
+    public async Task Create_ReturnsValidationErrors_WhenDataInvalid()
     {
         var request = CreateProductRequestFactory.CreateCustom("", "", "");
 

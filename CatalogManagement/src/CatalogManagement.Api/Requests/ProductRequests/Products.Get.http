@@ -2,7 +2,8 @@
 @port = 7177
 @base = https://{{hostname}}:{{port}}/api
 
-@productId = 8e150420-bb7f-43cf-bf21-894b155dc42f
+@productId = 00000000-0000-0000-0000-000000000000
+
 
 GET {{base}}/products
 

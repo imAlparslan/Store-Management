@@ -23,7 +23,7 @@ public class GetAllProductControllerTests : IClassFixture<ProductApiFactory>
     }
 
     [Fact]
-    public async void GetAll_ReturnsProducts_WhenProductsExists()
+    public async void GetAll_ReturnsProducts_WhenProductsExist()
     {
         CreateProductRequest createRequest = CreateProductRequestFactory.CreateValid();
         var createResponse = await _client.PostAsJsonAsync(ProductEndpoints.Create, createRequest);
@@ -43,7 +43,7 @@ public class GetAllProductControllerTests : IClassFixture<ProductApiFactory>
     }
 
     [Fact]
-    public async void GetAll_ReturnsEmptyResult_WhenNotProductsExists()
+    public async void GetAll_ReturnsEmptyResult_WhenNotProductsExist()
     {
         var products = await _client.GetAsync("http://localhost/api/products");
 

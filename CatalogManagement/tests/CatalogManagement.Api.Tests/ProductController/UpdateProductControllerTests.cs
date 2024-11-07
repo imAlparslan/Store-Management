@@ -23,7 +23,7 @@ public class UpdateProductControllerTests : IClassFixture<ProductApiFactory>
     }
 
     [Fact]
-    public async Task Update_UpdateProduct_WhenDataValid()
+    public async Task Update_UpdatesProduct_WhenDataValid()
     {
         CreateProductRequest createRequest = CreateProductRequestFactory.CreateValid();
         var createResponse = await _client.PostAsJsonAsync("http://localhost/api/products", createRequest);
@@ -61,7 +61,7 @@ public class UpdateProductControllerTests : IClassFixture<ProductApiFactory>
     [InlineData("")]
     [InlineData(" ")]
     [InlineData(null)]
-    public async Task Update_ReturnsError_WhenProdoctNameNullOrEmpty(string productName)
+    public async Task Update_ReturnsValidationError_WhenProdoctNameNullOrEmpty(string productName)
     {
         CreateProductRequest createRequest = CreateProductRequestFactory.CreateValid();
         var createResponse = await _client.PostAsJsonAsync("http://localhost/api/products", createRequest);
@@ -84,7 +84,7 @@ public class UpdateProductControllerTests : IClassFixture<ProductApiFactory>
     [InlineData("")]
     [InlineData(" ")]
     [InlineData(null)]
-    public async Task Update_ReturnsError_WhenProdoctCodeNullOrEmpty(string productCode)
+    public async Task Update_ReturnsValidationError_WhenProdoctCodeNullOrEmpty(string productCode)
     {
         CreateProductRequest createRequest = CreateProductRequestFactory.CreateValid();
         var createResponse = await _client.PostAsJsonAsync("http://localhost/api/products", createRequest);
@@ -107,7 +107,7 @@ public class UpdateProductControllerTests : IClassFixture<ProductApiFactory>
     [InlineData("")]
     [InlineData(" ")]
     [InlineData(null)]
-    public async Task Update_ReturnsError_WhenProdoctDefinitionNullOrEmpty(string productDefinition)
+    public async Task Update_ReturnsValidationError_WhenProdoctDefinitionNullOrEmpty(string productDefinition)
     {
         CreateProductRequest createRequest = CreateProductRequestFactory.CreateValid();
         var createResponse = await _client.PostAsJsonAsync("http://localhost/api/products", createRequest);
@@ -127,7 +127,7 @@ public class UpdateProductControllerTests : IClassFixture<ProductApiFactory>
     }
 
     [Fact]
-    public async Task Update_ReturnsError_WhenDataInValid()
+    public async Task Update_ReturnsValidationErrors_WhenDataInvalid()
     {
         CreateProductRequest createRequest = CreateProductRequestFactory.CreateValid();
         var createResponse = await _client.PostAsJsonAsync("http://localhost/api/products", createRequest);
@@ -146,6 +146,21 @@ public class UpdateProductControllerTests : IClassFixture<ProductApiFactory>
         }
     }
 
+    [Theory]
+    [MemberData(nameof(InvalidGuidData))]
+    public async void Update_ReturnsValidationError_WhenIdInvalid(Guid id)
+    {
+        UpdateProductRequest updateRequest = UpdateProductRequestFactory.CreateValid();
+        var updatedResponse = await _client.PutAsJsonAsync($"http://localhost/api/products/{id}", updateRequest);
+        using (AssertionScope scope = new())
+        {
+            updatedResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+            var error = await updatedResponse.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+            error.Title.Should().Be("One or more validation errors occurred.");
+            error.Errors.Count.Should().Be(1);
+        }
+    }
+
     private void RecreateDb()
     {
         var scope = _productApiFactory.Services.CreateAsyncScope();
@@ -153,4 +168,9 @@ public class UpdateProductControllerTests : IClassFixture<ProductApiFactory>
         dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
     }
+    public static IEnumerable<object[]> InvalidGuidData => new List<object[]> {
+        new object[] { null },
+        new object[] { Guid.Empty },
+        new object[] { default(Guid) }
+    };
 }

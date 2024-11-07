@@ -7,9 +7,17 @@ public static class UpdateProductCommandFactory
     public static UpdateProductCommand CreateCustom(string productName, string productCode, string productDefinition)
     {
         return new Faker<UpdateProductCommand>()
-            .CustomInstantiator(x => new(Guid.NewGuid(),productName, productCode, productDefinition))
+            .CustomInstantiator(x => new(Guid.NewGuid(), productName, productCode, productDefinition))
             .Generate();
     }
+
+    public static UpdateProductCommand CreateCustom(Guid id, string productName, string productCode, string productDefinition)
+    {
+        return new Faker<UpdateProductCommand>()
+            .CustomInstantiator(x => new(id, productName, productCode, productDefinition))
+            .Generate();
+    }
+
     public static UpdateProductCommand CreateValid()
     {
         return new Faker<UpdateProductCommand>()
