@@ -1,4 +1,4 @@
-﻿using CatalogManagement.Application.Common;
+﻿using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Infrastructure.Tests.Common.Factories;
 using CatalogManagement.Infrastructure.Tests.Fixtures;
 

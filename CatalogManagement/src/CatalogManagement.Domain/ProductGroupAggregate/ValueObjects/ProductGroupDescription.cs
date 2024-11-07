@@ -21,4 +21,6 @@ public sealed class ProductGroupDescription : ValueObject
     {
         yield return Value;
     }
+
+    public static implicit operator string(ProductGroupDescription productGroupDescription) => productGroupDescription.Value;
 }

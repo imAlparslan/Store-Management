@@ -1,4 +1,4 @@
-﻿using CatalogManagement.Application.Common;
+﻿using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Application.Products;
 using CatalogManagement.Application.Tests.Common.Factories.ProductFactories;
 using CatalogManagement.Domain.ProductAggregate;

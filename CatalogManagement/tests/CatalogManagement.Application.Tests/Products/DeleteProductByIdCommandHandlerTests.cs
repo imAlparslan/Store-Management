@@ -1,4 +1,4 @@
-﻿using CatalogManagement.Application.Common;
+﻿using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Application.Products;
 using CatalogManagement.Domain.ProductAggregate.Errors;
 using CatalogManagement.Domain.ProductAggregate.ValueObjects;

@@ -1,4 +1,4 @@
-﻿namespace CatalogManagement.Application.Common;
+﻿namespace CatalogManagement.Application.Common.Repositories;
 public interface IUnitOfWorkManager
 {
     bool IsUnitOfWorkManagerStarted();

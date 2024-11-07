@@ -1,4 +1,4 @@
-﻿using CatalogManagement.Application.Common;
+﻿using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Infrastructure.Persistence;
 using CatalogManagement.Infrastructure.Repositories;
 using Microsoft.Data.SqlClient;

@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogManagement.SharedKer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogManagement.Api.Tests", "tests\CatalogManagement.Api.Tests\CatalogManagement.Api.Tests.csproj", "{E26DBE33-B43E-4963-8639-CF25A755C1B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogManagement.Application.Tests", "tests\CatalogManagement.Application.Tests\CatalogManagement.Application.Tests.csproj", "{913F9380-80FA-49EB-9BF7-0DE1EA8336B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogManagement.Application.Tests", "tests\CatalogManagement.Application.Tests\CatalogManagement.Application.Tests.csproj", "{913F9380-80FA-49EB-9BF7-0DE1EA8336B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

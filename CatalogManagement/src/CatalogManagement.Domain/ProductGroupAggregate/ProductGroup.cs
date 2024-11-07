@@ -15,6 +15,15 @@ public sealed class ProductGroup : AggregateRoot<ProductGroupId>
         Description = description;
         Name = name;
     }
+
+    public void ChangeName(ProductGroupName name)
+    {
+        Name = name;
+    }
+    public void ChangeDescription(ProductGroupDescription description)
+    {
+        Description = description;
+    }
     private ProductGroup()
     {
 

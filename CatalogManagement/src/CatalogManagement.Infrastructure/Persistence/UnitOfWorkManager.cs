@@ -1,4 +1,4 @@
-﻿using CatalogManagement.Application.Common;
+﻿using CatalogManagement.Application.Common.Repositories;
 
 namespace CatalogManagement.Infrastructure.Persistence;
 internal class UnitOfWorkManager : IUnitOfWorkManager

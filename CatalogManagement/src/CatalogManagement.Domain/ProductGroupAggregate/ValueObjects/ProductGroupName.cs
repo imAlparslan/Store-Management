@@ -22,4 +22,6 @@ public class ProductGroupName : ValueObject
     {
         yield return Value;
     }
+
+    public static implicit operator string(ProductGroupName productGroupName) => productGroupName.Value;
 }

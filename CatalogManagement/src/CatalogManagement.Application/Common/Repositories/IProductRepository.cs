@@ -1,7 +1,7 @@
 ﻿using CatalogManagement.Domain.ProductAggregate;
 using CatalogManagement.Domain.ProductAggregate.ValueObjects;
 
-namespace CatalogManagement.Application.Common;
+namespace CatalogManagement.Application.Common.Repositories;
 public interface IProductRepository
 {
     Task<Product> InsertAsync(Product product, CancellationToken cancellationToken = default);
