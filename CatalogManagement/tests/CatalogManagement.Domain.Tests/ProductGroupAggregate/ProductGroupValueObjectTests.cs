@@ -36,6 +36,7 @@ public class ProductGroupValueObjectTests
     public void Product_Should_Have_ProductGroupId_After_Creating()
     {
         var productGroup = ProductGroupFactory.Create();
+        
         using (new AssertionScope())
         {
             productGroup.Id.Should().NotBeNull();

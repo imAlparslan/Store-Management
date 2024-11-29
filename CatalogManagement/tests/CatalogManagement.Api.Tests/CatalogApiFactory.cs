@@ -12,7 +12,7 @@ using Testcontainers.MsSql;
 
 namespace CatalogManagement.Api.Tests;
 
-public class ProductApiFactory : WebApplicationFactory<ProductsController>, IAsyncLifetime
+public class CatalogApiFactory : WebApplicationFactory<ProductsController>, IAsyncLifetime
 {
     private readonly MsSqlContainer _mssqlContainer =
         new MsSqlBuilder()

@@ -1,15 +1,14 @@
-﻿using CatalogManagement.Application.Products;
-using CatalogManagement.Application.Products.Commands.DeleteProductById;
+﻿using CatalogManagement.Application.ProductGroups;
+using CatalogManagement.Application.ProductGroups.Commands.DeleteProductGroup;
 
-namespace CatalogManagement.Application.Tests.Validations.ProductValidators;
-public class DeleteProductByIdCommandValidatorTests
+namespace CatalogManagement.Application.Tests.Validations.ProductGroupValidators;
+public class DeleteProductGroupCommandValidatorTests
 {
-
     [Fact]
     public void Validator_RetursSuccess_WhenIdValid()
     {
-        var command = new DeleteProductByIdCommand(Guid.NewGuid());
-        var validator = new DeleteProductByIdCommandValidator();
+        var command = new DeleteProductGroupByIdCommand(Guid.NewGuid());
+        var validator = new DeleteProductGroupByIdCommandValidator();
 
         var result = validator.Validate(command);
 
@@ -24,8 +23,8 @@ public class DeleteProductByIdCommandValidatorTests
     [MemberData(nameof(InvalidGuidData))]
     public void Validator_ReturnsValidationError_WhenProductIdInvalid(Guid id)
     {
-        var command = new DeleteProductByIdCommand(id);
-        var validator = new DeleteProductByIdCommandValidator();
+        var command = new DeleteProductGroupByIdCommand(id);
+        var validator = new DeleteProductGroupByIdCommandValidator();
 
         var result = validator.Validate(command);
 

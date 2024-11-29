@@ -1,19 +1,21 @@
 ﻿using CatalogManagement.Application.Common.Repositories;
+using CatalogManagement.Application.ProductGroups;
 using CatalogManagement.Application.Products;
 using CatalogManagement.Domain.ProductAggregate.Errors;
+using CatalogManagement.Domain.ProductGroupAggregate.Errors;
 using NSubstitute;
 
-namespace CatalogManagement.Application.Tests.Products;
+namespace CatalogManagement.Application.Tests.ProductsGroups;
 public class DeleteProductGroupByIdCommandHandlerTests
 {
 
     [Fact]
     public async void Handler_ReturnsTrue_WhenIdExists()
     {
-        var productRepository = Substitute.For<IProductRepository>();
-        productRepository.DeleteByIdAsync(Arg.Any<ProductId>()).Returns(true);
-        var handler = new DeleteProductByIdCommandHandler(productRepository);
-        var command = new DeleteProductByIdCommand(Guid.NewGuid());
+        var productGroupRepository = Substitute.For<IProductGroupRepository>();
+        productGroupRepository.DeleteByIdAsync(Arg.Any<ProductGroupId>()).Returns(true);
+        var handler = new DeleteProductGroupByIdCommandHandler(productGroupRepository);
+        var command = new DeleteProductGroupByIdCommand(Guid.NewGuid());
 
         var result = await handler.Handle(command, default);
 
@@ -28,10 +30,10 @@ public class DeleteProductGroupByIdCommandHandlerTests
     [Fact]
     public async void Handler_ReturnsNotDeleted_WhenIdNotExists()
     {
-        var productRepository = Substitute.For<IProductRepository>();
-        productRepository.DeleteByIdAsync(Arg.Any<ProductId>()).Returns(false);
-        var handler = new DeleteProductByIdCommandHandler(productRepository);
-        var command = new DeleteProductByIdCommand(Guid.NewGuid());
+        var productGroupRepository = Substitute.For<IProductGroupRepository>();
+        productGroupRepository.DeleteByIdAsync(Arg.Any<ProductGroupId>()).Returns(false);
+        var handler = new DeleteProductGroupByIdCommandHandler(productGroupRepository);
+        var command = new DeleteProductGroupByIdCommand(Guid.NewGuid());
 
         var result = await handler.Handle(command, default);
 
@@ -40,7 +42,7 @@ public class DeleteProductGroupByIdCommandHandlerTests
             result.Value.Should().BeFalse();
             result.IsSuccess.Should().BeFalse();
             result.Errors.Should().NotBeNullOrEmpty();
-            result.Errors![0].Should().Be(ProductError.NotDeleted);
+            result.Errors![0].Should().Be(ProductGroupError.NotDeleted);
         }
     }
 }

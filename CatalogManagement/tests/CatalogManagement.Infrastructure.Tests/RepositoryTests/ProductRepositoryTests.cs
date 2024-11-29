@@ -1,5 +1,5 @@
 ﻿using CatalogManagement.Application.Common.Repositories;
-using CatalogManagement.Infrastructure.Tests.Common.Factories;
+using CatalogManagement.Infrastructure.Tests.Common.Factories.ProductFactories;
 using CatalogManagement.Infrastructure.Tests.Fixtures;
 
 namespace CatalogManagement.Infrastructure.Tests.RepositoryTests;
@@ -17,7 +17,7 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>
     [Fact]
     public async void Find_By_Id_Should_Return_Correct_Product()
     {
-        var product = ProductFactory.CreateRandon();
+        var product = ProductFactory.CreateRandom();
 
         var inserted = await _productRepository.InsertAsync(product);
         var result = await _productRepository.GetByIdAsync(product.Id);
@@ -32,7 +32,7 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>
     [Fact]
     public async void Delete_By_Id_Should_Delete_And_Return_True_When_Id_Correct()
     {
-        var product = ProductFactory.CreateRandon();
+        var product = ProductFactory.CreateRandom();
 
         var inserted = await _productRepository.InsertAsync(product);
         var result = await _productRepository.DeleteByIdAsync(product.Id);
@@ -48,7 +48,7 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>
     [Fact]
     public async void Insert_Product_Should_Return_Inserted_Product()
     {
-        var product = ProductFactory.CreateRandon();
+        var product = ProductFactory.CreateRandom();
 
         var inserted = await _productRepository.InsertAsync(product);
         var isExists = await _productRepository.IsExistsAsync(product.Id);
@@ -63,7 +63,7 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>
     [Fact]
     public async void Update_Product_Name_Should_Return_Product_With_New_Name()
     {
-        var product = ProductFactory.CreateRandon();
+        var product = ProductFactory.CreateRandom();
         var oldName = product.Name;
         var newName = ProductNameFactory.CreateRandom();
 
@@ -83,7 +83,7 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>
     [Fact]
     public async void Update_Product_Code_Should_Return_Product_With_New_Code()
     {
-        var product = ProductFactory.CreateRandon();
+        var product = ProductFactory.CreateRandom();
         var oldCode = product.Code;
         var newCode = ProductCodeFactory.CreateRandom();
 
@@ -103,7 +103,7 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>
     [Fact]
     public async void Update_Product_Definition_Should_Return_Product_With_New_Definition()
     {
-        var product = ProductFactory.CreateRandon();
+        var product = ProductFactory.CreateRandom();
         var oldDefinition = product.Definition;
         var newDefinition = ProductDefinitionFactory.CreateRandom();
 

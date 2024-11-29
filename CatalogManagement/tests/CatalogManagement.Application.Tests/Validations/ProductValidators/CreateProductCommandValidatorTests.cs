@@ -1,7 +1,5 @@
 ﻿using CatalogManagement.Application.Products.Commands.CreateProduct;
 using CatalogManagement.Application.Tests.Common.Factories.CommandFactories;
-using FluentAssertions;
-using FluentAssertions.Execution;
 
 namespace CatalogManagement.Application.Tests.Validations.ProductValidators;
 public class CreateProductCommandValidatorTests

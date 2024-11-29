@@ -2,10 +2,7 @@
 using CatalogManagement.Application.Products;
 using CatalogManagement.Application.Tests.Common.Factories.CommandFactories;
 using CatalogManagement.Application.Tests.Common.Factories.ProductFactories;
-using CatalogManagement.Domain.ProductAggregate;
 using CatalogManagement.SharedKernel;
-using FluentAssertions;
-using FluentAssertions.Execution;
 using FluentValidation;
 using FluentValidation.Results;
 using MediatR;

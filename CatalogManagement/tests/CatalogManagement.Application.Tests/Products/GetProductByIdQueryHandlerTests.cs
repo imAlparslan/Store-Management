@@ -2,14 +2,11 @@
 using CatalogManagement.Application.Products;
 using CatalogManagement.Application.Tests.Common.Factories.ProductFactories;
 using CatalogManagement.Domain.ProductAggregate.Errors;
-using CatalogManagement.Domain.ProductAggregate.ValueObjects;
-using FluentAssertions;
-using FluentAssertions.Execution;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 
 namespace CatalogManagement.Application.Tests.Products;
-public class GetProductByIdQueryHandlerTests
+public class GetProductGroupsByIdQueryHandlerTests
 {
     [Fact]
     public async void Handler_ReturnsProduct_WhenIdExists()

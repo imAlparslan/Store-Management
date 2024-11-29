@@ -1,4 +1,4 @@
-﻿namespace CatalogManagement.Infrastructure.Tests.Common.Factories;
+﻿namespace CatalogManagement.Infrastructure.Tests.Common.Factories.ProductFactories;
 internal class ProductDefinitionFactory
 {
     public static ProductDefinition CreateRandom()

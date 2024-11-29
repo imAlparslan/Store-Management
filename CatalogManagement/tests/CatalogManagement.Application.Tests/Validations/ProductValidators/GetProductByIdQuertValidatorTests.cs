@@ -1,7 +1,5 @@
 ﻿using CatalogManagement.Application.Products;
 using CatalogManagement.Application.Products.Queries.GetProductById;
-using FluentAssertions;
-using FluentAssertions.Execution;
 
 namespace CatalogManagement.Application.Tests.Validations.ProductValidators;
 public class GetProductByIdQuertValidatorTests

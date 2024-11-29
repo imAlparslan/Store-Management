@@ -1,51 +1,57 @@
 ﻿using CatalogManagement.Api.Tests.RequestFactories;
 using CatalogManagement.Contracts.Products;
 using CatalogManagement.Infrastructure.Persistence;
-using FluentAssertions;
 using FluentAssertions.Execution;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using System.Net;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http.Json;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
+using CatalogManagement.Contracts.ProductGroups;
 
-namespace CatalogManagement.Api.Tests.ProductController;
-public class GetByIdProductControllerTests : IClassFixture<CatalogApiFactory>
+namespace CatalogManagement.Api.Tests.ProductGroupController;
+public class GetByIdProductGroupControllerTests : IClassFixture<CatalogApiFactory>
 {
     private readonly HttpClient _client;
-    private readonly CatalogApiFactory _productApiFactory;
+    private readonly CatalogApiFactory _catalogApiFactory;
 
-    public GetByIdProductControllerTests(CatalogApiFactory productApiFactory)
+    public GetByIdProductGroupControllerTests(CatalogApiFactory catalogApiFactory)
     {
-        _client = productApiFactory.CreateClient();
-        _productApiFactory = productApiFactory;
+        _client = catalogApiFactory.CreateClient();
+        _catalogApiFactory = catalogApiFactory;
 
         RecreateDb();
     }
 
     [Fact]
-    public async void GetById_ReturnsProduct_WhenProductExists()
+    public async void GetById_ReturnsProductGroup_WhenProductGroupExists()
     {
-        CreateProductRequest request = CreateProductRequestFactory.CreateValid();
-        var response = await _client.PostAsJsonAsync("http://localhost/api/products", request);
-        ProductResponse? createdProduct = await response.Content.ReadFromJsonAsync<ProductResponse>();
+        CreateProductGroupRequest request = CreateProductGroupRequestFactory.CreateValid();
+        var response = await _client.PostAsJsonAsync("http://localhost/api/product-groups", request);
+        ProductGroupResponse? createdProductGroup = await response.Content.ReadFromJsonAsync<ProductGroupResponse>();
 
-        var getByIdResponse = await _client.GetAsync($"http://localhost/api/products/{createdProduct!.Id}");
+        var getByIdResponse = await _client.GetAsync($"http://localhost/api/product-groups/{createdProductGroup!.Id}");
 
         using (AssertionScope scope = new())
         {
-            ProductResponse? product = await getByIdResponse.Content.ReadFromJsonAsync<ProductResponse>();
+            ProductGroupResponse? productGroup = await getByIdResponse.Content.ReadFromJsonAsync<ProductGroupResponse>();
             getByIdResponse.Should().NotBeNull();
             getByIdResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-            product.Should().BeEquivalentTo(createdProduct);
+            productGroup.Should().BeEquivalentTo(createdProductGroup);
         }
     }
 
     [Fact]
-    public async void GetById_ReturnsNotFound_WhenProductNotExists()
+    public async void GetById_ReturnsNotFound_WhenProductGroupNotExists()
     {
         var id = Guid.NewGuid();
 
-        var getByIdResponse = await _client.GetAsync($"http://localhost/api/products/{id}");
+        var getByIdResponse = await _client.GetAsync($"http://localhost/api/product-groups/{id}");
 
         getByIdResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
 
@@ -55,7 +61,7 @@ public class GetByIdProductControllerTests : IClassFixture<CatalogApiFactory>
     [MemberData(nameof(InvalidGuidData))]
     public async void GetById_ReturnsValidationError_WhenIdInvalid(Guid id)
     {
-        var result = await _client.GetAsync($"http://localhost/api/products/{id}");
+        var result = await _client.GetAsync($"http://localhost/api/product-groups/{id}");
         using (AssertionScope scope = new())
         {
             result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -66,7 +72,7 @@ public class GetByIdProductControllerTests : IClassFixture<CatalogApiFactory>
     }
     private void RecreateDb()
     {
-        var scope = _productApiFactory.Services.CreateAsyncScope();
+        var scope = _catalogApiFactory.Services.CreateAsyncScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
         dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();

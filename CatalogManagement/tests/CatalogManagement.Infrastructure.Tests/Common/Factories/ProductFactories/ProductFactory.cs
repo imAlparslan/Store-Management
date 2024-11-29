@@ -1,4 +1,4 @@
-﻿namespace CatalogManagement.Infrastructure.Tests.Common.Factories;
+﻿namespace CatalogManagement.Infrastructure.Tests.Common.Factories.ProductFactories;
 internal class ProductFactory
 {
     public static Product CreateDefault()
@@ -8,7 +8,7 @@ internal class ProductFactory
             new ProductDefinition("product definition"));
     }
 
-    public static Product CreateRandon()
+    public static Product CreateRandom()
     {
         var name = ProductNameFactory.CreateRandom();
         var code = ProductCodeFactory.CreateRandom();

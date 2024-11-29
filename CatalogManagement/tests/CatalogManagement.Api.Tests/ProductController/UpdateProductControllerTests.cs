@@ -9,12 +9,12 @@ using System.Net;
 using System.Net.Http.Json;
 
 namespace CatalogManagement.Api.Tests.ProductController;
-public class UpdateProductControllerTests : IClassFixture<ProductApiFactory>
+public class UpdateProductControllerTests : IClassFixture<CatalogApiFactory>
 {
     private readonly HttpClient _client;
-    private readonly ProductApiFactory _productApiFactory;
+    private readonly CatalogApiFactory _productApiFactory;
 
-    public UpdateProductControllerTests(ProductApiFactory productApiFactory)
+    public UpdateProductControllerTests(CatalogApiFactory productApiFactory)
     {
         _client = productApiFactory.CreateClient();
         _productApiFactory = productApiFactory;

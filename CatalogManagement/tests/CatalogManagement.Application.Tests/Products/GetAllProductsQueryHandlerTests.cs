@@ -1,13 +1,10 @@
 ﻿using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Application.Products;
 using CatalogManagement.Application.Tests.Common.Factories.ProductFactories;
-using CatalogManagement.Domain.ProductAggregate;
-using FluentAssertions;
-using FluentAssertions.Execution;
 using NSubstitute;
 
 namespace CatalogManagement.Application.Tests.Products;
-public class GetAllProductsQueryHandlerTests
+public class GetAllProductGroupQueryHandlerTests
 {
     [Fact]
     public async void Handler_ReturnsProductList_WhenProductsExist()
