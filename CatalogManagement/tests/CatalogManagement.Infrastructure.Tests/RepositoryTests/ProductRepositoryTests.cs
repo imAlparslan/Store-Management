@@ -6,8 +6,8 @@ namespace CatalogManagement.Infrastructure.Tests.RepositoryTests;
 
 public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>
 {
-    IProductRepository _productRepository;
-    IUnitOfWorkManager _unitOfWorkManager;
+    private readonly IProductRepository _productRepository;
+    private readonly IUnitOfWorkManager _unitOfWorkManager;
     public ProductRepositoryTests(ProductRepositoryFixture productRepositoryFixture)
     {
         _productRepository = productRepositoryFixture._productRepository;
@@ -15,7 +15,7 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>
     }
 
     [Fact]
-    public async void Find_By_Id_Should_Return_Correct_Product()
+    public async Task Find_By_Id_Should_Return_Correct_Product()
     {
         var product = ProductFactory.CreateRandom();
 
@@ -30,7 +30,7 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>
     }
 
     [Fact]
-    public async void Delete_By_Id_Should_Delete_And_Return_True_When_Id_Correct()
+    public async Task Delete_By_Id_Should_Delete_And_Return_True_When_Id_Correct()
     {
         var product = ProductFactory.CreateRandom();
 
@@ -46,7 +46,7 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>
     }
 
     [Fact]
-    public async void Insert_Product_Should_Return_Inserted_Product()
+    public async Task Insert_Product_Should_Return_Inserted_Product()
     {
         var product = ProductFactory.CreateRandom();
 
@@ -61,7 +61,7 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>
     }
 
     [Fact]
-    public async void Update_Product_Name_Should_Return_Product_With_New_Name()
+    public async Task Update_Product_Name_Should_Return_Product_With_New_Name()
     {
         var product = ProductFactory.CreateRandom();
         var oldName = product.Name;
@@ -81,7 +81,7 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>
     }
 
     [Fact]
-    public async void Update_Product_Code_Should_Return_Product_With_New_Code()
+    public async Task Update_Product_Code_Should_Return_Product_With_New_Code()
     {
         var product = ProductFactory.CreateRandom();
         var oldCode = product.Code;
