@@ -1,10 +1,8 @@
 ﻿using CatalogManagement.Application.ProductGroups.Commands.CreateProductGroup;
-using CatalogManagement.Application.Tests.Common.Factories.CommandFactories;
 
-namespace CatalogManagement.Application.Tests.Validations.ProductGroupValidators;
+namespace CatalogManagement.Application.Tests.ProductGroups.Validators;
 public class CreateProductGroupCommandValidatorTests
 {
-
     [Fact]
     public void Validator_ReturnsValidResult_WhenDataValid()
     {

@@ -10,13 +10,19 @@ public class ProductRepositoryFixture : IAsyncLifetime
 {
     public IProductRepository _productRepository = null!;
     public IUnitOfWorkManager _unitOfWorkManager = null!;
-    private readonly MsSqlContainer _mssqlContainer =
-        new MsSqlBuilder()
+    private readonly MsSqlContainer _mssqlContainer = null!;
+
+    private CatalogDbContext _catalogDbContext = null!;
+
+    public ProductRepositoryFixture()
+    {
+        _mssqlContainer = new MsSqlBuilder()
             .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
             .WithEnvironment("ACCEPT_EULA", "Y")
             .WithEnvironment("MSSQL_PID", "Developer")
             .WithPassword("test_pWd")
             .Build();
+    }
     public async Task InitializeAsync()
     {
         await _mssqlContainer.StartAsync();
@@ -30,18 +36,20 @@ public class ProductRepositoryFixture : IAsyncLifetime
             .UseSqlServer(connectionStringBuilder.ConnectionString)
             .Options;
 
-        var catalogDbContext = new CatalogDbContext(connectionOption);
+        _catalogDbContext = new CatalogDbContext(connectionOption);
 
-        _unitOfWorkManager = new UnitOfWorkManager(catalogDbContext);
-        _productRepository = new ProductRepository(catalogDbContext, _unitOfWorkManager);
-
-        await catalogDbContext.Database.EnsureDeletedAsync();
-        await catalogDbContext.Database.EnsureCreatedAsync();
-
+        _unitOfWorkManager = new UnitOfWorkManager(_catalogDbContext);
+        _productRepository = new ProductRepository(_catalogDbContext, _unitOfWorkManager);
     }
 
     public async Task DisposeAsync()
     {
         await _mssqlContainer.DisposeAsync();
+    }
+
+    public void RecreateDb()
+    {
+        _catalogDbContext.Database.EnsureDeleted();
+        _catalogDbContext.Database.EnsureCreated();
     }
 }

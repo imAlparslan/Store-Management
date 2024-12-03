@@ -1,7 +1,6 @@
-﻿using CatalogManagement.Application.ProductGroups;
-using CatalogManagement.Application.ProductGroups.Commands.DeleteProductGroup;
+﻿using CatalogManagement.Application.ProductGroups.Commands.DeleteProductGroup;
 
-namespace CatalogManagement.Application.Tests.Validations.ProductGroupValidators;
+namespace CatalogManagement.Application.Tests.ProductGroups.Validators;
 public class DeleteProductGroupCommandValidatorTests
 {
     [Fact]
@@ -38,7 +37,7 @@ public class DeleteProductGroupCommandValidatorTests
         }
     }
     public static IEnumerable<object[]> InvalidGuidData => new List<object[]> {
-        new object[] { null },
+        new object[] { null! },
         new object[] { Guid.Empty },
         new object[] { default(Guid) }
     };

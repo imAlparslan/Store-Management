@@ -1,27 +1,27 @@
-using CatalogManagement.Api.Controllers;
-using CatalogManagement.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Testcontainers.MsSql;
 
 namespace CatalogManagement.Api.Tests;
 
-public class CatalogApiFactory : WebApplicationFactory<ProductsController>, IAsyncLifetime
+public class CatalogApiFactory : WebApplicationFactory<IApiAssemblyMarker>, IAsyncLifetime
 {
-    private readonly MsSqlContainer _mssqlContainer =
-        new MsSqlBuilder()
+    private readonly MsSqlContainer _mssqlContainer = null!;
+
+    public CatalogApiFactory()
+    {
+        _mssqlContainer = new MsSqlBuilder()
             .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
             .WithEnvironment("ACCEPT_EULA", "Y")
             .WithEnvironment("MSSQL_PID", "Developer")
             .WithPassword("test_pWd")
             .Build();
-
+    }
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureLogging(logging => logging.ClearProviders());
@@ -35,7 +35,6 @@ public class CatalogApiFactory : WebApplicationFactory<ProductsController>, IAsy
                 var connectionStringBuilder = new SqlConnectionStringBuilder()
                 {
                     ConnectionString = _mssqlContainer.GetConnectionString(),
-
                     InitialCatalog = "Api_Test"
                 };
 

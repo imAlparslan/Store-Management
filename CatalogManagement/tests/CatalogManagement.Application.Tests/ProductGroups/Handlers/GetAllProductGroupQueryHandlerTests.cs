@@ -1,9 +1,6 @@
-﻿using CatalogManagement.Application.Common.Repositories;
-using CatalogManagement.Application.ProductGroups;
-using CatalogManagement.Application.Tests.Common.Factories.ProductGroupFactories;
-using NSubstitute;
+﻿using CatalogManagement.Domain.ProductGroupAggregate;
 
-namespace CatalogManagement.Application.Tests.ProductGroups;
+namespace CatalogManagement.Application.Tests.ProductGroups.Handlers;
 public class GetAllProductGroupQueryHandlerTests
 {
     [Fact]

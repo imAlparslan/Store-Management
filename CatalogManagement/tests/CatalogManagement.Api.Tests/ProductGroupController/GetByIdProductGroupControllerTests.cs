@@ -1,18 +1,4 @@
-﻿using CatalogManagement.Api.Tests.RequestFactories;
-using CatalogManagement.Contracts.Products;
-using CatalogManagement.Infrastructure.Persistence;
-using FluentAssertions.Execution;
-using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Json;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using CatalogManagement.Contracts.ProductGroups;
+﻿using CatalogManagement.Contracts.ProductGroups;
 
 namespace CatalogManagement.Api.Tests.ProductGroupController;
 public class GetByIdProductGroupControllerTests : IClassFixture<CatalogApiFactory>
@@ -29,7 +15,7 @@ public class GetByIdProductGroupControllerTests : IClassFixture<CatalogApiFactor
     }
 
     [Fact]
-    public async void GetById_ReturnsProductGroup_WhenProductGroupExists()
+    public async Task GetById_ReturnsProductGroup_WhenProductGroupExists()
     {
         CreateProductGroupRequest request = CreateProductGroupRequestFactory.CreateValid();
         var response = await _client.PostAsJsonAsync("http://localhost/api/product-groups", request);
@@ -47,7 +33,7 @@ public class GetByIdProductGroupControllerTests : IClassFixture<CatalogApiFactor
     }
 
     [Fact]
-    public async void GetById_ReturnsNotFound_WhenProductGroupNotExists()
+    public async Task GetById_ReturnsNotFound_WhenProductGroupNotExists()
     {
         var id = Guid.NewGuid();
 
@@ -59,14 +45,15 @@ public class GetByIdProductGroupControllerTests : IClassFixture<CatalogApiFactor
 
     [Theory]
     [MemberData(nameof(InvalidGuidData))]
-    public async void GetById_ReturnsValidationError_WhenIdInvalid(Guid id)
+    public async Task GetById_ReturnsValidationError_WhenIdInvalid(Guid id)
     {
         var result = await _client.GetAsync($"http://localhost/api/product-groups/{id}");
         using (AssertionScope scope = new())
         {
             result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             var error = await result.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-            error.Title.Should().Be("One or more validation errors occurred.");
+            error.Should().NotBeNull();
+            error!.Title.Should().Be("One or more validation errors occurred.");
             error.Errors.Count.Should().Be(1);
         }
     }
@@ -78,7 +65,7 @@ public class GetByIdProductGroupControllerTests : IClassFixture<CatalogApiFactor
         dbContext.Database.EnsureCreated();
     }
     public static IEnumerable<object[]> InvalidGuidData => new List<object[]> {
-        new object[] { null },
+        new object[] { null! },
         new object[] { Guid.Empty },
         new object[] { default(Guid) }
     };

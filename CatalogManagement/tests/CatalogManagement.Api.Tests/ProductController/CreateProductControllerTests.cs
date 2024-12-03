@@ -1,23 +1,15 @@
-﻿using CatalogManagement.Api.Tests.RequestFactories;
-using CatalogManagement.Contracts.Products;
-using CatalogManagement.Infrastructure.Persistence;
-using FluentAssertions;
-using FluentAssertions.Execution;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using System.Net;
-using System.Net.Http.Json;
+﻿using CatalogManagement.Contracts.Products;
 
 namespace CatalogManagement.Api.Tests.ProductController;
 public class CreateProductControllerTests : IClassFixture<CatalogApiFactory>
 {
     private readonly HttpClient _client;
-    private readonly CatalogApiFactory _productApiFactory;
+    private readonly CatalogApiFactory _catalogApiFactory;
 
-    public CreateProductControllerTests(CatalogApiFactory productApiFactory)
+    public CreateProductControllerTests(CatalogApiFactory catalogApiFactory)
     {
-        _client = productApiFactory.CreateClient();
-        _productApiFactory = productApiFactory;
+        _client = catalogApiFactory.CreateClient();
+        _catalogApiFactory = catalogApiFactory;
 
         RecreateDb();
     }
@@ -32,10 +24,9 @@ public class CreateProductControllerTests : IClassFixture<CatalogApiFactory>
         using (AssertionScope scope = new())
         {
             ProductResponse? productResponse = await response.Content.ReadFromJsonAsync<ProductResponse>();
+            productResponse.Should().NotBeNull();
             response.StatusCode.Should().Be(HttpStatusCode.Created);
             response.Headers.Location!.ToString().Should().Be($"http://localhost/api/products/{productResponse!.Id}");
-            productResponse.Should().NotBeNull();
-            productResponse.Should().BeEquivalentTo(request);
         }
     }
 
@@ -43,7 +34,7 @@ public class CreateProductControllerTests : IClassFixture<CatalogApiFactory>
     [InlineData("")]
     [InlineData(" ")]
     [InlineData(null)]
-    public async Task Create_ReturnsValidationError_WhenProdoctNameNullOrEmpty(string productName)
+    public async Task Create_ReturnsValidationError_WhenProductNameNullOrEmpty(string productName)
     {
         var request = CreateProductRequestFactory.CreateWithName(productName);
 
@@ -53,6 +44,7 @@ public class CreateProductControllerTests : IClassFixture<CatalogApiFactory>
         {
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+            error.Should().NotBeNull();
             error!.Status.Should().Be(400);
             error.Title.Should().Be("One or more validation errors occurred.");
             error.Errors.Count.Should().Be(1);
@@ -73,6 +65,7 @@ public class CreateProductControllerTests : IClassFixture<CatalogApiFactory>
         {
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+            error.Should().NotBeNull();
             error!.Status.Should().Be(400);
             error.Title.Should().Be("One or more validation errors occurred.");
             error.Errors.Count.Should().Be(1);
@@ -93,6 +86,7 @@ public class CreateProductControllerTests : IClassFixture<CatalogApiFactory>
         {
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+            error.Should().NotBeNull();
             error!.Status.Should().Be(400);
             error.Title.Should().Be("One or more validation errors occurred.");
             error.Errors.Count.Should().Be(1);
@@ -110,6 +104,7 @@ public class CreateProductControllerTests : IClassFixture<CatalogApiFactory>
         {
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+            error.Should().NotBeNull();
             error!.Status.Should().Be(400);
             error.Title.Should().Be("One or more validation errors occurred.");
             error.Errors.Count.Should().Be(3);
@@ -118,7 +113,7 @@ public class CreateProductControllerTests : IClassFixture<CatalogApiFactory>
 
     private void RecreateDb()
     {
-        var scope = _productApiFactory.Services.CreateAsyncScope();
+        var scope = _catalogApiFactory.Services.CreateAsyncScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
         dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();

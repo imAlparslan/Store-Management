@@ -1,23 +1,15 @@
-﻿using CatalogManagement.Api.Tests.RequestFactories;
-using CatalogManagement.Contracts.Products;
-using CatalogManagement.Infrastructure.Persistence;
-using FluentAssertions;
-using FluentAssertions.Execution;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using System.Net;
-using System.Net.Http.Json;
+﻿using CatalogManagement.Contracts.Products;
 
 namespace CatalogManagement.Api.Tests.ProductController;
 public class UpdateProductControllerTests : IClassFixture<CatalogApiFactory>
 {
     private readonly HttpClient _client;
-    private readonly CatalogApiFactory _productApiFactory;
+    private readonly CatalogApiFactory _catalogApiFactory;
 
-    public UpdateProductControllerTests(CatalogApiFactory productApiFactory)
+    public UpdateProductControllerTests(CatalogApiFactory catalogApiFactory)
     {
-        _client = productApiFactory.CreateClient();
-        _productApiFactory = productApiFactory;
+        _client = catalogApiFactory.CreateClient();
+        _catalogApiFactory = catalogApiFactory;
 
         RecreateDb();
     }
@@ -35,7 +27,7 @@ public class UpdateProductControllerTests : IClassFixture<CatalogApiFactory>
         using (AssertionScope scope = new())
         {
             var updatedProductResponse = await updatedResponse.Content.ReadFromJsonAsync<ProductResponse>();
-            updatedResponse.Should().NotBeNull();
+            updatedProductResponse.Should().NotBeNull();
             updatedResponse.StatusCode.Should().Be(HttpStatusCode.OK);
             updatedProductResponse.Should().BeEquivalentTo(updateRequest);
         }
@@ -74,6 +66,7 @@ public class UpdateProductControllerTests : IClassFixture<CatalogApiFactory>
         {
             updatedResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             var error = await updatedResponse.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+            error.Should().NotBeNull();
             error!.Status.Should().Be(400);
             error.Title.Should().Be("One or more validation errors occurred.");
             error.Errors.Count.Should().Be(1);
@@ -97,6 +90,7 @@ public class UpdateProductControllerTests : IClassFixture<CatalogApiFactory>
         {
             updatedResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             var error = await updatedResponse.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+            error.Should().NotBeNull();
             error!.Status.Should().Be(400);
             error.Title.Should().Be("One or more validation errors occurred.");
             error.Errors.Count.Should().Be(1);
@@ -120,6 +114,7 @@ public class UpdateProductControllerTests : IClassFixture<CatalogApiFactory>
         {
             updatedResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             var error = await updatedResponse.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+            error.Should().NotBeNull();
             error!.Status.Should().Be(400);
             error.Title.Should().Be("One or more validation errors occurred.");
             error.Errors.Count.Should().Be(1);
@@ -140,6 +135,7 @@ public class UpdateProductControllerTests : IClassFixture<CatalogApiFactory>
         {
             updatedResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             var error = await updatedResponse.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+            error.Should().NotBeNull();
             error!.Status.Should().Be(400);
             error.Title.Should().Be("One or more validation errors occurred.");
             error.Errors.Count.Should().Be(3);
@@ -148,7 +144,7 @@ public class UpdateProductControllerTests : IClassFixture<CatalogApiFactory>
 
     [Theory]
     [MemberData(nameof(InvalidGuidData))]
-    public async void Update_ReturnsValidationError_WhenIdInvalid(Guid id)
+    public async Task Update_ReturnsValidationError_WhenIdInvalid(Guid id)
     {
         UpdateProductRequest updateRequest = UpdateProductRequestFactory.CreateValid();
         var updatedResponse = await _client.PutAsJsonAsync($"http://localhost/api/products/{id}", updateRequest);
@@ -156,20 +152,21 @@ public class UpdateProductControllerTests : IClassFixture<CatalogApiFactory>
         {
             updatedResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             var error = await updatedResponse.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-            error.Title.Should().Be("One or more validation errors occurred.");
+            error.Should().NotBeNull();
+            error!.Title.Should().Be("One or more validation errors occurred.");
             error.Errors.Count.Should().Be(1);
         }
     }
 
     private void RecreateDb()
     {
-        var scope = _productApiFactory.Services.CreateAsyncScope();
+        var scope = _catalogApiFactory.Services.CreateAsyncScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
         dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
     }
     public static IEnumerable<object[]> InvalidGuidData => new List<object[]> {
-        new object[] { null },
+        new object[] { null! },
         new object[] { Guid.Empty },
         new object[] { default(Guid) }
     };

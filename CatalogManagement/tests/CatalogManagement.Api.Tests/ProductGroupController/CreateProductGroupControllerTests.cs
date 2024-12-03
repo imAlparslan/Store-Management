@@ -1,22 +1,14 @@
-﻿using CatalogManagement.Api.Tests.RequestFactories;
-using CatalogManagement.Contracts.ProductGroups;
-using CatalogManagement.Infrastructure.Persistence;
-using FluentAssertions;
-using FluentAssertions.Execution;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using System.Net;
-using System.Net.Http.Json;
+﻿using CatalogManagement.Contracts.ProductGroups;
 
 namespace CatalogManagement.Api.Tests.ProductGroupController;
 public class CreateProductGroupControllerTests : IClassFixture<CatalogApiFactory>
 {
     private readonly HttpClient _client;
-    private readonly CatalogApiFactory _productApiFactory;
-    public CreateProductGroupControllerTests(CatalogApiFactory productApiFactory)
+    private readonly CatalogApiFactory _catalogApiFactory;
+    public CreateProductGroupControllerTests(CatalogApiFactory catalogApiFactory)
     {
-        _client = productApiFactory.CreateClient();
-        _productApiFactory = productApiFactory;
+        _client = catalogApiFactory.CreateClient();
+        _catalogApiFactory = catalogApiFactory;
 
         ReCreateDb();
     }
@@ -32,6 +24,7 @@ public class CreateProductGroupControllerTests : IClassFixture<CatalogApiFactory
         {
             response.StatusCode.Should().Be(HttpStatusCode.Created);
             ProductGroupResponse? productGroupResponse = await response.Content.ReadFromJsonAsync<ProductGroupResponse>();
+            productGroupResponse.Should().NotBeNull();
             response.Headers.Location!.ToString().Should().Be($"http://localhost/api/product-groups/{productGroupResponse!.Id}");
             productGroupResponse.Should().NotBeNull();
             productGroupResponse.Should().BeEquivalentTo(request);
@@ -52,6 +45,7 @@ public class CreateProductGroupControllerTests : IClassFixture<CatalogApiFactory
         {
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+            error.Should().NotBeNull();
             error!.Status.Should().Be(400);
             error.Title.Should().Be("One or more validation errors occurred.");
             error.Errors.Count.Should().Be(1);
@@ -72,6 +66,7 @@ public class CreateProductGroupControllerTests : IClassFixture<CatalogApiFactory
         {
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+            error.Should().NotBeNull();
             error!.Status.Should().Be(400);
             error.Title.Should().Be("One or more validation errors occurred.");
             error.Errors.Count.Should().Be(1);
@@ -89,6 +84,7 @@ public class CreateProductGroupControllerTests : IClassFixture<CatalogApiFactory
         {
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+            error.Should().NotBeNull();
             error!.Status.Should().Be(400);
             error.Title.Should().Be("One or more validation errors occurred.");
             error.Errors.Count.Should().Be(2);
@@ -96,7 +92,7 @@ public class CreateProductGroupControllerTests : IClassFixture<CatalogApiFactory
     }
     private void ReCreateDb()
     {
-        var scope = _productApiFactory.Services.CreateScope();
+        var scope = _catalogApiFactory.Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
         db.Database.EnsureDeleted();
         db.Database.EnsureCreated();

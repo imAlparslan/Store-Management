@@ -1,12 +1,4 @@
-﻿using CatalogManagement.Api.Tests.RequestFactories;
-using CatalogManagement.Contracts.ProductGroups;
-using CatalogManagement.Infrastructure.Persistence;
-using FluentAssertions;
-using FluentAssertions.Execution;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using System.Net;
-using System.Net.Http.Json;
+﻿using CatalogManagement.Contracts.ProductGroups;
 
 namespace CatalogManagement.Api.Tests.ProductGroupController;
 public class DeleteProductGroupControllerTests : IClassFixture<CatalogApiFactory>
@@ -22,7 +14,7 @@ public class DeleteProductGroupControllerTests : IClassFixture<CatalogApiFactory
     }
 
     [Fact]
-    public async void Delete_ReturnsOk_WhenProductGroupExists()
+    public async Task Delete_ReturnsOk_WhenProductGroupExists()
     {
         CreateProductGroupRequest createRequest = CreateProductGroupRequestFactory.CreateValid();
         var response = await _client.PostAsJsonAsync("http://localhost/api/product-groups", createRequest);
@@ -34,7 +26,7 @@ public class DeleteProductGroupControllerTests : IClassFixture<CatalogApiFactory
 
     }
     [Fact]
-    public async void Delete_ReturnsNotFound_WhenProductGroupNotExists()
+    public async Task Delete_ReturnsNotFound_WhenProductGroupNotExists()
     {
         var id = Guid.NewGuid();
 
@@ -45,14 +37,15 @@ public class DeleteProductGroupControllerTests : IClassFixture<CatalogApiFactory
     }
     [Theory]
     [MemberData(nameof(InvalidGuidData))]
-    public async void Delete_ReturnsValidationError_WhenIdInvalid(Guid id)
+    public async Task Delete_ReturnsValidationError_WhenIdInvalid(Guid id)
     {
         var deleteResponse = await _client.DeleteAsync($"http://localhost/api/product-groups/{id}");
         using (AssertionScope scope = new())
         {
             deleteResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             var error = await deleteResponse.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-            error.Title.Should().Be("One or more validation errors occurred.");
+            error.Should().NotBeNull();
+            error!.Title.Should().Be("One or more validation errors occurred.");
             error.Errors.Count.Should().Be(1);
         }
     }
@@ -65,7 +58,7 @@ public class DeleteProductGroupControllerTests : IClassFixture<CatalogApiFactory
     }
 
     public static IEnumerable<object[]> InvalidGuidData => new List<object[]> {
-        new object[] { null },
+        new object[] { null! },
         new object[] { Guid.Empty },
         new object[] { default(Guid) }
     };

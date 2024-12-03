@@ -1,7 +1,6 @@
-﻿using CatalogManagement.Application.Products;
-using CatalogManagement.Application.Products.Queries.GetProductById;
+﻿using CatalogManagement.Application.Products.Queries.GetProductById;
 
-namespace CatalogManagement.Application.Tests.Validations.ProductValidators;
+namespace CatalogManagement.Application.Tests.Products.Validators;
 public class GetProductByIdQuertValidatorTests
 {
     [Fact]
@@ -38,7 +37,7 @@ public class GetProductByIdQuertValidatorTests
     }
 
     public static IEnumerable<object[]> InvalidGuidData => new List<object[]> {
-        new object[] { null },
+        new object[] { null! },
         new object[] { Guid.Empty },
         new object[] { default(Guid) }
     };

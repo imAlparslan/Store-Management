@@ -17,4 +17,9 @@
     <ProjectReference Include="..\CatalogManagement.Domain\CatalogManagement.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+	<InternalsVisibleTo Include="CatalogManagement.Architecture.Tests"/>
+	<InternalsVisibleTo Include="CatalogManagement.Application.Tests"/>
+  </ItemGroup>
+
 </Project>

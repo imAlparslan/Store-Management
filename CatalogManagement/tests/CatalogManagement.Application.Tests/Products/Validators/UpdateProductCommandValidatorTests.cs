@@ -1,7 +1,6 @@
 ﻿using CatalogManagement.Application.Products.Commands.UpdateProduct;
-using CatalogManagement.Application.Tests.Common.Factories.CommandFactories;
 
-namespace CatalogManagement.Application.Tests.Validations.ProductValidators;
+namespace CatalogManagement.Application.Tests.Products.Validators;
 public class UpdateProductCommandValidatorTests
 {
     [Fact]
@@ -121,7 +120,7 @@ public class UpdateProductCommandValidatorTests
         }
     }
     public static IEnumerable<object[]> InvalidGuidData => new List<object[]> {
-        new object[] { null },
+        new object[] { null! },
         new object[] { Guid.Empty },
         new object[] { default(Guid) }
     };

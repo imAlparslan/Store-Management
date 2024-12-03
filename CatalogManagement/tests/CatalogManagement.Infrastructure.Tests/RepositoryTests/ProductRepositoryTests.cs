@@ -7,11 +7,11 @@ namespace CatalogManagement.Infrastructure.Tests.RepositoryTests;
 public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>
 {
     private readonly IProductRepository _productRepository;
-    private readonly IUnitOfWorkManager _unitOfWorkManager;
     public ProductRepositoryTests(ProductRepositoryFixture productRepositoryFixture)
     {
         _productRepository = productRepositoryFixture._productRepository;
-        _unitOfWorkManager = productRepositoryFixture._unitOfWorkManager;
+
+        productRepositoryFixture.RecreateDb();
     }
 
     [Fact]
@@ -33,8 +33,8 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>
     public async Task Delete_By_Id_Should_Delete_And_Return_True_When_Id_Correct()
     {
         var product = ProductFactory.CreateRandom();
-
-        var inserted = await _productRepository.InsertAsync(product);
+        _ = await _productRepository.InsertAsync(product);
+        
         var result = await _productRepository.DeleteByIdAsync(product.Id);
         var isExists = await _productRepository.IsExistsAsync(product.Id);
 
@@ -101,7 +101,7 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>
     }
 
     [Fact]
-    public async void Update_Product_Definition_Should_Return_Product_With_New_Definition()
+    public async Task Update_Product_Definition_Should_Return_Product_With_New_Definition()
     {
         var product = ProductFactory.CreateRandom();
         var oldDefinition = product.Definition;
