@@ -15,7 +15,7 @@ internal class DeleteProductByIdCommandHandler : IRequestHandler<DeleteProductBy
 
     public async Task<Result<bool>> Handle(DeleteProductByIdCommand request, CancellationToken cancellationToken)
     {
-        var result = await productRepository.DeleteByIdAsync(request.Id);
+        var result = await productRepository.DeleteByIdAsync(request.Id, cancellationToken);
         if (result)
         {
             return Result<bool>.Success(result);

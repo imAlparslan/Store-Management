@@ -39,7 +39,7 @@ public class CommandValidationBehavior<TCommand, TResponse>
         return await next();
     }
 
-    private Error CreateValidationError(string propertyName, string errorMessage)
+    private static Error CreateValidationError(string propertyName, string errorMessage)
     {
         return new Error(propertyName, ErrorType.Validation, errorMessage);
     }

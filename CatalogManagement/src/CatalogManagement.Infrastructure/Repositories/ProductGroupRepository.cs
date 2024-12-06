@@ -36,7 +36,7 @@ internal class ProductGroupRepository : IProductGroupRepository
     }
     public async Task<ProductGroup?> GetByIdAsync(ProductGroupId productGroupId, CancellationToken cancellationToken = default)
     {
-        return await _catalogDbContext.ProductGroups.FindAsync(productGroupId, cancellationToken);
+        return await _catalogDbContext.ProductGroups.FindAsync([productGroupId], cancellationToken);
     }
 
     public async Task<IEnumerable<ProductGroup>> GetAllAsync(CancellationToken cancellationToken = default)
@@ -46,7 +46,7 @@ internal class ProductGroupRepository : IProductGroupRepository
 
     public async Task<bool> DeleteByIdAsync(ProductGroupId productGroupId, CancellationToken cancellationToken = default)
     {
-        var currentProductGroup = await _catalogDbContext.ProductGroups.FindAsync(productGroupId, cancellationToken);
+        var currentProductGroup = await _catalogDbContext.ProductGroups.FindAsync([productGroupId], cancellationToken);
 
         if (currentProductGroup is null)
         {

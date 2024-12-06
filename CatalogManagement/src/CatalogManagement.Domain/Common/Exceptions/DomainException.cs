@@ -5,7 +5,7 @@ public class DomainException : Exception
 
     protected DomainException(string code, string? message) : base(message)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(code, nameof(code));
+        ArgumentException.ThrowIfNullOrWhiteSpace(code);
 
         Code = code;
     }

@@ -36,7 +36,7 @@ internal class ProductRepository : IProductRepository
     }
     public async Task<Product?> GetByIdAsync(ProductId productId, CancellationToken cancellationToken = default)
     {
-        return await _catalogDbContext.Products.FindAsync(productId, cancellationToken);
+        return await _catalogDbContext.Products.FindAsync([productId], cancellationToken);
     }
 
     public async Task<IEnumerable<Product>> GetAllAsync(CancellationToken cancellationToken = default)
@@ -46,7 +46,7 @@ internal class ProductRepository : IProductRepository
 
     public async Task<bool> DeleteByIdAsync(ProductId productId, CancellationToken cancellationToken = default)
     {
-        var currentProduct = await _catalogDbContext.Products.FindAsync(productId, cancellationToken);
+        var currentProduct = await _catalogDbContext.Products.FindAsync([productId], cancellationToken);
 
         if (currentProduct is null)
         {

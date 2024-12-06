@@ -1,6 +1,6 @@
 ﻿namespace CatalogManagement.Api;
 
-public class ApiEndpoints
+public static class ApiEndpoints
 {
     private const string ApiBase = "api";
 

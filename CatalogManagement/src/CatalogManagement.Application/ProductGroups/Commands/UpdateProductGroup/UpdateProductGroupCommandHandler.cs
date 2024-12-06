@@ -25,7 +25,7 @@ internal class UpdateProductGroupCommandHandler
         productGroup.ChangeName(new(request.Name));
         productGroup.ChangeDescription(new(request.Description));
 
-        await productGroupRepository.UpdateAsync(productGroup);
+        await productGroupRepository.UpdateAsync(productGroup, cancellationToken);
 
         return Result<ProductGroup>.Success(productGroup);
     }
