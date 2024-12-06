@@ -1,7 +1,6 @@
 ﻿using CatalogManagement.Application.Products.Commands.CreateProduct;
-using CatalogManagement.Application.Tests.Common.Factories.CommandFactories;
 
-namespace CatalogManagement.Application.Tests.Validations.ProductValidators;
+namespace CatalogManagement.Application.Tests.Products.Validators;
 public class CreateProductCommandValidatorTests
 {
     [Fact]

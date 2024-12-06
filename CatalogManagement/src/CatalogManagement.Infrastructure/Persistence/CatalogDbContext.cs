@@ -4,15 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace CatalogManagement.Infrastructure.Persistence;
-public class CatalogDbContext : DbContext
+public class CatalogDbContext(DbContextOptions<CatalogDbContext> options) : DbContext(options)
 {
     public DbSet<Product> Products => Set<Product>();
     public DbSet<ProductGroup> ProductGroups => Set<ProductGroup>();
-
-    public CatalogDbContext(DbContextOptions<CatalogDbContext> options) : base(options)
-    {
-
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

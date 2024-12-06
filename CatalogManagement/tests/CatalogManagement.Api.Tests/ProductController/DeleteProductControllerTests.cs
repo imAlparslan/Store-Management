@@ -1,28 +1,20 @@
-﻿using CatalogManagement.Api.Tests.RequestFactories;
-using CatalogManagement.Contracts.Products;
-using CatalogManagement.Infrastructure.Persistence;
-using FluentAssertions;
-using FluentAssertions.Execution;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using System.Net;
-using System.Net.Http.Json;
+﻿using CatalogManagement.Contracts.Products;
 
 namespace CatalogManagement.Api.Tests.ProductController;
 public class DeleteProductControllerTests : IClassFixture<CatalogApiFactory>
 {
     private readonly HttpClient _client;
-    private readonly CatalogApiFactory _productApiFactory;
-    public DeleteProductControllerTests(CatalogApiFactory productApiFactory)
+    private readonly CatalogApiFactory _catalogApiFactory;
+    public DeleteProductControllerTests(CatalogApiFactory catalogApiFactory)
     {
-        _client = productApiFactory.CreateClient();
-        _productApiFactory = productApiFactory;
+        _client = catalogApiFactory.CreateClient();
+        _catalogApiFactory = catalogApiFactory;
 
         RecreateDb();
     }
 
     [Fact]
-    public async void Delete_ReturnsOk_WhenProductExists()
+    public async Task Delete_ReturnsOk_WhenProductExists()
     {
         CreateProductRequest createRequest = CreateProductRequestFactory.CreateValid();
         var response = await _client.PostAsJsonAsync("http://localhost/api/products", createRequest);
@@ -34,7 +26,7 @@ public class DeleteProductControllerTests : IClassFixture<CatalogApiFactory>
 
     }
     [Fact]
-    public async void Delete_ReturnsNotFound_WhenProductNotExists()
+    public async Task Delete_ReturnsNotFound_WhenProductNotExists()
     {
         var id = Guid.NewGuid();
 
@@ -45,27 +37,28 @@ public class DeleteProductControllerTests : IClassFixture<CatalogApiFactory>
     }
     [Theory]
     [MemberData(nameof(InvalidGuidData))]
-    public async void Delete_ReturnsValidationError_WhenIdInvalid(Guid id)
+    public async Task Delete_ReturnsValidationError_WhenIdInvalid(Guid id)
     {
         var deleteResponse = await _client.DeleteAsync($"http://localhost/api/products/{id}");
         using (AssertionScope scope = new())
         {
             deleteResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             var error = await deleteResponse.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-            error.Title.Should().Be("One or more validation errors occurred.");
+            error.Should().NotBeNull();
+            error!.Title.Should().Be("One or more validation errors occurred.");
             error.Errors.Count.Should().Be(1);
         }
     }
     private void RecreateDb()
     {
-        var scope = _productApiFactory.Services.CreateAsyncScope();
+        var scope = _catalogApiFactory.Services.CreateAsyncScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
         dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
     }
 
     public static IEnumerable<object[]> InvalidGuidData => new List<object[]> {
-        new object[] { null },
+        new object[] { null! },
         new object[] { Guid.Empty },
         new object[] { default(Guid) }
     };

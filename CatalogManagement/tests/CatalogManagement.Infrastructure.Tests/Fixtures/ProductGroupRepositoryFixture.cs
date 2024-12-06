@@ -1,5 +1,4 @@
-﻿
-using CatalogManagement.Application.Common.Repositories;
+﻿using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Infrastructure.Persistence;
 using CatalogManagement.Infrastructure.Repositories;
 using Microsoft.Data.SqlClient;
@@ -11,14 +10,19 @@ public class ProductGroupRepositoryFixture : IAsyncLifetime
 {
     public IProductGroupRepository _productGroupRepository = null!;
     public IUnitOfWorkManager _unitOfWorkManager = null!;
-    private readonly MsSqlContainer _mssqlContainer =
-        new MsSqlBuilder()
+    private readonly MsSqlContainer _mssqlContainer = null!;
+
+    private CatalogDbContext _catalogDbContext = null!;
+
+    public ProductGroupRepositoryFixture()
+    {
+        _mssqlContainer = new MsSqlBuilder()
             .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
             .WithEnvironment("ACCEPT_EULA", "Y")
             .WithEnvironment("MSSQL_PID", "Developer")
             .WithPassword("test_pWd")
             .Build();
-
+    }
     public async Task InitializeAsync()
     {
         await _mssqlContainer.StartAsync();
@@ -32,17 +36,19 @@ public class ProductGroupRepositoryFixture : IAsyncLifetime
             .UseSqlServer(connectionStringBuilder.ConnectionString)
             .Options;
 
-        var catalogDbContext = new CatalogDbContext(connectionOption);
+        _catalogDbContext = new CatalogDbContext(connectionOption);
 
-        _unitOfWorkManager = new UnitOfWorkManager(catalogDbContext);
-        _productGroupRepository = new ProductGroupRepository(catalogDbContext, _unitOfWorkManager);
+        _unitOfWorkManager = new UnitOfWorkManager(_catalogDbContext);
+        _productGroupRepository = new ProductGroupRepository(_catalogDbContext, _unitOfWorkManager);
 
-        await catalogDbContext.Database.EnsureDeletedAsync();
-        await catalogDbContext.Database.EnsureCreatedAsync();
     }
     public async Task DisposeAsync()
     {
         await _mssqlContainer.DisposeAsync();
     }
-
+    public void RecreateDb()
+    {
+        _catalogDbContext.Database.EnsureDeleted();
+        _catalogDbContext.Database.EnsureCreated();
+    }
 }

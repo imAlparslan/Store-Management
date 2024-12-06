@@ -5,14 +5,9 @@ using CatalogManagement.SharedKernel;
 using MediatR;
 
 namespace CatalogManagement.Application.Products;
-internal class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, Result<Product>>
+internal class UpdateProductCommandHandler(IProductRepository productRepository) : IRequestHandler<UpdateProductCommand, Result<Product>>
 {
-    private readonly IProductRepository productRepository;
-
-    public UpdateProductCommandHandler(IProductRepository productRepository)
-    {
-        this.productRepository = productRepository;
-    }
+    private readonly IProductRepository productRepository = productRepository;
 
     public async Task<Result<Product>> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {

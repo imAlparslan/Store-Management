@@ -1,12 +1,4 @@
-﻿using CatalogManagement.Api.Tests.RequestFactories;
-using CatalogManagement.Contracts.ProductGroups;
-using CatalogManagement.Infrastructure.Persistence;
-using FluentAssertions;
-using FluentAssertions.Execution;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using System.Net;
-using System.Net.Http.Json;
+﻿using CatalogManagement.Contracts.ProductGroups;
 
 namespace CatalogManagement.Api.Tests.ProductGroupController;
 public class UpdateProductGroupControllerTests : IClassFixture<CatalogApiFactory>
@@ -74,6 +66,7 @@ public class UpdateProductGroupControllerTests : IClassFixture<CatalogApiFactory
         {
             updatedResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             var error = await updatedResponse.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+            error.Should().NotBeNull();
             error!.Status.Should().Be(400);
             error.Title.Should().Be("One or more validation errors occurred.");
             error.Errors.Count.Should().Be(1);
@@ -97,6 +90,7 @@ public class UpdateProductGroupControllerTests : IClassFixture<CatalogApiFactory
         {
             updatedResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             var error = await updatedResponse.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+            error.Should().NotBeNull();
             error!.Status.Should().Be(400);
             error.Title.Should().Be("One or more validation errors occurred.");
             error.Errors.Count.Should().Be(1);
@@ -117,6 +111,7 @@ public class UpdateProductGroupControllerTests : IClassFixture<CatalogApiFactory
         {
             updatedResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             var error = await updatedResponse.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+            error.Should().NotBeNull();
             error!.Status.Should().Be(400);
             error.Title.Should().Be("One or more validation errors occurred.");
             error.Errors.Count.Should().Be(2);
@@ -133,7 +128,8 @@ public class UpdateProductGroupControllerTests : IClassFixture<CatalogApiFactory
         {
             updatedResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             var error = await updatedResponse.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-            error.Title.Should().Be("One or more validation errors occurred.");
+            error.Should().NotBeNull();
+            error!.Title.Should().Be("One or more validation errors occurred.");
             error.Errors.Count.Should().Be(1);
         }
     }
@@ -146,7 +142,7 @@ public class UpdateProductGroupControllerTests : IClassFixture<CatalogApiFactory
         dbContext.Database.EnsureCreated();
     }
     public static IEnumerable<object[]> InvalidGuidData => new List<object[]> {
-        new object[] { null },
+        new object[] { null! },
         new object[] { Guid.Empty },
         new object[] { default(Guid) }
     };

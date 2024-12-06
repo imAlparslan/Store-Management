@@ -15,6 +15,12 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.8" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+  
+  </ItemGroup>
+	<ItemGroup>
+	<InternalsVisibleTo Include="CatalogManagement.Architecture.Tests" />
+	<InternalsVisibleTo Include="CatalogManagement.Infrastructure.Tests" />
+	<InternalsVisibleTo Include="CatalogManagement.Api.Tests" />
   </ItemGroup>
 
 </Project>

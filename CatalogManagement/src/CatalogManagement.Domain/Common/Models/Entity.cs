@@ -22,15 +22,16 @@ public abstract class Entity<TId> : IEquatable<Entity<TId>> where TId : notnull
         return ((Entity<TId>)obj).Id.Equals(Id);
     }
 
+    public bool Equals(Entity<TId>? other)
+    {
+        return Equals((object?)other);
+    }
+
     public override int GetHashCode()
     {
         return Id.GetHashCode();
     }
 
-    public bool Equals(Entity<TId>? other)
-    {
-        return Equals((object?)other);
-    }
     public static bool operator ==(Entity<TId> left, Entity<TId> right)
     {
         return Equals(left, right);

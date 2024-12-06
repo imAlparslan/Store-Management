@@ -1,18 +1,4 @@
-﻿using CatalogManagement.Api.Tests.RequestFactories;
-using CatalogManagement.Contracts.Products;
-using CatalogManagement.Infrastructure.Persistence;
-using FluentAssertions.Execution;
-using FluentAssertions;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Json;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using static CatalogManagement.Api.ApiEndpoints;
-using CatalogManagement.Contracts.ProductGroups;
+﻿using CatalogManagement.Contracts.ProductGroups;
 
 namespace CatalogManagement.Api.Tests.ProductGroupController;
 public class GetAllProductGroupControllerTests : IClassFixture<CatalogApiFactory>
@@ -29,10 +15,10 @@ public class GetAllProductGroupControllerTests : IClassFixture<CatalogApiFactory
     }
 
     [Fact]
-    public async void GetAll_ReturnsProductGroups_WhenProductGroupsExist()
+    public async Task GetAll_ReturnsProductGroups_WhenProductGroupsExist()
     {
         CreateProductGroupRequest createRequest = CreateProductGroupRequestFactory.CreateValid();
-        var createResponse = await _client.PostAsJsonAsync(ProductGroupEndpoints.Create, createRequest);
+        var createResponse = await _client.PostAsJsonAsync("http://localhost/api/product-groups", createRequest);
         var createdProductGroup = await createResponse.Content.ReadFromJsonAsync<ProductGroupResponse>();
 
         var productGroups = await _client.GetAsync("http://localhost/api/product-groups");
@@ -49,7 +35,7 @@ public class GetAllProductGroupControllerTests : IClassFixture<CatalogApiFactory
     }
 
     [Fact]
-    public async void GetAll_ReturnsEmptyResult_WhenNotProductGroupsExist()
+    public async Task GetAll_ReturnsEmptyResult_WhenNotProductGroupsExist()
     {
         var productGroups = await _client.GetAsync("http://localhost/api/product-groups");
 

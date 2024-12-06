@@ -1,12 +1,9 @@
 ﻿using CatalogManagement.Application.Common.Behaviors;
-using CatalogManagement.Application.Products;
-using CatalogManagement.Application.Tests.Common.Factories.CommandFactories;
-using CatalogManagement.Application.Tests.Common.Factories.ProductFactories;
+using CatalogManagement.Domain.ProductAggregate;
 using CatalogManagement.SharedKernel;
 using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
-using NSubstitute;
 using NSubstitute.Extensions;
 
 namespace CatalogManagement.Application.Tests.Behaviors;

@@ -9,6 +9,7 @@ public class InfrastructureLayerDependencyTests : ArchUnitBase
     [Fact]
     public void Infrastructure_Should_Not_Depend_PresentationLayer()
     {
+
         ArchRuleDefinition
             .Types()
             .That()

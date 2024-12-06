@@ -5,14 +5,10 @@ using CatalogManagement.SharedKernel;
 using MediatR;
 
 namespace CatalogManagement.Application.Products;
-internal class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Result<Product>>
+internal class CreateProductCommandHandler(IProductRepository productRepository) 
+    : IRequestHandler<CreateProductCommand, Result<Product>>
 {
-    private readonly IProductRepository productRepository;
-
-    public CreateProductCommandHandler(IProductRepository productRepository)
-    {
-        this.productRepository = productRepository;
-    }
+    private readonly IProductRepository productRepository = productRepository;
 
     public async Task<Result<Product>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {

@@ -5,15 +5,10 @@ using CatalogManagement.SharedKernel;
 using MediatR;
 
 namespace CatalogManagement.Application.ProductGroups;
-internal class GetProductGroupByIdQueryHandler
-    : IRequestHandler<GetProductGroupByIdQuery, Result<ProductGroup>>
+internal class GetProductGroupByIdQueryHandler(IProductGroupRepository productGroupRepository)
+        : IRequestHandler<GetProductGroupByIdQuery, Result<ProductGroup>>
 {
-    private readonly IProductGroupRepository productGroupRepository;
-
-    public GetProductGroupByIdQueryHandler(IProductGroupRepository productGroupRepository)
-    {
-        this.productGroupRepository = productGroupRepository;
-    }
+    private readonly IProductGroupRepository productGroupRepository = productGroupRepository;
 
     public async Task<Result<ProductGroup>> Handle(GetProductGroupByIdQuery request, CancellationToken cancellationToken)
     {

@@ -1,11 +1,4 @@
-﻿using CatalogManagement.Application.Common.Repositories;
-using CatalogManagement.Application.Products;
-using CatalogManagement.Application.Tests.Common.Factories.ProductFactories;
-using CatalogManagement.Domain.ProductAggregate.Errors;
-using NSubstitute;
-using NSubstitute.ReturnsExtensions;
-
-namespace CatalogManagement.Application.Tests.Products;
+﻿namespace CatalogManagement.Application.Tests.Products.Handlers;
 public class GetProductGroupsByIdQueryHandlerTests
 {
     [Fact]

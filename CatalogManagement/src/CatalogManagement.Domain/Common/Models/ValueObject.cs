@@ -14,17 +14,16 @@ public abstract class ValueObject : IEquatable<ValueObject>
             .SequenceEqual(GetEqualityComponents());
 
     }
+    public bool Equals(ValueObject? other)
+    {
+        return Equals((object?)other);
+    }
 
     public override int GetHashCode()
     {
         return GetEqualityComponents()
             .Select(x => x?.GetHashCode() ?? 0)
             .Aggregate((x, y) => x ^ y);
-    }
-
-    public bool Equals(ValueObject? other)
-    {
-        return Equals((object?)other);
     }
 
     public static bool operator ==(ValueObject left, ValueObject right)

@@ -1,14 +1,6 @@
-﻿using CatalogManagement.Application.Common.Repositories;
-using CatalogManagement.Application.ProductGroups;
-using CatalogManagement.Application.Products;
-using CatalogManagement.Domain.ProductAggregate.Errors;
-using CatalogManagement.Domain.ProductGroupAggregate.Errors;
-using NSubstitute;
-
-namespace CatalogManagement.Application.Tests.ProductsGroups;
+﻿namespace CatalogManagement.Application.Tests.ProductGroups.Handlers;
 public class DeleteProductGroupByIdCommandHandlerTests
 {
-
     [Fact]
     public async void Handler_ReturnsTrue_WhenIdExists()
     {

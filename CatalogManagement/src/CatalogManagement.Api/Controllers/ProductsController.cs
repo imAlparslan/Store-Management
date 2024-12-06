@@ -1,4 +1,5 @@
-﻿using CatalogManagement.Application.Products;
+﻿using CatalogManagement.Api.Mapping;
+using CatalogManagement.Application.Products;
 using CatalogManagement.Contracts.Products;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -6,24 +7,20 @@ using static CatalogManagement.Api.ApiEndpoints;
 
 namespace CatalogManagement.Api.Controllers;
 
-public class ProductsController : BaseApiController
+public class ProductsController(IMediator mediator) : BaseApiController
 {
-    private readonly IMediator mediator;
-    public ProductsController(IMediator mediator)
-    {
-        this.mediator = mediator;
-    }
+    private readonly IMediator mediator = mediator;
 
     [HttpPost(ProductEndpoints.Create)]
     public async Task<IActionResult> Create([FromBody] CreateProductRequest request)
     {
-        CreateProductCommand command = new CreateProductCommand(request.ProductName, request.ProductCode, request.ProductDefinition);
+        CreateProductCommand command = request.MapToCommand();
 
         var result = await mediator.Send(command);
 
         return result.Match(
-            suc => CreatedAtAction(nameof(GetById), new { Id = suc.Id.Value }, new ProductResponse(suc.Id, suc.Name, suc.Code, suc.Definition)),
-            fail => Problem(fail));
+            product => CreatedAtAction(nameof(GetById), new { Id = product.Id.Value }, product.MapToResponse()),
+            Problem);
 
     }
 
@@ -31,11 +28,10 @@ public class ProductsController : BaseApiController
     public async Task<IActionResult> GetAll()
     {
         var query = new GetAllProductsQuery();
-
         var result = await mediator.Send(query);
 
-        return result.Match(suc => Ok(suc.Select(product => new ProductResponse(product.Id, product.Name, product.Code, product.Definition))),
-            fail => Problem(fail));
+        return result.Match(products => Ok(products.Select(product => product.MapToResponse())),
+            Problem);
     }
 
     [HttpGet(ProductEndpoints.GetById)]
@@ -45,8 +41,8 @@ public class ProductsController : BaseApiController
 
         var result = await mediator.Send(query);
 
-        return result.Match(suc => Ok(new ProductResponse(suc.Id, suc.Name, suc.Code, suc.Definition)),
-            fail => Problem(fail));
+        return result.Match(product => Ok(product.MapToResponse()),
+            Problem);
     }
 
     [HttpDelete(ProductEndpoints.Delete)]
@@ -56,17 +52,18 @@ public class ProductsController : BaseApiController
 
         var result = await mediator.Send(command);
 
-        return result.Match(suc => Ok(), fail => Problem(fail));
+        return result.Match(suc => Ok(), Problem);
     }
 
 
     [HttpPut(ProductEndpoints.Update)]
     public async Task<IActionResult> Update([FromBody] UpdateProductRequest request, Guid id)
     {
-        var command = new UpdateProductCommand(id, request.ProductName, request.ProductCode, request.ProductDefinition);
+        var command = request.MapToCommand(id);
 
         var result = await mediator.Send(command);
 
-        return result.Match(suc => Ok(new ProductResponse(suc.Id, suc.Name, suc.Code, suc.Definition)), fail => Problem(fail));
+        return result.Match(product => Ok(product.MapToResponse()),
+            Problem);
     }
 }

@@ -1,11 +1,4 @@
-﻿using CatalogManagement.Application.Common.Repositories;
-using CatalogManagement.Application.ProductGroups;
-using CatalogManagement.Application.Tests.Common.Factories.CommandFactories;
-using CatalogManagement.Application.Tests.Common.Factories.ProductGroupFactories;
-using CatalogManagement.Domain.ProductGroupAggregate.Exceptions;
-using NSubstitute;
-
-namespace CatalogManagement.Application.Tests.ProductGroups;
+﻿namespace CatalogManagement.Application.Tests.ProductGroups.Handlers;
 public class CreateProductGroupCommandHandlerTests
 {
     [Fact]

@@ -1,10 +1,8 @@
-﻿using CatalogManagement.Application.Products;
-using CatalogManagement.Application.Products.Commands.DeleteProductById;
+﻿using CatalogManagement.Application.Products.Commands.DeleteProductById;
 
-namespace CatalogManagement.Application.Tests.Validations.ProductValidators;
+namespace CatalogManagement.Application.Tests.Products.Validators;
 public class DeleteProductByIdCommandValidatorTests
 {
-
     [Fact]
     public void Validator_RetursSuccess_WhenIdValid()
     {
@@ -39,7 +37,7 @@ public class DeleteProductByIdCommandValidatorTests
         }
     }
     public static IEnumerable<object[]> InvalidGuidData => new List<object[]> {
-        new object[] { null },
+        new object[] { null! },
         new object[] { Guid.Empty },
         new object[] { default(Guid) }
     };

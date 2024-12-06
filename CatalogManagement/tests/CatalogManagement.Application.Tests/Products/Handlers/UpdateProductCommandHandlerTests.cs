@@ -1,21 +1,18 @@
-﻿using CatalogManagement.Application.Common.Repositories;
-using CatalogManagement.Application.Products;
-using CatalogManagement.Application.Tests.Common.Factories.CommandFactories;
-using CatalogManagement.Application.Tests.Common.Factories.ProductFactories;
-using CatalogManagement.Domain.ProductAggregate.Exceptions;
-using NSubstitute;
-
-namespace CatalogManagement.Application.Tests.Products;
-public class CreateProductCommandHandlerTests
+﻿namespace CatalogManagement.Application.Tests.Products.Handlers;
+public class UpdateProductGroupCommandHandlerTests
 {
     [Fact]
-    public async void Handler_ReturnsSuccessResult_WhenDataValid()
+    public async void Handler_ReturnsProduct_WhenDataValid()
     {
-        var command = CreateProductCommandFactory.CreateValid();
-        var product = ProductFactory.CreateFromCreateCommand(command);
+        var product = ProductFactory.CreateDefault();
+        var command = UpdateProductCommandFactory.CreateValid();
         var productRepository = Substitute.For<IProductRepository>();
-        productRepository.InsertAsync(default!).ReturnsForAnyArgs(product);
-        var handler = new CreateProductCommandHandler(productRepository);
+
+        productRepository.GetByIdAsync(default!).ReturnsForAnyArgs(product);
+        productRepository.UpdateAsync(default!).ReturnsForAnyArgs(product);
+
+
+        var handler = new UpdateProductCommandHandler(productRepository);
 
         var result = await handler.Handle(command, default);
 
@@ -24,10 +21,30 @@ public class CreateProductCommandHandlerTests
             result.IsSuccess.Should().BeTrue();
             result.Errors.Should().BeNullOrEmpty();
             result.Value.Should().NotBeNull();
-            result.Value!.Name.Should().Be(product.Name);
-            result.Value!.Code.Should().Be(product.Code);
-            result.Value!.Definition.Should().Be(product.Definition);
+            result.Value!.Name.Value.Should().Be(command.ProductName);
+            result.Value!.Code.Value.Should().Be(command.ProductCode);
+            result.Value!.Definition.Value.Should().Be(command.ProductDefinition);
         }
+    }
+
+    [Fact]
+    public async void Handler_ReturnsProductError_WhenIdNotExists()
+    {
+        var productRepository = Substitute.For<IProductRepository>();
+        productRepository.GetByIdAsync(Arg.Any<ProductId>()).ReturnsNull();
+        var handler = new UpdateProductCommandHandler(productRepository);
+        var command = UpdateProductCommandFactory.CreateValid();
+
+        var result = await handler.Handle(command, default);
+
+        using (AssertionScope scope = new())
+        {
+            result.IsSuccess!.Should().BeFalse();
+            result.Errors.Should().NotBeNullOrEmpty();
+            result.Errors![0].Should().Be(ProductError.NotFoundById);
+        }
+
+
     }
 
     [Theory]
@@ -36,8 +53,10 @@ public class CreateProductCommandHandlerTests
     [InlineData(null)]
     public void Handler_ThrowsException_WhenProductNameInvalid(string productName)
     {
-        var command = CreateProductCommandFactory.CreateWithName(productName);
-        var handler = new CreateProductCommandHandler(default!);
+        var productRepository = Substitute.For<IProductRepository>();
+        productRepository.GetByIdAsync(Arg.Any<ProductId>()).Returns(ProductFactory.CreateDefault());
+        var command = UpdateProductCommandFactory.CreateWithName(productName);
+        var handler = new UpdateProductCommandHandler(productRepository);
 
         var result = () => handler.Handle(command, default);
 
@@ -64,6 +83,7 @@ public class CreateProductCommandHandlerTests
             result.Should().ThrowExactlyAsync<ProductException>();
         }
     }
+
 
     [Theory]
     [InlineData("")]
