@@ -9,6 +9,7 @@ public class DeleteProductControllerTests : IClassFixture<CatalogApiFactory>
     {
         _client = catalogApiFactory.CreateClient();
         _catalogApiFactory = catalogApiFactory;
+
         RecreateDb();
     }
 

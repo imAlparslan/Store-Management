@@ -4,18 +4,13 @@ using CatalogManagement.SharedKernel;
 using MediatR;
 
 namespace CatalogManagement.Application.Products;
-internal class DeleteProductByIdCommandHandler : IRequestHandler<DeleteProductByIdCommand, Result<bool>>
+internal class DeleteProductByIdCommandHandler(IProductRepository productRepository) : IRequestHandler<DeleteProductByIdCommand, Result<bool>>
 {
-    private readonly IProductRepository productRepository;
-
-    public DeleteProductByIdCommandHandler(IProductRepository productRepository)
-    {
-        this.productRepository = productRepository;
-    }
+    private readonly IProductRepository productRepository = productRepository;
 
     public async Task<Result<bool>> Handle(DeleteProductByIdCommand request, CancellationToken cancellationToken)
     {
-        var result = await productRepository.DeleteByIdAsync(request.Id);
+        var result = await productRepository.DeleteByIdAsync(request.Id, cancellationToken);
         if (result)
         {
             return Result<bool>.Success(result);

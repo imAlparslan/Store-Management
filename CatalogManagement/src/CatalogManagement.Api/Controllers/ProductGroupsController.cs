@@ -1,4 +1,5 @@
-﻿using CatalogManagement.Application.ProductGroups;
+﻿using CatalogManagement.Api.Mapping;
+using CatalogManagement.Application.ProductGroups;
 using CatalogManagement.Contracts.ProductGroups;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -6,35 +7,27 @@ using static CatalogManagement.Api.ApiEndpoints;
 
 namespace CatalogManagement.Api.Controllers;
 
-public class ProductGroupsController : BaseApiController
+public class ProductGroupsController(IMediator mediator) : BaseApiController
 {
-
-    private readonly IMediator mediator;
-
-    public ProductGroupsController(IMediator mediator)
-    {
-        this.mediator = mediator;
-    }
+    private readonly IMediator mediator = mediator;
 
     [HttpPost(ProductGroupEndpoints.Create)]
     public async Task<IActionResult> Create(CreateProductGroupRequest request)
     {
-        var command = new CreateProductGroupCommand(request.Name, request.Description);
+        var command = request.MapToCommand();
         var result = await mediator.Send(command);
         return result.Match(
-            success => CreatedAtAction(nameof(GetById),
-                new { Id = success.Id.Value },
-                new ProductGroupResponse(success.Id, success.Name, success.Description)),
+            productGroup => CreatedAtAction(nameof(GetById), new { Id = productGroup.Id.Value }, productGroup.MapToResponse()),
             Problem);
     }
 
     [HttpPut(ProductGroupEndpoints.Update)]
     public async Task<IActionResult> Update(Guid id, UpdateProductGroupRequest request)
     {
-        var command = new UpdateProductGroupCommand(id, request.Name, request.Description);
+        var command = request.MapToCommand(id);
         var result = await mediator.Send(command);
         return result.Match(
-            success => Ok(new ProductGroupResponse(success.Id, success.Name, success.Description)),
+            productGroup => Ok(productGroup.MapToResponse()),
             Problem);
     }
 
@@ -44,7 +37,7 @@ public class ProductGroupsController : BaseApiController
         var command = new GetAllProductGroupsQuery();
         var result = await mediator.Send(command);
         return result.Match(
-            success => Ok(success.Select(group => new ProductGroupResponse(group.Id, group.Name, group.Description))),
+            productGroups => Ok(productGroups.Select(productGroup => productGroup.MapToResponse())),
             Problem);
     }
 
@@ -54,7 +47,7 @@ public class ProductGroupsController : BaseApiController
         var command = new GetProductGroupByIdQuery(id);
         var result = await mediator.Send(command);
         return result.Match(
-            success => Ok(new ProductGroupResponse(success.Id, success.Name, success.Description)),
+            productGroup => Ok(productGroup.MapToResponse()),
             Problem);
     }
 

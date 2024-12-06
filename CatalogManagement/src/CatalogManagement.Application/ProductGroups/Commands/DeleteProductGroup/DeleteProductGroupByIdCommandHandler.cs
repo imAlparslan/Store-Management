@@ -4,15 +4,10 @@ using CatalogManagement.SharedKernel;
 using MediatR;
 
 namespace CatalogManagement.Application.ProductGroups;
-internal class DeleteProductGroupByIdCommandHandler
-    : IRequestHandler<DeleteProductGroupByIdCommand, Result<bool>>
+internal class DeleteProductGroupByIdCommandHandler(IProductGroupRepository productGroupRepository)
+        : IRequestHandler<DeleteProductGroupByIdCommand, Result<bool>>
 {
-    private readonly IProductGroupRepository productGroupRepository;
-
-    public DeleteProductGroupByIdCommandHandler(IProductGroupRepository productGroupRepository)
-    {
-        this.productGroupRepository = productGroupRepository;
-    }
+    private readonly IProductGroupRepository productGroupRepository = productGroupRepository;
 
     public async Task<Result<bool>> Handle(DeleteProductGroupByIdCommand request, CancellationToken cancellationToken)
     {

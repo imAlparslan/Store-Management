@@ -5,15 +5,10 @@ using CatalogManagement.SharedKernel;
 using MediatR;
 
 namespace CatalogManagement.Application.ProductGroups;
-internal class UpdateProductGroupCommandHandler
-    : IRequestHandler<UpdateProductGroupCommand, Result<ProductGroup>>
+internal class UpdateProductGroupCommandHandler(IProductGroupRepository productGroupRepository)
+        : IRequestHandler<UpdateProductGroupCommand, Result<ProductGroup>>
 {
-    private readonly IProductGroupRepository productGroupRepository;
-
-    public UpdateProductGroupCommandHandler(IProductGroupRepository productGroupRepository)
-    {
-        this.productGroupRepository = productGroupRepository;
-    }
+    private readonly IProductGroupRepository productGroupRepository = productGroupRepository;
 
     public async Task<Result<ProductGroup>> Handle(UpdateProductGroupCommand request, CancellationToken cancellationToken)
     {
@@ -25,7 +20,7 @@ internal class UpdateProductGroupCommandHandler
         productGroup.ChangeName(new(request.Name));
         productGroup.ChangeDescription(new(request.Description));
 
-        await productGroupRepository.UpdateAsync(productGroup);
+        await productGroupRepository.UpdateAsync(productGroup, cancellationToken);
 
         return Result<ProductGroup>.Success(productGroup);
     }
