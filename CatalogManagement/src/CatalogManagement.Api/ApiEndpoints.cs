@@ -1,5 +1,4 @@
 ﻿namespace CatalogManagement.Api;
-
 public static class ApiEndpoints
 {
     private const string ApiBase = "api";
@@ -13,6 +12,8 @@ public static class ApiEndpoints
         public const string Delete = $"{ProductBase}/{{id:guid}}";
         public const string GetById = $"{ProductBase}/{{id:guid}}";
         public const string GetAll = ProductBase;
+        public const string AddGroup = $"{ProductBase}/{{productId:guid}}/add-group";
+        public const string RemoveGroup = $"{ProductBase}/{{productId:guid}}/remove-group";
     }
     public static class ProductGroupEndpoints
     {
@@ -23,6 +24,8 @@ public static class ApiEndpoints
         public const string Delete = $"{ProductGroupBase}/{{id:guid}}";
         public const string GetById = $"{ProductGroupBase}/{{id:guid}}";
         public const string GetAll = ProductGroupBase;
+        public const string AddProduct = $"{ProductGroupBase}/{{productGroupId:guid}}/add-product";
+
     }
 
 }

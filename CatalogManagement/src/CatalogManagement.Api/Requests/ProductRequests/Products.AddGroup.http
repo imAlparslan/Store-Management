@@ -1,0 +1,16 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+@hostname = localhost
+@port = 7177
+@base = https://{{hostname}}:{{port}}/api
+
+
+@productId = 1a2b4b5b-395d-4306-b2f9-7f66a94297db
+@productGroupId = 6651d453-d2dd-4f44-95fb-d798b69a5367
+
+
+POST {{base}}/products/{{productId}}/add-group
+Content-Type: application/json
+
+{
+  "productGroupId":"{{productGroupId}}"
+}

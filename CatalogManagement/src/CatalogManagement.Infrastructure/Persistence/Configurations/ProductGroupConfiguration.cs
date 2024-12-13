@@ -19,17 +19,21 @@ internal class ProductGroupConfiguration : IEntityTypeConfiguration<ProductGroup
                 .HasColumnOrder(1)
                 .ValueGeneratedNever();
 
+        builder.Property("_productIds")
+            .HasColumnName("ProductIds")
+            .HasColumnOrder(2);
+
         builder.ComplexProperty<ProductGroupName>(n => n.Name,
             n => n.Property(n => n.Value)
                 .ValueGeneratedNever()
                 .HasColumnName("Name")
-                .HasColumnOrder(2));
+                .HasColumnOrder(3));
 
         builder.ComplexProperty<ProductGroupDescription>(d => d.Description,
             d => d.Property(d => d.Value)
                 .ValueGeneratedNever()
                 .HasColumnName("Description")
-                .HasColumnOrder(3));
+                .HasColumnOrder(4));
 
     }
 }
