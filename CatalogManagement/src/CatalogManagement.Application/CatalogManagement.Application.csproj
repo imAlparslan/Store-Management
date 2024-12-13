@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-	<InternalsVisibleTo Include="CatalogManagement.Architecture.Tests"/>
-	<InternalsVisibleTo Include="CatalogManagement.Application.Tests"/>
+	<InternalsVisibleTo Include="CatalogManagement.Architecture.Tests" />
+	<InternalsVisibleTo Include="CatalogManagement.Application.Tests" />
   </ItemGroup>
 
 </Project>

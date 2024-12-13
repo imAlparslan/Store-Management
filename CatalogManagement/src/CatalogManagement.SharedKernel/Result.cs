@@ -57,4 +57,8 @@ public class Result<TValue>
     {
         return Result<TValue>.Fail(errs);
     }
+    public static implicit operator Result<TValue>(Error err)
+    {
+        return Result<TValue>.Fail(err);
+    }
 }

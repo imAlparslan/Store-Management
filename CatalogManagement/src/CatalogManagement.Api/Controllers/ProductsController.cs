@@ -66,4 +66,15 @@ public class ProductsController(IMediator mediator) : BaseApiController
         return result.Match(product => Ok(product.MapToResponse()),
             Problem);
     }
+
+    [HttpPost(ProductEndpoints.AddGroup)]
+    public async Task<IActionResult> AddGroup(Guid productId, [FromBody] AddGroupRequest request)
+    {
+        var command = request.MapToCommand(productId);
+
+        var result = await mediator.Send(command);
+
+        return result.Match(product => Ok(product.MapToResponse()),
+            Problem);
+    }
 }
