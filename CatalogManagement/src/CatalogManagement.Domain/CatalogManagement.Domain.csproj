@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Ardalis.GuardClauses" Version="5.0.0" />
+    <PackageReference Include="MediatR" Version="12.4.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -15,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-	<InternalsVisibleTo Include="CatalogManagement.Architecture.Tests"/>
+	<InternalsVisibleTo Include="CatalogManagement.Architecture.Tests" />
   </ItemGroup>
 
 </Project>

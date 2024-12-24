@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 
 namespace CatalogManagement.Application.Products.Commands.AddGroup;
-internal class AddGroupCommandValidator : AbstractValidator<AddGroupCommand>
+internal class AddGroupToProductCommandValidator : AbstractValidator<AddGroupToProductCommand>
 {
-    public AddGroupCommandValidator()
+    public AddGroupToProductCommandValidator()
     {
         RuleFor(x => x.ProductId)
             .NotEmpty();

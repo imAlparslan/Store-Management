@@ -1,3 +1,4 @@
+using CatalogManagement.Infrastructure.Persistence.Interceptors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -38,9 +39,16 @@ public class CatalogApiFactory : WebApplicationFactory<IApiAssemblyMarker>, IAsy
                     InitialCatalog = "Api_Test"
                 };
 
-                services.AddSqlServer<CatalogDbContext>(connectionStringBuilder.ConnectionString);
+             //   services.AddSqlServer<CatalogDbContext>(connectionStringBuilder.ConnectionString);
 
+                services.AddDbContext<CatalogDbContext>(
+                    (sp,opt) => opt
+                        .UseSqlServer(connectionString:connectionStringBuilder.ConnectionString)
+                        .AddInterceptors(sp.GetRequiredService<DomainEventPublisher>())
+
+                    );
             });
+
     }
 
     public async Task InitializeAsync()

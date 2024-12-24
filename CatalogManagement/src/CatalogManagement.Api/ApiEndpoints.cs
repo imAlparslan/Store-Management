@@ -12,8 +12,8 @@ public static class ApiEndpoints
         public const string Delete = $"{ProductBase}/{{id:guid}}";
         public const string GetById = $"{ProductBase}/{{id:guid}}";
         public const string GetAll = ProductBase;
-        public const string AddGroup = $"{ProductBase}/{{productId:guid}}/add-group";
-        public const string RemoveGroup = $"{ProductBase}/{{productId:guid}}/remove-group";
+        public const string AddGroupToProduct = $"{ProductBase}/{{productId:guid}}/add-group";
+        public const string RemoveFromProductGroup = $"{ProductBase}/{{productId:guid}}/remove-group";
     }
     public static class ProductGroupEndpoints
     {

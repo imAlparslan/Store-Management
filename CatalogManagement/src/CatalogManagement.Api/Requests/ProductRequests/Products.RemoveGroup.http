@@ -3,11 +3,11 @@
 @base = https://{{hostname}}:{{port}}/api
 
 
-@productId = 74169806-88b5-4765-b236-4b15054c9b0a
-@productGroupId = 556decad-f3c1-4cba-ab45-48dc45fa3b22
+@productId = 73ea84b7-60ef-4e7d-98be-09daaa18a7a5
+@productGroupId = 6651d453-d2dd-4f44-95fb-d798b69a5367
 
 
-POST {{base}}/products/{{productId}}/add-group
+POST {{base}}/products/{{productId}}/remove-group
 Content-Type: application/json
 
 {

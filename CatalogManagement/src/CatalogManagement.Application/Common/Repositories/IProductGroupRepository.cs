@@ -10,5 +10,5 @@ public interface IProductGroupRepository
     Task<ProductGroup?> GetByIdAsync(ProductGroupId productGroupId, CancellationToken cancellationToken = default);
     Task<IEnumerable<ProductGroup>> GetAllAsync(CancellationToken cancellationToken = default);
     Task<bool> DeleteByIdAsync(ProductGroupId productGroupId, CancellationToken cancellationToken = default);
-
+    Task<IEnumerable<ProductGroup>> GetProductGroupsByContainigProduct(Guid productId, CancellationToken cancellationToken = default);
 }

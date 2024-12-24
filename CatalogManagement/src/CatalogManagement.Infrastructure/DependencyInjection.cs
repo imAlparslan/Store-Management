@@ -1,5 +1,6 @@
 ﻿using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Infrastructure.Persistence;
+using CatalogManagement.Infrastructure.Persistence.Interceptors;
 using CatalogManagement.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -12,10 +13,13 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        services.AddScoped<DomainEventPublisher>();
+
         services.AddDbContext<CatalogDbContext>(
-            opt =>
-                opt.UseSqlServer(connectionString: configuration.GetConnectionString("MSSQL")
-            ));
+            (sp, opt) =>
+                opt.UseSqlServer(connectionString: configuration.GetConnectionString("MSSQL"))
+                .AddInterceptors(sp.GetRequiredService<DomainEventPublisher>())
+            );
 
         services.AddScoped<IUnitOfWorkManager, UnitOfWorkManager>();
         services.AddScoped<IProductRepository, ProductRepository>();

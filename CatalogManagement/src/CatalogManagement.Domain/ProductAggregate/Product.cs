@@ -8,7 +8,7 @@ public sealed class Product : AggregateRoot<ProductId>
     public ProductDefinition Definition { get; private set; }
 
     private readonly List<Guid> _groupIds = new();
-    public IReadOnlyList<Guid> GroupIds => _groupIds;
+    public IReadOnlyList<Guid> GroupIds => _groupIds.ToList();
 
     public Product(ProductName name,
                    ProductCode code,
@@ -21,12 +21,14 @@ public sealed class Product : AggregateRoot<ProductId>
         Definition = definition;
     }
 
-    public void AddGroup(Guid groupId)
+    public bool AddGroup(Guid groupId)
     {
-        if (!_groupIds.Contains(groupId))
+        if (_groupIds.Contains(groupId))
         {
-            _groupIds.Add(groupId);
+            return false;
         }
+        _groupIds.Add(groupId);
+        return true;
     }
     public void RemoveGroup(Guid groupId)
     {

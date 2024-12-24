@@ -1,5 +1,6 @@
 ﻿using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Domain.ProductAggregate.Errors;
+using CatalogManagement.Domain.ProductAggregate.Events;
 using CatalogManagement.SharedKernel;
 using MediatR;
 
@@ -10,13 +11,18 @@ internal class DeleteProductByIdCommandHandler(IProductRepository productReposit
 
     public async Task<Result<bool>> Handle(DeleteProductByIdCommand request, CancellationToken cancellationToken)
     {
-        var result = await productRepository.DeleteByIdAsync(request.Id, cancellationToken);
-        if (result)
+        var product = await productRepository.GetByIdAsync(request.Id, cancellationToken);
+        if (product is null)
         {
-            return Result<bool>.Success(result);
+            return ProductError.NotFoundById;
         }
+        product.AddDomainEvent(new ProductDeletedDomainEvent(product.Id));
+        var result = await productRepository.DeleteByIdAsync(request.Id, cancellationToken);
 
-        return Result<bool>.Fail(ProductError.NotDeleted);
-
+        if (!result)
+        {
+            return ProductError.NotFoundById;
+        }
+        return result;
     }
 }

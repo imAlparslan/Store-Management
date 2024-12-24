@@ -1,4 +1,5 @@
 ﻿using CatalogManagement.Application.Common.Behaviors;
+using CatalogManagement.Application.Products.Commands.AddGroup;
 using CatalogManagement.Domain.ProductAggregate;
 using CatalogManagement.SharedKernel;
 using FluentValidation;
@@ -69,6 +70,5 @@ public class CommandValidationBehaviorTests
             result.IsSuccess.Should().BeFalse();
             result.Errors.Should().NotBeNullOrEmpty();
         }
-
     }
 }
