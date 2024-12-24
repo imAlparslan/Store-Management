@@ -43,9 +43,8 @@ internal class ProductGroupRepository(CatalogDbContext catalogDbContext, IUnitOf
     public async Task<IEnumerable<ProductGroup>> GetProductGroupsByContainigProduct(Guid productId, CancellationToken cancellationToken = default)
     {
         return await catalogDbContext.ProductGroups
-            .FromSqlRaw("SELECT * FROM [ProductGroup] WHERE {0} IN ProductIds", productId)
-           //.AsNoTracking()
-           //.Where(x => x.ProductIds.Contains(productId))
+           .AsNoTracking()
+           .Where(x => x.ProductIds.Contains(productId))
            .ToListAsync(cancellationToken);
     }
 
