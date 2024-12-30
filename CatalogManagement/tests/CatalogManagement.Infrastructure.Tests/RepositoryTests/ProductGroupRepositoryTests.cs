@@ -1,6 +1,5 @@
 ﻿using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Domain.ProductGroupAggregate;
-using CatalogManagement.Infrastructure.Tests.Common.Factories.ProductFactories;
 using CatalogManagement.Infrastructure.Tests.Common.Factories.ProductGroupFactories;
 using CatalogManagement.Infrastructure.Tests.Fixtures;
 

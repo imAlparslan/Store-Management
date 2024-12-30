@@ -1,13 +1,11 @@
-﻿using CatalogManagement.Contracts.ProductGroups;
+﻿using CatalogManagement.Api.Tests.Fixtures;
+using CatalogManagement.Contracts.ProductGroups;
 using CatalogManagement.Contracts.Products;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CatalogManagement.Api.Tests.ProductGroupController;
-public class RemoveProductFromProductGroupControllerTests:IClassFixture<CatalogApiFactory>
+
+[Collection(nameof(ProductGroupControllerCollectionFixture))]
+public class RemoveProductFromProductGroupControllerTests
 {
     private readonly HttpClient _client;
     private readonly CatalogApiFactory _catalogApiFactory;

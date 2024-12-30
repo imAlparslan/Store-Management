@@ -1,8 +1,11 @@
-﻿using CatalogManagement.Contracts.ProductGroups;
+﻿using CatalogManagement.Api.Tests.Fixtures;
+using CatalogManagement.Contracts.ProductGroups;
 using CatalogManagement.Contracts.Products;
 
 namespace CatalogManagement.Api.Tests.ProductGroupController;
-public class AddProductToProductGroupControllerTests : IClassFixture<CatalogApiFactory>
+
+[Collection(nameof(ProductGroupControllerCollectionFixture))]
+public class AddProductToProductGroupControllerTests
 {
     private readonly HttpClient _client;
     private readonly CatalogApiFactory _catalogApiFactory;

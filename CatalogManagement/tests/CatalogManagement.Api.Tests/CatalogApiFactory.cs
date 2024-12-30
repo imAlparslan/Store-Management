@@ -11,7 +11,8 @@ using Testcontainers.MsSql;
 
 namespace CatalogManagement.Api.Tests;
 
-public class CatalogApiFactory : WebApplicationFactory<IApiAssemblyMarker>, IAsyncLifetime
+public class CatalogApiFactory
+    : WebApplicationFactory<IApiAssemblyMarker>, IAsyncLifetime
 {
     private readonly MsSqlContainer _mssqlContainer = null!;
 
@@ -44,8 +45,8 @@ public class CatalogApiFactory : WebApplicationFactory<IApiAssemblyMarker>, IAsy
                 services.AddScoped<IDomainEventPublisherService, DomainEventPublisherService>();
 
                 services.AddDbContext<CatalogDbContext>(
-                    (sp,opt) => opt
-                        .UseSqlServer(connectionString:connectionStringBuilder.ConnectionString)
+                    (sp, opt) => opt
+                        .UseSqlServer(connectionString: connectionStringBuilder.ConnectionString)
                         .AddInterceptors(sp.GetRequiredService<DomainEventPublisher>())
                     );
             });

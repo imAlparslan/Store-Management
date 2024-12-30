@@ -1,7 +1,10 @@
-﻿using CatalogManagement.Contracts.Products;
+﻿using CatalogManagement.Api.Tests.Fixtures;
+using CatalogManagement.Contracts.Products;
 
 namespace CatalogManagement.Api.Tests.ProductController;
-public class GetByIdProductControllerTests : IClassFixture<CatalogApiFactory>
+
+[Collection(nameof(ProductControllerCollectionFixture))]
+public class GetByIdProductControllerTests
 {
     private readonly HttpClient _client;
     private readonly CatalogApiFactory _catalogApiFactory;
