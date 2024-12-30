@@ -15,7 +15,7 @@ public class RemoveGroupFromProductControllerTests : IClassFixture<CatalogApiFac
     }
 
     [Fact]
-    private async Task RemoveGroup_ReturnsProductResponse_WhenDataValid()
+    public async Task RemoveGroup_ReturnsProductResponse_WhenDataValid()
     {
         var insertedProduct = await InsertProduct();
         var insertedProductGroup = await InsertProductGroup();
@@ -33,7 +33,24 @@ public class RemoveGroupFromProductControllerTests : IClassFixture<CatalogApiFac
     }
 
     [Fact]
-    private async Task RemoveGroup_ReturnsNotFound_WhenProductIdNotExists()
+    public async Task RemoveGroup_ProductGroupNotHaveProduct_WhenGroupRemovedFromProduct()
+    {
+        var insertedProduct = await InsertProduct();
+        var insertedProductGroup = await InsertProductGroup();
+        var addGroupRequest = new AddGroupToProductRequest(insertedProductGroup!.Id);
+        var addGroupresponse = await _client.PostAsJsonAsync($"http://localhost/api/products/{insertedProduct!.Id}/add-group", addGroupRequest);
+        
+        var removeGroupRequest = new RemoveGroupFromProductRequest(insertedProductGroup!.Id);
+        
+        var response = await _client.PostAsJsonAsync($"http://localhost/api/products/{insertedProduct.Id}/remove-group", removeGroupRequest);
+        var productGroupByIdResponse = await _client.GetAsync($"http://localhost/api/product-groups/{insertedProductGroup.Id}");
+        var productGroup = await productGroupByIdResponse.Content.ReadFromJsonAsync<ProductGroupResponse>();
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        productGroup!.ProductIds.Should().NotContain(insertedProduct.Id);
+    }
+
+    [Fact]
+    public async Task RemoveGroup_ReturnsNotFound_WhenProductIdNotExists()
     {
         var insertedProductGroup = await InsertProductGroup();
         var removeGroupRequest = new RemoveGroupFromProductRequest(insertedProductGroup!.Id);

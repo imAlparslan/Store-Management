@@ -2,6 +2,7 @@
 using CatalogManagement.Infrastructure.Persistence;
 using CatalogManagement.Infrastructure.Persistence.Interceptors;
 using CatalogManagement.Infrastructure.Repositories;
+using CatalogManagement.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,10 +10,11 @@ using Microsoft.Extensions.DependencyInjection;
 namespace CatalogManagement.Infrastructure;
 public static class DependencyInjection
 {
-    public static IServiceCollection AddPersistence(
+    public static IServiceCollection AddInfrastructure(
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        services.AddScoped<IDomainEventPublisherService, DomainEventPublisherService>();
         services.AddScoped<DomainEventPublisher>();
 
         services.AddDbContext<CatalogDbContext>(

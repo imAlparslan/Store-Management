@@ -19,7 +19,7 @@ public class InMemoryProductGroupRepository : Dictionary<Guid, ProductGroup>, IP
         return await Task.FromResult(base[productGroupId]);
     }
 
-    public async Task<IEnumerable<ProductGroup>> GetProductGroupsByContainigProduct(Guid productId, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<ProductGroup>> GetProductGroupsByContainigProductAsync(Guid productId, CancellationToken cancellationToken = default)
     {
         return await Task.FromResult(Values.Where(x => x.ProductIds.Contains(productId)));
     }

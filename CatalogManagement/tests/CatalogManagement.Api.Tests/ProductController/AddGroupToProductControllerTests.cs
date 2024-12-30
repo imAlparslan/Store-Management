@@ -32,6 +32,23 @@ public class AddGroupToProductControllerTests : IClassFixture<CatalogApiFactory>
         data!.GroupIds.Should().HaveCount(1);
         data.GroupIds.Should().Contain(insertedProductGroup.Id);
     }
+
+    [Fact]
+    public async Task AddGroup_ProductGroupHasProduct_WhenNewGroupAddedToProduct()
+    {
+        var insertedProduct = await InsertProduct();
+        var insertedProductGroup = await InsertProductGroup();
+        var addGroupRequest = new AddGroupToProductRequest(insertedProductGroup!.Id);
+        var response = await _client.PostAsJsonAsync($"http://localhost/api/products/{insertedProduct!.Id}/add-group", addGroupRequest);
+
+        var productGroupByIdResponse = await _client.GetAsync($"http://localhost/api/product-groups/{insertedProductGroup.Id}");
+
+        var productGroup = await productGroupByIdResponse.Content.ReadFromJsonAsync<ProductGroupResponse>();
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        productGroup!.ProductIds.Should().HaveCount(1);
+        productGroup.ProductIds.Should().Contain(insertedProduct.Id);
+    }
+
     [Theory]
     [InlineData("00000000-0000-0000-0000-000000000000")]
     public async Task AddGroup_ReturnsBadRequest_WhenProductIdInvalid(Guid invalidProductId)
@@ -70,20 +87,6 @@ public class AddGroupToProductControllerTests : IClassFixture<CatalogApiFactory>
         errors!.Errors.Should().HaveCount(2);
         errors.Errors.Should().ContainKey("ProductId");
         errors.Errors.Should().ContainKey("GroupId");
-    }
-
-    [Fact]
-    public async Task AddGroup_ProductGroupHasProduct_WhenNewGroupAddedToProduct()
-    {
-        var insertedProduct = await InsertProduct();
-        var insertedProductGroup = await InsertProductGroup();
-        var addGroupRequest = new AddGroupToProductRequest(insertedProductGroup!.Id);
-        var response = await _client.PostAsJsonAsync($"http://localhost/api/products/{insertedProduct!.Id}/add-group", addGroupRequest);
-
-        var productGroup = await _client.GetFromJsonAsync<ProductGroupResponse>($"http://localhost/api/product-groups/{insertedProductGroup.Id}");
-
-        productGroup!.ProductIds.Should().HaveCount(1);
-        productGroup.ProductIds.Should().Contain(insertedProduct.Id);
     }
 
     [Fact]

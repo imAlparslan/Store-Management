@@ -1,32 +1,24 @@
 ﻿using CatalogManagement.Application.ProductGroups.Events;
-using CatalogManagement.Application.Tests.TestDoubles;
 using CatalogManagement.Domain.ProductAggregate.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CatalogManagement.Domain.ProductGroupAggregate;
 
 namespace CatalogManagement.Application.Tests.ProductGroups.Events;
 public class ProductDeletedDomainEventHandlerTests
 {
 
     [Fact]
-    public async Task Handler_Should_Work_When_DataValid()
+    public async Task Handler_RemovesProductIdFromProductGroup_WhenProductGroupHaveProduct()
     {
-        var guid1 = Guid.NewGuid();
-        var guid2 = Guid.NewGuid();
-        var repo = new InMemoryProductGroupRepository();
-        var handler = new ProductDeletedDomainEventHandler(repo);
-        var group = ProductGroupFactory.CreateRandom();
-        group.AddProduct(guid1);
-        group.AddProduct(guid2);
+        var productId = Guid.NewGuid();
+        var productGroupRepository = Substitute.For<IProductGroupRepository>();
+        var productGroup = ProductGroupFactory.CreateRandom();
+        productGroup.AddProduct(productId);
+        productGroupRepository.GetProductGroupsByContainigProductAsync(productId).ReturnsForAnyArgs(new List<ProductGroup> { productGroup });
+        var handler = new ProductDeletedDomainEventHandler(productGroupRepository);
+        var notification = new ProductDeletedDomainEvent(productId);
 
-        var command = new ProductDeletedDomainEvent(guid1);
+        await handler.Handle(notification, CancellationToken.None);
 
-
-
-        await handler.Handle(command, default);
-
+        productGroup.ProductIds.Should().NotContain(productId);
     }
 }

@@ -1,27 +1,26 @@
 ﻿using CatalogManagement.Domain.Common.Interfaces;
-using MediatR;
+using CatalogManagement.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace CatalogManagement.Infrastructure.Persistence.Interceptors;
 public class DomainEventPublisher : SaveChangesInterceptor
 {
-    private readonly IMediator mediator;
-    private IReadOnlyList<IDomainEvent> domainEvents;
-    public DomainEventPublisher(IMediator mediator)
+
+    private readonly IDomainEventPublisherService _publisher;
+    public DomainEventPublisher(IDomainEventPublisherService publisher)
     {
-        this.mediator = mediator;
-        domainEvents = new List<IDomainEvent>();
+        _publisher = publisher;
     }
 
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
-        FilterDomainEvents(eventData);
+        _publisher.AddDomainEvent(GetDomainEvents(eventData));
         return base.SavingChanges(eventData, result);
     }
 
     public override async ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
     {
-        FilterDomainEvents(eventData);
+        _publisher.AddDomainEvent(GetDomainEvents(eventData));
         return await base.SavingChangesAsync(eventData, result, cancellationToken);
     }
     public override async ValueTask<int> SavedChangesAsync(
@@ -43,27 +42,23 @@ public class DomainEventPublisher : SaveChangesInterceptor
 
     private async Task PublishDomainEvents(CancellationToken cancellationToken = default)
     {
-        var events = domainEvents;
-        domainEvents = new List<IDomainEvent>();
-        foreach (var domainEvent in events)
-        {
-            await mediator.Publish(domainEvent, cancellationToken);
-        }
+        await _publisher.PublishAllAsync(cancellationToken);
     }
 
-    private void FilterDomainEvents(DbContextEventData eventData)
+    private static List<IDomainEvent> GetDomainEvents(DbContextEventData eventData)
     {
         if (eventData.Context is not null)
         {
-            domainEvents = eventData.Context.ChangeTracker.Entries<IHasDomainEvent>()
-                    .Select(x => x.Entity)
-                    .SelectMany(x =>
-                    {
-                        List<IDomainEvent> events = x.GetDomainEvents().ToList();
-                        x.ClearDomainEvents();
-                        return events;
-                    })
-                    .ToList();
+            return eventData.Context.ChangeTracker.Entries<IHasDomainEvent>()
+                .Select(x => x.Entity)
+                .SelectMany(x =>
+                {
+                    List<IDomainEvent> events = x.GetDomainEvents().ToList();
+                    x.ClearDomainEvents();
+                    return events;
+                })
+                .ToList();
         }
+        return new List<IDomainEvent>();
     }
 }

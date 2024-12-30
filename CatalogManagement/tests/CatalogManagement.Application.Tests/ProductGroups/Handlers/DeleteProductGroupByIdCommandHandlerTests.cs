@@ -2,7 +2,7 @@
 public class DeleteProductGroupByIdCommandHandlerTests
 {
     [Fact]
-    public async void Handler_ReturnsTrue_WhenIdExists()
+    public async Task Handler_ReturnsTrue_WhenIdExists()
     {
         var productGroupRepository = Substitute.For<IProductGroupRepository>();
         productGroupRepository.DeleteByIdAsync(Arg.Any<ProductGroupId>()).Returns(true);

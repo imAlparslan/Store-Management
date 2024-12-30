@@ -40,12 +40,13 @@ internal class ProductGroupRepository(CatalogDbContext catalogDbContext, IUnitOf
         return await catalogDbContext.ProductGroups.AsNoTracking().ToListAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<ProductGroup>> GetProductGroupsByContainigProduct(Guid productId, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<ProductGroup>> GetProductGroupsByContainigProductAsync(Guid productId, CancellationToken cancellationToken = default)
     {
-        return await catalogDbContext.ProductGroups
-           .AsNoTracking()
-           .Where(x => x.ProductIds.Contains(productId))
-           .ToListAsync(cancellationToken);
+        var res = catalogDbContext.ProductGroups
+            .AsEnumerable()
+            .Where(x => x.HasProduct(productId));
+
+        return await Task.FromResult(res.ToList());
     }
 
     public async Task<bool> DeleteByIdAsync(ProductGroupId productGroupId, CancellationToken cancellationToken = default)

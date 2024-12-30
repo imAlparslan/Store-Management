@@ -2,7 +2,7 @@
 public class UpdateProductGroupCommandHandlerTests
 {
     [Fact]
-    public async void Handler_ReturnsProductGroup_WhenDataValid()
+    public async Task Handler_ReturnsProductGroup_WhenDataValid()
     {
         var productGroup = ProductGroupFactory.CreateDefault();
         var command = UpdateProductGroupCommandFactory.CreateValid();
@@ -24,7 +24,7 @@ public class UpdateProductGroupCommandHandlerTests
     }
 
     [Fact]
-    public async void Handler_ReturnsProductGroupError_WhenIdNotExists()
+    public async Task Handler_ReturnsProductGroupError_WhenIdNotExists()
     {
         var productGroupRepository = Substitute.For<IProductGroupRepository>();
         productGroupRepository.GetByIdAsync(Arg.Any<ProductGroupId>()).ReturnsNull();

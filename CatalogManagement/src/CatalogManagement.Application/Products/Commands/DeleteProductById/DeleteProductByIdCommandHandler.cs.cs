@@ -5,7 +5,8 @@ using CatalogManagement.SharedKernel;
 using MediatR;
 
 namespace CatalogManagement.Application.Products;
-internal class DeleteProductByIdCommandHandler(IProductRepository productRepository) : IRequestHandler<DeleteProductByIdCommand, Result<bool>>
+internal sealed class DeleteProductByIdCommandHandler(IProductRepository productRepository) 
+    : IRequestHandler<DeleteProductByIdCommand, Result<bool>>
 {
     private readonly IProductRepository productRepository = productRepository;
 
@@ -17,12 +18,7 @@ internal class DeleteProductByIdCommandHandler(IProductRepository productReposit
             return ProductError.NotFoundById;
         }
         product.AddDomainEvent(new ProductDeletedDomainEvent(product.Id));
-        var result = await productRepository.DeleteByIdAsync(request.Id, cancellationToken);
+        return await productRepository.DeleteByIdAsync(request.Id, cancellationToken);
 
-        if (!result)
-        {
-            return ProductError.NotFoundById;
-        }
-        return result;
     }
 }

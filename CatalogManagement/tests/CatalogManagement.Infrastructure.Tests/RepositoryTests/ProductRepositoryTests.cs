@@ -121,11 +121,22 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>
     }
 
     [Fact]
-
-    public async void Get_All_Should_Return_Collection()
+    public async Task Get_All_Should_Return_Collection()
     {
         var result = await _productRepository.GetAllAsync();
 
         result.Should().BeAssignableTo(typeof(List<Product>));
     }
+
+    [Fact]
+    public async Task GetByGroup_Returns_Collection()
+    {
+        var groupId = Guid.NewGuid();
+        var product = ProductFactory.CreateRandom();
+        product.AddGroup(groupId);
+        _ = await _productRepository.InsertAsync(product);
+        var result = await _productRepository.GetByGroupAsync(groupId);
+        result.Should().HaveCount(1);
+    }
+
 }

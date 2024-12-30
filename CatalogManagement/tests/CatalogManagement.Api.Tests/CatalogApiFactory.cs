@@ -1,4 +1,5 @@
 using CatalogManagement.Infrastructure.Persistence.Interceptors;
+using CatalogManagement.Infrastructure.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -32,6 +33,7 @@ public class CatalogApiFactory : WebApplicationFactory<IApiAssemblyMarker>, IAsy
             {
                 services.RemoveAll(typeof(DbContextOptions<CatalogDbContext>));
                 services.RemoveAll(typeof(CatalogDbContext));
+                services.RemoveAll(typeof(IDomainEventPublisherService));
 
                 var connectionStringBuilder = new SqlConnectionStringBuilder()
                 {
@@ -39,13 +41,12 @@ public class CatalogApiFactory : WebApplicationFactory<IApiAssemblyMarker>, IAsy
                     InitialCatalog = "Api_Test"
                 };
 
-             //   services.AddSqlServer<CatalogDbContext>(connectionStringBuilder.ConnectionString);
+                services.AddScoped<IDomainEventPublisherService, DomainEventPublisherService>();
 
                 services.AddDbContext<CatalogDbContext>(
                     (sp,opt) => opt
                         .UseSqlServer(connectionString:connectionStringBuilder.ConnectionString)
                         .AddInterceptors(sp.GetRequiredService<DomainEventPublisher>())
-
                     );
             });
 

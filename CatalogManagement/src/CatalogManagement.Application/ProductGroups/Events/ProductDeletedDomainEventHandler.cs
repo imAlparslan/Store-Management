@@ -9,8 +9,8 @@ internal class ProductDeletedDomainEventHandler(IProductGroupRepository productG
 
     public async Task Handle(ProductDeletedDomainEvent notification, CancellationToken cancellationToken)
     {
-        var groups = await productGroupRepository.GetProductGroupsByContainigProduct(notification.ProductId);
-
+        var groups = await productGroupRepository.GetProductGroupsByContainigProductAsync(notification.ProductId, cancellationToken);
+        //TODO: UNIT OF WORK ?
         foreach (var group in groups)
         {
             group.RemoveProduct(notification.ProductId);
