@@ -1,5 +1,6 @@
 ﻿using CatalogManagement.Application.ProductGroups;
 using CatalogManagement.Application.ProductGroups.Commands.AddProduct;
+using CatalogManagement.Application.ProductGroups.Commands.RemoveProductFromProductGroup;
 using CatalogManagement.Contracts.ProductGroups;
 using CatalogManagement.Domain.ProductGroupAggregate;
 
@@ -14,9 +15,13 @@ public static class ProductGroupMappings
         => new UpdateProductGroupCommand(id, request.Name, request.Description);
 
 
-    public static AddProductToGroupCommand MapToCommand(this AddProductRequest request, Guid ProductGroupId)
+    public static AddProductToGroupCommand MapToCommand(this AddProductToProductGroupRequest request, Guid ProductGroupId)
         => new AddProductToGroupCommand(ProductGroupId, request.ProductId);
 
     public static ProductGroupResponse MapToResponse(this ProductGroup product)
         => new ProductGroupResponse(product.Id, product.Name, product.Description, product.ProductIds);
+
+    public static RemoveProductFromProductGroupCommand MapToCommand(this RemoveProductFromProductGroupRequest request, Guid productGroupId)
+        => new RemoveProductFromProductGroupCommand(productGroupId, request.ProductId);
+
 }

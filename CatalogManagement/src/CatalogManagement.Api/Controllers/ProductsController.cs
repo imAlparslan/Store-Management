@@ -77,7 +77,7 @@ public class ProductsController(IMediator mediator) : BaseApiController
             Problem);
     }
 
-    [HttpPost(ProductEndpoints.RemoveFromProductGroup)]
+    [HttpPost(ProductEndpoints.RemoveGroupFromProduct)]
     public async Task<IActionResult> RemoveGroupFromProduct(Guid productId, [FromBody] RemoveGroupFromProductRequest request)
     {
         var command = request.MapToCommand(productId);
@@ -87,4 +87,5 @@ public class ProductsController(IMediator mediator) : BaseApiController
         return result.Match(product => Ok(product.MapToResponse()),
             Problem);
     }
+
 }

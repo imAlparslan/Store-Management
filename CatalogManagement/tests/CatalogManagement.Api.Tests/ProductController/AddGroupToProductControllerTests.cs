@@ -12,7 +12,7 @@ public class AddGroupToProductControllerTests : IClassFixture<CatalogApiFactory>
         _client = catalogApiFactory.CreateClient();
         _catalogApiFactory = catalogApiFactory;
 
-        RecreateDb();
+        ResetDB();
 
     }
 
@@ -116,7 +116,7 @@ public class AddGroupToProductControllerTests : IClassFixture<CatalogApiFactory>
         return await response.Content.ReadFromJsonAsync<ProductGroupResponse>();
 
     }
-    private void RecreateDb()
+    private void ResetDB()
     {
         var scope = _catalogApiFactory.Services.CreateAsyncScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
