@@ -62,4 +62,14 @@ internal class ProductRepository(CatalogDbContext catalogDbContext, IUnitOfWorkM
     {
         return await catalogDbContext.Products.AnyAsync(x => x.Id == productId, cancellationToken);
     }
+
+    public async Task<IEnumerable<Product>> GetByGroupAsync(Guid groupId, CancellationToken cancellationToken = default)
+    {
+        var set = catalogDbContext.Products
+            .AsEnumerable()
+            .Where(x => x.GroupIds.Contains(groupId));
+
+        return await Task.FromResult(set.ToList());
+
+    }
 }

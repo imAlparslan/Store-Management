@@ -2,9 +2,10 @@
 public class DeleteProductGroupByIdCommandHandlerTests
 {
     [Fact]
-    public async void Handler_ReturnsTrue_WhenIdExists()
+    public async Task Handler_ReturnsTrue_WhenIdExists()
     {
         var productRepository = Substitute.For<IProductRepository>();
+        productRepository.GetByIdAsync(Arg.Any<ProductId>()).Returns(ProductFactory.CreateDefault());
         productRepository.DeleteByIdAsync(Arg.Any<ProductId>()).Returns(true);
         var handler = new DeleteProductByIdCommandHandler(productRepository);
         var command = new DeleteProductByIdCommand(Guid.NewGuid());
@@ -20,7 +21,7 @@ public class DeleteProductGroupByIdCommandHandlerTests
     }
 
     [Fact]
-    public async void Handler_ReturnsNotDeleted_WhenIdNotExists()
+    public async Task Handler_ReturnsNotDeleted_WhenIdNotExists()
     {
         var productRepository = Substitute.For<IProductRepository>();
         productRepository.DeleteByIdAsync(Arg.Any<ProductId>()).Returns(false);
@@ -34,7 +35,7 @@ public class DeleteProductGroupByIdCommandHandlerTests
             result.Value.Should().BeFalse();
             result.IsSuccess.Should().BeFalse();
             result.Errors.Should().NotBeNullOrEmpty();
-            result.Errors![0].Should().Be(ProductError.NotDeleted);
+            result.Errors![0].Should().Be(ProductError.NotFoundById);
         }
     }
 }

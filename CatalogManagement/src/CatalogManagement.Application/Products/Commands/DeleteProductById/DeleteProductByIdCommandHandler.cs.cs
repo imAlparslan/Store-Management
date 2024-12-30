@@ -1,22 +1,24 @@
 ﻿using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Domain.ProductAggregate.Errors;
+using CatalogManagement.Domain.ProductAggregate.Events;
 using CatalogManagement.SharedKernel;
 using MediatR;
 
 namespace CatalogManagement.Application.Products;
-internal class DeleteProductByIdCommandHandler(IProductRepository productRepository) : IRequestHandler<DeleteProductByIdCommand, Result<bool>>
+internal sealed class DeleteProductByIdCommandHandler(IProductRepository productRepository) 
+    : IRequestHandler<DeleteProductByIdCommand, Result<bool>>
 {
     private readonly IProductRepository productRepository = productRepository;
 
     public async Task<Result<bool>> Handle(DeleteProductByIdCommand request, CancellationToken cancellationToken)
     {
-        var result = await productRepository.DeleteByIdAsync(request.Id, cancellationToken);
-        if (result)
+        var product = await productRepository.GetByIdAsync(request.Id, cancellationToken);
+        if (product is null)
         {
-            return Result<bool>.Success(result);
+            return ProductError.NotFoundById;
         }
-
-        return Result<bool>.Fail(ProductError.NotDeleted);
+        product.AddDomainEvent(new ProductDeletedDomainEvent(product.Id));
+        return await productRepository.DeleteByIdAsync(request.Id, cancellationToken);
 
     }
 }

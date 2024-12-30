@@ -55,7 +55,6 @@ public class ProductsController(IMediator mediator) : BaseApiController
         return result.Match(suc => Ok(), Problem);
     }
 
-
     [HttpPut(ProductEndpoints.Update)]
     public async Task<IActionResult> Update([FromBody] UpdateProductRequest request, Guid id)
     {
@@ -67,8 +66,8 @@ public class ProductsController(IMediator mediator) : BaseApiController
             Problem);
     }
 
-    [HttpPost(ProductEndpoints.AddGroup)]
-    public async Task<IActionResult> AddGroup(Guid productId, [FromBody] AddGroupRequest request)
+    [HttpPost(ProductEndpoints.AddGroupToProduct)]
+    public async Task<IActionResult> AddGroupToProduct(Guid productId, [FromBody] AddGroupToProductRequest request)
     {
         var command = request.MapToCommand(productId);
 
@@ -77,4 +76,16 @@ public class ProductsController(IMediator mediator) : BaseApiController
         return result.Match(product => Ok(product.MapToResponse()),
             Problem);
     }
+
+    [HttpPost(ProductEndpoints.RemoveGroupFromProduct)]
+    public async Task<IActionResult> RemoveGroupFromProduct(Guid productId, [FromBody] RemoveGroupFromProductRequest request)
+    {
+        var command = request.MapToCommand(productId);
+
+        var result = await mediator.Send(command);
+
+        return result.Match(product => Ok(product.MapToResponse()),
+            Problem);
+    }
+
 }

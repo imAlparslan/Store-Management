@@ -9,6 +9,6 @@ POST {{base}}/product-groups
 Content-Type: application/json
 
 {
-  "name":"group name",
-  "description":"group description"
+  "name":"group name-2",
+  "description":"group description-2"
 }

@@ -1,4 +1,3 @@
-# For more info on HTTP files go to https://aka.ms/vs/httpfile
 @hostname = localhost
 @port = 7177
 @base = https://{{hostname}}:{{port}}/api
@@ -7,4 +6,4 @@ DELETE {{base}}/products/{{$guid}}
 
 ###
 
-DELETE {{base}}/products/a1166e6b-82b9-4487-a52e-b54c1933aea6
+DELETE {{base}}/products/4c2e9e68-e8e7-484c-bd2d-165fc749abec

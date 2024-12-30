@@ -1,4 +1,5 @@
 ﻿using CatalogManagement.Contracts.ProductGroups;
+using CatalogManagement.Contracts.Products;
 
 namespace CatalogManagement.Api.Tests.ProductGroupController;
 public class DeleteProductGroupControllerTests : IClassFixture<CatalogApiFactory>
@@ -10,7 +11,7 @@ public class DeleteProductGroupControllerTests : IClassFixture<CatalogApiFactory
         _client = catalogApiFactory.CreateClient();
         _catalogApiFactory = catalogApiFactory;
 
-        RecreateDb();
+        ResetDB();
     }
 
     [Fact]
@@ -23,6 +24,27 @@ public class DeleteProductGroupControllerTests : IClassFixture<CatalogApiFactory
         var deleteResponse = await _client.DeleteAsync($"http://localhost/api/product-groups/{createdProductGroup!.Id}");
 
         deleteResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+
+    }
+
+    [Fact]
+    public async Task ProductHasNoGroupId_WhenProductGroupDeleted()
+    {
+        var createProductRequest = CreateProductRequestFactory.CreateValid();
+        var postProductResponse = await _client.PostAsJsonAsync("http://localhost/api/products", createProductRequest);
+        var createdProduct = await postProductResponse.Content.ReadFromJsonAsync<ProductResponse>();
+        var createProductGroupRequest = CreateProductGroupRequestFactory.CreateValid();
+        var postProductGroupResponse = await _client.PostAsJsonAsync("http://localhost/api/product-groups", createProductGroupRequest);
+        var createdProductGroup = await postProductGroupResponse.Content.ReadFromJsonAsync<ProductGroupResponse>();
+        var addProductToProductGroupRequest = new AddProductToProductGroupRequest(createdProduct.Id);
+        await _client.PostAsJsonAsync($"http://localhost/api/product-groups/{createdProductGroup!.Id}/add-product", addProductToProductGroupRequest);
+
+        var deleteResponse = await _client.DeleteAsync($"http://localhost/api/product-groups/{createdProductGroup!.Id}");
+
+        var productResponse = await _client.GetAsync($"http://localhost/api/products/{createdProduct.Id}");
+        var product = await productResponse.Content.ReadFromJsonAsync<ProductResponse>();
+        product!.GroupIds.Should().BeEmpty();
+
 
     }
     [Fact]
@@ -49,7 +71,7 @@ public class DeleteProductGroupControllerTests : IClassFixture<CatalogApiFactory
             error.Errors.Count.Should().Be(1);
         }
     }
-    private void RecreateDb()
+    private void ResetDB()
     {
         var scope = _catalogApiFactory.Services.CreateAsyncScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();

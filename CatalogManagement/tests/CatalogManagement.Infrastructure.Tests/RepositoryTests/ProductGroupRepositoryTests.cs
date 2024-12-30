@@ -1,5 +1,6 @@
 ﻿using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Domain.ProductGroupAggregate;
+using CatalogManagement.Infrastructure.Tests.Common.Factories.ProductFactories;
 using CatalogManagement.Infrastructure.Tests.Common.Factories.ProductGroupFactories;
 using CatalogManagement.Infrastructure.Tests.Fixtures;
 
@@ -105,5 +106,19 @@ public class ProductGroupRepositoryTests : IClassFixture<ProductGroupRepositoryF
         var result = await _productGroupRepository.GetAllAsync();
 
         result.Should().BeAssignableTo(typeof(IEnumerable<ProductGroup>));
+    }
+
+    [Fact]
+    public async Task Get_ProductGroups_By_Containing_Product_Should_Return_Collection()
+    {
+        var productId = Guid.NewGuid();
+        var productGroup = ProductGroupFactory.CreateRandom();
+        productGroup.AddProduct(productId);
+        _ = await _productGroupRepository.InsertAsync(productGroup);
+
+        var result = await _productGroupRepository.GetProductGroupsByContainigProductAsync(productId);
+
+        result.Should().HaveCount(1);
+
     }
 }

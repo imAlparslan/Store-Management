@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
 namespace CatalogManagement.Application.ProductGroups.Commands.AddProduct;
-internal class AddProductCommandValidator : AbstractValidator<AddProductCommand>
+internal class AddProductToGroupCommandValidator : AbstractValidator<AddProductToGroupCommand>
 {
 
-    public AddProductCommandValidator()
+    public AddProductToGroupCommandValidator()
     {
         RuleFor(x => x.ProductGroupId)
             .NotEmpty();

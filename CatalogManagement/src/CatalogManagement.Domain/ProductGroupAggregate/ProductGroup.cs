@@ -21,19 +21,22 @@ public sealed class ProductGroup : AggregateRoot<ProductGroupId>
 
     public void AddProduct(Guid productId)
     {
-        if (!_productIds.Contains(productId))
+        if (!HasProduct(productId))
         {
             _productIds.Add(productId);
         }
     }
     public void RemoveProduct(Guid productId)
     {
-        if (_productIds.Contains(productId))
+        if (HasProduct(productId))
         {
             _productIds.Remove(productId);
         }
     }
-
+    public bool HasProduct(Guid productId)
+    {
+        return _productIds.Contains(productId);
+    }
     public void ChangeName(ProductGroupName name)
     {
         Name = name;
