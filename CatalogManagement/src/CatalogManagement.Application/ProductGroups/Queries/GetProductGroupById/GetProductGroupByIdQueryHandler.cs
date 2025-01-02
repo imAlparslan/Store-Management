@@ -1,12 +1,12 @@
-﻿using CatalogManagement.Application.Common.Repositories;
+﻿using CatalogManagement.Application.Common.Interfaces;
+using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Domain.ProductGroupAggregate;
 using CatalogManagement.Domain.ProductGroupAggregate.Errors;
 using CatalogManagement.SharedKernel;
-using MediatR;
 
 namespace CatalogManagement.Application.ProductGroups;
-internal class GetProductGroupByIdQueryHandler(IProductGroupRepository productGroupRepository)
-        : IRequestHandler<GetProductGroupByIdQuery, Result<ProductGroup>>
+internal sealed class GetProductGroupByIdQueryHandler(IProductGroupRepository productGroupRepository)
+        : IQueryHandler<GetProductGroupByIdQuery, Result<ProductGroup>>
 {
     private readonly IProductGroupRepository productGroupRepository = productGroupRepository;
 
@@ -15,8 +15,8 @@ internal class GetProductGroupByIdQueryHandler(IProductGroupRepository productGr
         var productGroup = await productGroupRepository.GetByIdAsync(request.Id, cancellationToken);
         if (productGroup is null)
         {
-            return Result<ProductGroup>.Fail(ProductGroupError.NotFoundById);
+            return ProductGroupError.NotFoundById;
         }
-        return Result<ProductGroup>.Success(productGroup);
+        return productGroup;
     }
 }

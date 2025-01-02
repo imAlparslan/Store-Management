@@ -4,7 +4,7 @@ namespace CatalogManagement.Application.Tests.Products.Handlers;
 public class GetAllProductGroupQueryHandlerTests
 {
     [Fact]
-    public async void Handler_ReturnsProductList_WhenProductsExist()
+    public async Task Handler_ReturnsProductList_WhenProductsExist()
     {
         var products = new List<Product>() { ProductFactory.CreateRandom(), ProductFactory.CreateRandom() };
         var command = new GetAllProductsQuery();
@@ -23,7 +23,7 @@ public class GetAllProductGroupQueryHandlerTests
     }
 
     [Fact]
-    public async void Handler_ReturnsEmptyList_WhenNoProductsExist()
+    public async Task Handler_ReturnsEmptyList_WhenNoProductsExist()
     {
         var command = new GetAllProductsQuery();
         var productRepository = Substitute.For<IProductRepository>();

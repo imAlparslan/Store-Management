@@ -14,7 +14,7 @@ public class GetAllProductControllerTests
         _client = catalogApiFactory.CreateClient();
         _catalogApiFactory = catalogApiFactory;
 
-        RecreateDb();
+        ResetDB();
     }
 
     [Fact]
@@ -50,7 +50,7 @@ public class GetAllProductControllerTests
         }
     }
 
-    private void RecreateDb()
+    private void ResetDB()
     {
         var scope = _catalogApiFactory.Services.CreateAsyncScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();

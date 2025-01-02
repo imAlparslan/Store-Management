@@ -8,9 +8,7 @@ namespace CatalogManagement.Domain.Tests.ProductGroupAggregate;
 public class ProductGroupValueObjectTests
 {
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
+    [MemberData(nameof(invalidStrings))]
     public void Creating_ProductGroupName_throw_Exception_When_Name_Null_OrWhiteSpace(string name)
     {
         var productGroupName = () => new ProductGroupName(name);
@@ -21,9 +19,7 @@ public class ProductGroupValueObjectTests
     }
 
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
+    [MemberData(nameof(invalidStrings))]
     public void Creating_ProductGroupDescription_throw_Exception_When_Name_Null_OrWhiteSpace(string description)
     {
         var productGroupDescription = () => new ProductGroupDescription(description);
@@ -36,11 +32,13 @@ public class ProductGroupValueObjectTests
     public void Product_Should_Have_ProductGroupId_After_Creating()
     {
         var productGroup = ProductGroupFactory.Create();
-        
+
         using (new AssertionScope())
         {
             productGroup.Id.Should().NotBeNull();
             productGroup.Id.Value.Should().NotBeEmpty();
         }
     }
+    public static readonly TheoryData<string> invalidStrings = ["", " ", null];
+
 }

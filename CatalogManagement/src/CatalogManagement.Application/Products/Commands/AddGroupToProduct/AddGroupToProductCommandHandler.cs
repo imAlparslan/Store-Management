@@ -1,12 +1,13 @@
-﻿using CatalogManagement.Application.Common.Repositories;
+﻿using CatalogManagement.Application.Common.Interfaces;
+using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Domain.ProductAggregate;
 using CatalogManagement.Domain.ProductAggregate.Errors;
 using CatalogManagement.Domain.ProductAggregate.Events;
 using CatalogManagement.SharedKernel;
-using MediatR;
 
 namespace CatalogManagement.Application.Products.Commands.AddGroup;
-internal class AddGroupToProductCommandHandler(IProductRepository productRepository) : IRequestHandler<AddGroupToProductCommand, Result<Product>>
+internal sealed class AddGroupToProductCommandHandler(IProductRepository productRepository)
+    : ICommandHandler<AddGroupToProductCommand, Result<Product>>
 {
     private readonly IProductRepository productRepository = productRepository;
 
@@ -24,10 +25,9 @@ internal class AddGroupToProductCommandHandler(IProductRepository productReposit
         if (isSuccess)
         {
             product.AddDomainEvent(new NewGroupAddedToProductDomainEvent(request.GroupId, request.ProductId));
-            await productRepository.UpdateAsync(product, cancellationToken);
+            return await productRepository.UpdateAsync(product, cancellationToken);
         }
 
-
-        return product;
+        return ProductError.ProductGroupNotAddedToProduct;
     }
 }

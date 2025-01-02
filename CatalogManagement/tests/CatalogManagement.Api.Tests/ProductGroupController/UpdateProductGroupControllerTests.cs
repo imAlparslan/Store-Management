@@ -14,7 +14,7 @@ public class UpdateProductGroupControllerTests
         _client = catalogApiFactory.CreateClient();
         _catalogApiFactory = catalogApiFactory;
 
-        RecreateDb();
+        ResetDB();
     }
 
     [Fact]
@@ -53,10 +53,8 @@ public class UpdateProductGroupControllerTests
     }
 
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
-    public async Task Update_ReturnsValidationError_WhenProdoctGroupNameNullOrEmpty(string productGroupName)
+    [MemberData(nameof(invalidStrings))]
+    public async Task Update_ReturnsValidationError_WhenProductGroupNameNullOrEmpty(string productGroupName)
     {
         UpdateProductGroupRequest createRequest = UpdateProductGroupRequestFactory.CreateValid();
         var createResponse = await _client.PostAsJsonAsync("http://localhost/api/product-groups", createRequest);
@@ -77,15 +75,13 @@ public class UpdateProductGroupControllerTests
     }
 
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
-    public async Task Update_ReturnsValidationError_WhenProdoctGroupDescriptionNullOrEmpty(string productGroupDescriotion)
+    [MemberData(nameof(invalidStrings))]
+    public async Task Update_ReturnsValidationError_WhenProductGroupDescriptionNullOrEmpty(string productGroupDescription)
     {
         UpdateProductGroupRequest createRequest = UpdateProductGroupRequestFactory.CreateValid();
         var createResponse = await _client.PostAsJsonAsync("http://localhost/api/product-groups", createRequest);
         ProductGroupResponse? createdProductGroup = await createResponse.Content.ReadFromJsonAsync<ProductGroupResponse>();
-        UpdateProductGroupRequest updateRequest = UpdateProductGroupRequestFactory.CreateWithDescription(productGroupDescriotion);
+        UpdateProductGroupRequest updateRequest = UpdateProductGroupRequestFactory.CreateWithDescription(productGroupDescription);
 
         var updatedResponse = await _client.PutAsJsonAsync($"http://localhost/api/product-groups/{createdProductGroup!.Id}", updateRequest);
 
@@ -122,8 +118,8 @@ public class UpdateProductGroupControllerTests
     }
 
     [Theory]
-    [MemberData(nameof(InvalidGuidData))]
-    public async void Update_ReturnsValidationError_WhenIdInvalid(Guid id)
+    [InlineData("00000000-0000-0000-0000-000000000000")]
+    public async Task Update_ReturnsValidationError_WhenIdInvalid(Guid id)
     {
         UpdateProductGroupRequest updateRequest = UpdateProductGroupRequestFactory.CreateValid();
         var updatedResponse = await _client.PutAsJsonAsync($"http://localhost/api/product-groups/{id}", updateRequest);
@@ -137,16 +133,13 @@ public class UpdateProductGroupControllerTests
         }
     }
 
-    private void RecreateDb()
+    private void ResetDB()
     {
         var scope = _catalogApiFactory.Services.CreateAsyncScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
         dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
     }
-    public static IEnumerable<object[]> InvalidGuidData => new List<object[]> {
-        new object[] { null! },
-        new object[] { Guid.Empty },
-        new object[] { default(Guid) }
-    };
+    public static readonly TheoryData<string> invalidStrings = ["", " ", null];
+
 }

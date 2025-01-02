@@ -25,7 +25,7 @@ public class AddGroupToProductCommandValidatorTests
         var result = await validator.ValidateAsync(command, CancellationToken.None);
 
         result.IsValid.Should().BeFalse();
-        result.Errors.Count().Should().Be(1);
+        result.Errors.Count.Should().Be(1);
         result.Errors.Select(x => x.PropertyName)
             .Should().Contain(nameof(command.GroupId));
     }
@@ -40,7 +40,7 @@ public class AddGroupToProductCommandValidatorTests
         var result = await validator.ValidateAsync(command, CancellationToken.None);
 
         result.IsValid.Should().BeFalse();
-        result.Errors.Count().Should().Be(1);
+        result.Errors.Count.Should().Be(1);
         result.Errors.Select(x => x.PropertyName)
             .Should().Contain(nameof(command.ProductId));
     }
@@ -54,7 +54,7 @@ public class AddGroupToProductCommandValidatorTests
         var result = await validator.ValidateAsync(command, CancellationToken.None);
 
         result.IsValid.Should().BeFalse();
-        result.Errors.Count().Should().Be(2);
+        result.Errors.Count.Should().Be(2);
         result.Errors.Select(x => x.PropertyName)
             .Should().Contain([nameof(command.ProductId), nameof(command.GroupId)]);
     }

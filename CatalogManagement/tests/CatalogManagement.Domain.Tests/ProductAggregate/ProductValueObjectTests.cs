@@ -9,9 +9,7 @@ namespace CatalogManagement.Domain.Tests.ProductAggregate;
 public class ProductValueObjectTests
 {
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
+    [MemberData(nameof(invalidStrings))]
     public void Creating_ProductName_Should_Throw_Exception_When_Argument_Null_OrWhiteSpace(string name)
     {
         var productName = () => new ProductName(name);
@@ -23,9 +21,7 @@ public class ProductValueObjectTests
     }
 
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
+    [MemberData(nameof(invalidStrings))]
     public void Creating_ProductCode_Should_Throw_Exception_When_Argument_Null_OrWhiteSpace(string code)
     {
         var productCode = () => new ProductCode(code);
@@ -36,9 +32,7 @@ public class ProductValueObjectTests
 
     }
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
+    [MemberData(nameof(invalidStrings))]
     public void Creating_ProductDefinition_Should_Throw_Exception_When_Argument_Null_OrWhiteSpace(string definition)
     {
         var productDefinition = () => new ProductDefinition(definition);
@@ -58,4 +52,6 @@ public class ProductValueObjectTests
             product.Id.Value.Should().NotBeEmpty();
         }
     }
+    public static readonly TheoryData<string> invalidStrings = ["", " ", null];
+
 }

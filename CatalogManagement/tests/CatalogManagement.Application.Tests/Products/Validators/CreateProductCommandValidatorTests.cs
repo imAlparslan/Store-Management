@@ -13,7 +13,6 @@ public class CreateProductCommandValidatorTests
 
         using (AssertionScope scope = new())
         {
-
             result.IsValid.Should().BeTrue();
             result.Errors.Should().BeEmpty();
         }

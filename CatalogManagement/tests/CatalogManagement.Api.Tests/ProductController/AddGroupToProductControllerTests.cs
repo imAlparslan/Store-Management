@@ -66,7 +66,7 @@ public class AddGroupToProductControllerTests
     }
 
     [Theory]
-    [MemberData(nameof(InvalidGuidData))]
+    [InlineData("00000000-0000-0000-0000-000000000000")]
     public async Task AddGroup_ReturnsBadRequest_WhenProductGroupIdInvalid(Guid invalidProductGroupId)
     {
         var response = await _client.PostAsJsonAsync($"http://localhost/api/products/{Guid.NewGuid()}/add-group", new AddGroupToProductRequest(invalidProductGroupId));
@@ -108,6 +108,7 @@ public class AddGroupToProductControllerTests
         CreateProductRequest request = CreateProductRequestFactory.CreateValid();
 
         var response = await _client.PostAsJsonAsync("http://localhost/api/products", request);
+
         return await response.Content.ReadFromJsonAsync<ProductResponse>();
 
     }
@@ -126,9 +127,4 @@ public class AddGroupToProductControllerTests
         dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
     }
-    public static IEnumerable<object[]> InvalidGuidData => new List<object[]> {
-        new object[] { null! },
-        new object[] { Guid.Empty },
-        new object[] { default(Guid) }
-    };
 }

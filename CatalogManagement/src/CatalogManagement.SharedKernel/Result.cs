@@ -1,6 +1,9 @@
 ﻿namespace CatalogManagement.SharedKernel;
+public interface IResult
+{
 
-public class Result<TValue>
+}
+public class Result<TValue> :IResult
 {
     public TValue? Value { get; private set; }
     public bool IsSuccess { get; private set; }

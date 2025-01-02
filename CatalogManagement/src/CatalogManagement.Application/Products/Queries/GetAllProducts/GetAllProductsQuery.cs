@@ -1,6 +1,7 @@
-﻿using CatalogManagement.Domain.ProductAggregate;
+﻿using CatalogManagement.Application.Common.Interfaces;
+using CatalogManagement.Domain.ProductAggregate;
 using CatalogManagement.SharedKernel;
-using MediatR;
 
 namespace CatalogManagement.Application.Products;
-public record GetAllProductsQuery : IRequest<Result<IEnumerable<Product>>>;
+public sealed record GetAllProductsQuery
+    : IQuery<Result<IEnumerable<Product>>>;

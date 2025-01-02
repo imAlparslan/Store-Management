@@ -9,7 +9,9 @@ public class RemoveProductFromProductGroupCommandValidatorTests
     {
         var command = new RemoveProductFromProductGroupCommand(Guid.NewGuid(), Guid.NewGuid());
         var validator = new RemoveProductFromProductGroupCommandValidator();
+
         var result = validator.Validate(command);
+
         result.IsValid.Should().BeTrue();
     }
 
@@ -18,7 +20,9 @@ public class RemoveProductFromProductGroupCommandValidatorTests
     {
         var command = new RemoveProductFromProductGroupCommand(Guid.Empty, Guid.NewGuid());
         var validator = new RemoveProductFromProductGroupCommandValidator();
+
         var result = validator.Validate(command);
+
         result.IsValid.Should().BeFalse();
         result.Errors.Select(x => x.PropertyName).Should().Contain(nameof(command.ProductGroupId));
     }
@@ -28,7 +32,9 @@ public class RemoveProductFromProductGroupCommandValidatorTests
     {
         var command = new RemoveProductFromProductGroupCommand(Guid.NewGuid(), Guid.Empty);
         var validator = new RemoveProductFromProductGroupCommandValidator();
+
         var result = validator.Validate(command);
+
         result.IsValid.Should().BeFalse();
         result.Errors.Select(x => x.PropertyName).Should().Contain(nameof(command.ProductId));
     }
@@ -37,7 +43,9 @@ public class RemoveProductFromProductGroupCommandValidatorTests
     {
         var command = new RemoveProductFromProductGroupCommand(Guid.Empty, Guid.Empty);
         var validator = new RemoveProductFromProductGroupCommandValidator();
+
         var result = validator.Validate(command);
+
         result.IsValid.Should().BeFalse();
         result.Errors.Select(x => x.PropertyName).Should().Contain(nameof(command.ProductGroupId));
         result.Errors.Select(x => x.PropertyName).Should().Contain(nameof(command.ProductId));

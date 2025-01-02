@@ -2,16 +2,13 @@
 public class UpdateProductGroupCommandHandlerTests
 {
     [Fact]
-    public async void Handler_ReturnsProduct_WhenDataValid()
+    public async Task Handler_ReturnsProduct_WhenDataValid()
     {
         var product = ProductFactory.CreateDefault();
         var command = UpdateProductCommandFactory.CreateValid();
         var productRepository = Substitute.For<IProductRepository>();
-
         productRepository.GetByIdAsync(default!).ReturnsForAnyArgs(product);
         productRepository.UpdateAsync(default!).ReturnsForAnyArgs(product);
-
-
         var handler = new UpdateProductCommandHandler(productRepository);
 
         var result = await handler.Handle(command, default);
@@ -28,7 +25,7 @@ public class UpdateProductGroupCommandHandlerTests
     }
 
     [Fact]
-    public async void Handler_ReturnsProductError_WhenIdNotExists()
+    public async Task Handler_ReturnsProductError_WhenIdNotExists()
     {
         var productRepository = Substitute.For<IProductRepository>();
         productRepository.GetByIdAsync(Arg.Any<ProductId>()).ReturnsNull();

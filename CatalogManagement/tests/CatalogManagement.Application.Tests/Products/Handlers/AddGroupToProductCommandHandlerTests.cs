@@ -33,6 +33,24 @@ public class AddGroupToProductCommandHandlerTests
         var result = await handler.Handle(command, default);
 
         result.Errors.Should().HaveCount(1);
+        result.Errors.Should().Contain(ProductError.NotFoundById);
 
+    }
+
+    [Fact]
+    public async Task Handler_ReturnsProductGroupNotAddedToProductError_WhenProductGroupNotAdded()
+    {
+        var productGroupId = Guid.NewGuid();
+        var product = ProductFactory.CreateDefault();
+        product.AddGroup(productGroupId);
+        var command = new AddGroupToProductCommand(product.Id, productGroupId);
+        var repo = Substitute.For<IProductRepository>();
+        repo.GetByIdAsync(default!).ReturnsForAnyArgs(product);
+        var handler = new AddGroupToProductCommandHandler(repo);
+
+        var result = await handler.Handle(command, default);
+
+        result.Errors.Should().HaveCount(1);
+        result.Errors.Should().Contain(ProductError.ProductGroupNotAddedToProduct);
     }
 }

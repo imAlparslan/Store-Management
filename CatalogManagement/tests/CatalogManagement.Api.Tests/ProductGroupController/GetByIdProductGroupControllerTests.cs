@@ -14,7 +14,7 @@ public class GetByIdProductGroupControllerTests
         _client = catalogApiFactory.CreateClient();
         _catalogApiFactory = catalogApiFactory;
 
-        RecreateDb();
+        ResetDB();
     }
 
     [Fact]
@@ -47,7 +47,7 @@ public class GetByIdProductGroupControllerTests
     }
 
     [Theory]
-    [MemberData(nameof(InvalidGuidData))]
+    [InlineData("00000000-0000-0000-0000-000000000000")]
     public async Task GetById_ReturnsValidationError_WhenIdInvalid(Guid id)
     {
         var result = await _client.GetAsync($"http://localhost/api/product-groups/{id}");
@@ -60,16 +60,11 @@ public class GetByIdProductGroupControllerTests
             error.Errors.Count.Should().Be(1);
         }
     }
-    private void RecreateDb()
+    private void ResetDB()
     {
         var scope = _catalogApiFactory.Services.CreateAsyncScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
         dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
     }
-    public static IEnumerable<object[]> InvalidGuidData => new List<object[]> {
-        new object[] { null! },
-        new object[] { Guid.Empty },
-        new object[] { default(Guid) }
-    };
 }

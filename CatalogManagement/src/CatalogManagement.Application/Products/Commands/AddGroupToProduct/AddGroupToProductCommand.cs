@@ -1,6 +1,7 @@
-﻿using CatalogManagement.Domain.ProductAggregate;
+﻿using CatalogManagement.Application.Common.Interfaces;
+using CatalogManagement.Domain.ProductAggregate;
 using CatalogManagement.SharedKernel;
-using MediatR;
 
 namespace CatalogManagement.Application.Products.Commands.AddGroup;
-public record AddGroupToProductCommand(Guid ProductId, Guid GroupId) : IRequest<Result<Product>>;
+public sealed record AddGroupToProductCommand(Guid ProductId, Guid GroupId)
+    : ICommand<Result<Product>>;

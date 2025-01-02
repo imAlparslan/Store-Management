@@ -2,7 +2,7 @@
 public class GetProductGroupsByIdQueryHandlerTests
 {
     [Fact]
-    public async void Handler_ReturnsProductGroup_WhenIdExists()
+    public async Task Handler_ReturnsProductGroup_WhenIdExists()
     {
         var productGroup = ProductGroupFactory.CreateDefault();
         var command = new GetProductGroupByIdQuery(productGroup.Id);
@@ -22,7 +22,7 @@ public class GetProductGroupsByIdQueryHandlerTests
     }
 
     [Fact]
-    public async void Handler_ReturnsProductGroupError_WhenIdNotExists()
+    public async Task Handler_ReturnsProductGroupError_WhenIdNotExists()
     {
         var productGroup = ProductGroupFactory.CreateDefault();
         var command = new GetProductGroupByIdQuery(productGroup.Id);

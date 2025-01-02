@@ -15,7 +15,6 @@ public class ProductRemovedFromProductGroupDomainEventHandlerTests
         var handler = new ProductRemovedFromProductGroupDomainEventHandler(productRepository);
         var @event = new ProductRemovedFromProductGroupDomainEvent(productGroupId, product.Id);
 
-
         await handler.Handle(@event, CancellationToken.None);
 
         product.GroupIds.Should().NotContain(productGroupId);

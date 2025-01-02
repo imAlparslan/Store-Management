@@ -13,7 +13,7 @@ public class CreateProductGroupControllerTests
         _client = catalogApiFactory.CreateClient();
         _catalogApiFactory = catalogApiFactory;
 
-        ReCreateDb();
+        ResetDB();
     }
 
     [Fact]
@@ -35,9 +35,7 @@ public class CreateProductGroupControllerTests
     }
 
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
+    [MemberData(nameof(invalidStrings))]
     public async Task Create_ReturnsValidationError_WhenProdoctGroupNameNullOrEmpty(string productGroupName)
     {
         var request = CreateProductGroupRequestFactory.CreateWithName(productGroupName);
@@ -56,9 +54,7 @@ public class CreateProductGroupControllerTests
     }
 
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
+    [MemberData(nameof(invalidStrings))]
     public async Task Create_ReturnsValidationError_WhenProductGroupDescriptionNullOrEmpty(string productGroupDescription)
     {
         var request = CreateProductGroupRequestFactory.CreateWithDescription(productGroupDescription);
@@ -93,11 +89,13 @@ public class CreateProductGroupControllerTests
             error.Errors.Count.Should().Be(2);
         }
     }
-    private void ReCreateDb()
+    private void ResetDB()
     {
         var scope = _catalogApiFactory.Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
         db.Database.EnsureDeleted();
         db.Database.EnsureCreated();
     }
+    public static readonly TheoryData<string> invalidStrings = ["", " ", null];
+
 }

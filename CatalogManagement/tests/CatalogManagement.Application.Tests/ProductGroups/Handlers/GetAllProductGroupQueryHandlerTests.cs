@@ -4,7 +4,7 @@ namespace CatalogManagement.Application.Tests.ProductGroups.Handlers;
 public class GetAllProductGroupQueryHandlerTests
 {
     [Fact]
-    public async void Handler_ReturnsProductGroupList_WhenProductsExist()
+    public async Task Handler_ReturnsProductGroupList_WhenProductsExist()
     {
         var productGroups = new List<ProductGroup>() { ProductGroupFactory.CreateRandom(), ProductGroupFactory.CreateRandom() };
         var command = new GetAllProductGroupsQuery();
@@ -23,7 +23,7 @@ public class GetAllProductGroupQueryHandlerTests
     }
 
     [Fact]
-    public async void Handler_ReturnsEmptyList_WhenNoProductGroupsExist()
+    public async Task Handler_ReturnsEmptyList_WhenNoProductGroupsExist()
     {
         var command = new GetAllProductGroupsQuery();
         var productGroupRepository = Substitute.For<IProductGroupRepository>();

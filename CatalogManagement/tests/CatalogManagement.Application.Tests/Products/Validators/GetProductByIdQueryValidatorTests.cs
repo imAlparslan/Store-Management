@@ -1,7 +1,7 @@
 ﻿using CatalogManagement.Application.Products.Queries.GetProductById;
 
 namespace CatalogManagement.Application.Tests.Products.Validators;
-public class GetProductByIdQuertValidatorTests
+public class GetProductByIdQueryValidatorTests
 {
     [Fact]
     public void Validator_ReturnsValid_WhenProductIdValid()

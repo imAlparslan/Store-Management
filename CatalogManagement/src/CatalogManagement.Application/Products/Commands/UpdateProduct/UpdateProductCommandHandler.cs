@@ -1,11 +1,12 @@
-﻿using CatalogManagement.Application.Common.Repositories;
+﻿using CatalogManagement.Application.Common.Interfaces;
+using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Domain.ProductAggregate;
 using CatalogManagement.Domain.ProductAggregate.Errors;
 using CatalogManagement.SharedKernel;
-using MediatR;
 
 namespace CatalogManagement.Application.Products;
-internal class UpdateProductCommandHandler(IProductRepository productRepository) : IRequestHandler<UpdateProductCommand, Result<Product>>
+internal sealed class UpdateProductCommandHandler(IProductRepository productRepository)
+    : ICommandHandler<UpdateProductCommand, Result<Product>>
 {
     private readonly IProductRepository productRepository = productRepository;
 
@@ -15,16 +16,14 @@ internal class UpdateProductCommandHandler(IProductRepository productRepository)
 
         if (product is null)
         {
-            return Result<Product>.Fail(ProductError.NotFoundById);
+            return ProductError.NotFoundById;
         }
 
         product.ChangeName(new(request.ProductName));
         product.ChangeCode(new(request.ProductCode));
         product.ChangeDefinition(new(request.ProductDefinition));
 
-        var result = await productRepository.UpdateAsync(product, cancellationToken);
-
-        return Result<Product>.Success(result);
+        return await productRepository.UpdateAsync(product, cancellationToken);
 
     }
 }

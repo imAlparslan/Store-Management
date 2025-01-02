@@ -22,8 +22,10 @@ public class AddProductToProductGroupControllerTests
     {
         var insertedProduct = await InsertProduct();
         var insertedProductGroup = await InsertProductGroup();
-        var addProductToProductGroupRequest = new AddProductToProductGroupRequest(insertedProduct.Id);
-        var response = await _client.PostAsJsonAsync($"http://localhost/api/product-groups/{insertedProductGroup.Id}/add-product", addProductToProductGroupRequest);
+        var addProductToProductGroupRequest = new AddProductToProductGroupRequest(insertedProduct!.Id);
+
+        var response = await _client.PostAsJsonAsync($"http://localhost/api/product-groups/{insertedProductGroup!.Id}/add-product", addProductToProductGroupRequest);
+
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Should().NotBeNull();
         var data = await response.Content.ReadFromJsonAsync<ProductGroupResponse>();
@@ -33,16 +35,16 @@ public class AddProductToProductGroupControllerTests
     }
 
     [Fact]
-    public async Task ProductHasGroup_HasGroupId_WhenAddProductToGroupSuccess()
+    public async Task ProductHasGroupId_WhenAddProductToGroupSuccess()
     {
         var insertedProduct = await InsertProduct();
         var insertedProductGroup = await InsertProductGroup();
-        var addProductToProductGroupRequest = new AddProductToProductGroupRequest(insertedProduct.Id);
-        var response = await _client.PostAsJsonAsync($"http://localhost/api/product-groups/{insertedProductGroup.Id}/add-product", addProductToProductGroupRequest);
-        var productGroupByIdResponse = await _client.GetAsync($"http://localhost/api/product-groups/{insertedProductGroup.Id}");
-        var productGroup = await productGroupByIdResponse.Content.ReadFromJsonAsync<ProductGroupResponse>();
+        var addProductToProductGroupRequest = new AddProductToProductGroupRequest(insertedProduct!.Id);
+        await _client.PostAsJsonAsync($"http://localhost/api/product-groups/{insertedProductGroup!.Id}/add-product", addProductToProductGroupRequest);
+        var productGroupByIdResponse = await _client.GetAsync($"http://localhost/api/product-groups/{insertedProductGroup!.Id}");
+        await productGroupByIdResponse.Content.ReadFromJsonAsync<ProductGroupResponse>();
 
-        var productGetResponse = await _client.GetAsync($"http://localhost/api/products/{insertedProduct.Id}");
+        var productGetResponse = await _client.GetAsync($"http://localhost/api/products/{insertedProduct!.Id}");
         var product = await productGetResponse.Content.ReadFromJsonAsync<ProductResponse>();
 
         product.Should().NotBeNull();
@@ -54,6 +56,7 @@ public class AddProductToProductGroupControllerTests
     public async Task AddProductToProductGroup_ReturnsBadRequest_WhenProductGroupIdInvalid(Guid invalidProductGroupId)
     {
         var response = await _client.PostAsJsonAsync($"http://localhost/api/product-groups/{invalidProductGroupId}/add-product", new AddProductToProductGroupRequest(Guid.NewGuid()));
+
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         var errors = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
         errors.Should().NotBeNull();
@@ -63,7 +66,9 @@ public class AddProductToProductGroupControllerTests
     public async Task AddProductToProductGroup_ReturnsBadRequest_WhenProductIdInvalid(Guid invalidProductId)
     {
         var insertedProductGroup = await InsertProductGroup();
-        var response = await _client.PostAsJsonAsync($"http://localhost/api/product-groups/{insertedProductGroup.Id}/add-product", new AddProductToProductGroupRequest(invalidProductId));
+
+        var response = await _client.PostAsJsonAsync($"http://localhost/api/product-groups/{insertedProductGroup!.Id}/add-product", new AddProductToProductGroupRequest(invalidProductId));
+
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         var errors = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
         errors.Should().NotBeNull();
@@ -72,11 +77,12 @@ public class AddProductToProductGroupControllerTests
     public async Task AddProductToProductGroup_ReturnsNotFound_WhenProductGroupIdNotFound()
     {
         var response = await _client.PostAsJsonAsync($"http://localhost/api/product-groups/{Guid.NewGuid}/add-product", new AddProductToProductGroupRequest(Guid.NewGuid()));
+
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 
 
-    private async Task<ProductGroupResponse> InsertProductGroup()
+    private async Task<ProductGroupResponse?> InsertProductGroup()
     {
         var createProductGroupRequest = CreateProductGroupRequestFactory.CreateValid();
 
@@ -84,7 +90,7 @@ public class AddProductToProductGroupControllerTests
         return await response.Content.ReadFromJsonAsync<ProductGroupResponse>();
     }
 
-    private async Task<ProductResponse> InsertProduct()
+    private async Task<ProductResponse?> InsertProduct()
     {
         var createProductRequest = CreateProductRequestFactory.CreateValid();
 

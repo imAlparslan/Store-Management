@@ -4,7 +4,7 @@ namespace CatalogManagement.Application.Tests.ProductGroups.Validators;
 public class DeleteProductGroupCommandValidatorTests
 {
     [Fact]
-    public void Validator_RetursSuccess_WhenIdValid()
+    public void Validator_ReturnsSuccess_WhenIdValid()
     {
         var command = new DeleteProductGroupByIdCommand(Guid.NewGuid());
         var validator = new DeleteProductGroupByIdCommandValidator();
