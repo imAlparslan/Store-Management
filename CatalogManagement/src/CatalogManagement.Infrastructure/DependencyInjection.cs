@@ -19,8 +19,10 @@ public static class DependencyInjection
 
         services.AddDbContext<CatalogDbContext>(
             (sp, opt) =>
-                opt.UseSqlServer(connectionString: configuration.GetConnectionString("MSSQL"))
-                .AddInterceptors(sp.GetRequiredService<DomainEventPublisher>())
+                opt.UseSqlServer(
+                    connectionString: configuration.GetConnectionString("MSSQL"),
+                    sqlOption => sqlOption.EnableRetryOnFailure())
+            .AddInterceptors(sp.GetRequiredService<DomainEventPublisher>())
             );
 
         services.AddScoped<IUnitOfWorkManager, UnitOfWorkManager>();

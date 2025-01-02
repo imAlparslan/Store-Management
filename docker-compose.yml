@@ -1,0 +1,51 @@
+
+
+services:
+  catalog-service:
+    container_name: catalog-service
+    build:
+      context: ./CatalogManagement
+      dockerfile: Dockerfile
+    ports:
+      - 5154:5154
+    depends_on:
+      rabbit:
+        condition: service_healthy
+      catalog-db:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_URLS=http://+:5154
+      - ConnectionStrings__MSSQL=Server=catalog-db;Database=CatalogDb;User Id=sa;Password=Passw0r!d;TrustServerCertificate=True;
+
+
+  catalog-db:
+    container_name: catalog-db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - 14330:1433
+    environment:
+       ACCEPT_EULA: Y
+       MSSQL_SA_PASSWORD: Passw0r!d
+       MSSQL_PID: Developer
+    volumes:
+      - catalog-db-volume:/var/opt/mssql/
+    healthcheck:
+      test: ["CMD-SHELL", "echo 'SELECT 1' | /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Passw0r!d -Q 'SELECT 1'"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  rabbit:
+    container_name: rabbit
+    image: rabbitmq:4.0.4-management-alpine
+    ports:
+      - 15672:15672
+      - 5672:5672
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  catalog-db-volume:
