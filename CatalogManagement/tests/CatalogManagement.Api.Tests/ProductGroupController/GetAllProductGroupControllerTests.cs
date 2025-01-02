@@ -1,7 +1,10 @@
-﻿using CatalogManagement.Contracts.ProductGroups;
+﻿using CatalogManagement.Api.Tests.Fixtures;
+using CatalogManagement.Contracts.ProductGroups;
 
 namespace CatalogManagement.Api.Tests.ProductGroupController;
-public class GetAllProductGroupControllerTests : IClassFixture<CatalogApiFactory>
+
+[Collection(nameof(ProductGroupControllerCollectionFixture))]
+public class GetAllProductGroupControllerTests
 {
     private readonly HttpClient _client;
     private readonly CatalogApiFactory _catalogApiFactory;
@@ -11,7 +14,7 @@ public class GetAllProductGroupControllerTests : IClassFixture<CatalogApiFactory
         _client = catalogApiFactory.CreateClient();
         _catalogApiFactory = catalogApiFactory;
 
-        RecreateDb();
+        ResetDB();
     }
 
     [Fact]
@@ -47,7 +50,7 @@ public class GetAllProductGroupControllerTests : IClassFixture<CatalogApiFactory
         }
     }
 
-    private void RecreateDb()
+    private void ResetDB()
     {
         var scope = _catalogApiFactory.Services.CreateAsyncScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();

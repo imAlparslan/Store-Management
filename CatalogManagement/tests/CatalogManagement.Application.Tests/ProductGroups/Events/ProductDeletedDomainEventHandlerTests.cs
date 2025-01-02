@@ -13,7 +13,7 @@ public class ProductDeletedDomainEventHandlerTests
         var productGroupRepository = Substitute.For<IProductGroupRepository>();
         var productGroup = ProductGroupFactory.CreateRandom();
         productGroup.AddProduct(productId);
-        productGroupRepository.GetProductGroupsByContainigProductAsync(productId).ReturnsForAnyArgs(new List<ProductGroup> { productGroup });
+        productGroupRepository.GetProductGroupsByContainingProductAsync(productId).ReturnsForAnyArgs(new List<ProductGroup> { productGroup });
         var handler = new ProductDeletedDomainEventHandler(productGroupRepository);
         var notification = new ProductDeletedDomainEvent(productId);
 

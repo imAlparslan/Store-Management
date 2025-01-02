@@ -1,8 +1,11 @@
-﻿using CatalogManagement.Contracts.ProductGroups;
+﻿using CatalogManagement.Api.Tests.Fixtures;
+using CatalogManagement.Contracts.ProductGroups;
 using CatalogManagement.Contracts.Products;
 
 namespace CatalogManagement.Api.Tests.ProductController;
-public class RemoveGroupFromProductControllerTests : IClassFixture<CatalogApiFactory>
+
+[Collection(nameof(ProductControllerCollectionFixture))]
+public class RemoveGroupFromProductControllerTests
 {
     private readonly HttpClient _client;
     private readonly CatalogApiFactory _catalogApiFactory;
@@ -11,7 +14,7 @@ public class RemoveGroupFromProductControllerTests : IClassFixture<CatalogApiFac
         _client = catalogApiFactory.CreateClient();
         _catalogApiFactory = catalogApiFactory;
 
-        RecreateDb();
+        ResetDB();
     }
 
     [Fact]
@@ -20,7 +23,7 @@ public class RemoveGroupFromProductControllerTests : IClassFixture<CatalogApiFac
         var insertedProduct = await InsertProduct();
         var insertedProductGroup = await InsertProductGroup();
         var addGroupRequest = new AddGroupToProductRequest(insertedProductGroup!.Id);
-        var addGroupresponse = await _client.PostAsJsonAsync($"http://localhost/api/products/{insertedProduct!.Id}/add-group", addGroupRequest);
+        await _client.PostAsJsonAsync($"http://localhost/api/products/{insertedProduct!.Id}/add-group", addGroupRequest);
         var removeGroupRequest = new RemoveGroupFromProductRequest(insertedProductGroup!.Id);
 
         var response = await _client.PostAsJsonAsync($"http://localhost/api/products/{insertedProduct.Id}/remove-group", removeGroupRequest);
@@ -38,14 +41,13 @@ public class RemoveGroupFromProductControllerTests : IClassFixture<CatalogApiFac
         var insertedProduct = await InsertProduct();
         var insertedProductGroup = await InsertProductGroup();
         var addGroupRequest = new AddGroupToProductRequest(insertedProductGroup!.Id);
-        var addGroupResponse = await _client.PostAsJsonAsync($"http://localhost/api/products/{insertedProduct!.Id}/add-group", addGroupRequest);
-        
+        await _client.PostAsJsonAsync($"http://localhost/api/products/{insertedProduct!.Id}/add-group", addGroupRequest);
         var removeGroupRequest = new RemoveGroupFromProductRequest(insertedProductGroup!.Id);
-        
+
         var response = await _client.PostAsJsonAsync($"http://localhost/api/products/{insertedProduct.Id}/remove-group", removeGroupRequest);
+
         var productGroupByIdResponse = await _client.GetAsync($"http://localhost/api/product-groups/{insertedProductGroup.Id}");
         var productGroup = await productGroupByIdResponse.Content.ReadFromJsonAsync<ProductGroupResponse>();
-       
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         productGroup!.ProductIds.Should().NotContain(insertedProduct.Id);
     }
@@ -115,7 +117,7 @@ public class RemoveGroupFromProductControllerTests : IClassFixture<CatalogApiFac
         return await response.Content.ReadFromJsonAsync<ProductGroupResponse>();
 
     }
-    private void RecreateDb()
+    private void ResetDB()
     {
         var scope = _catalogApiFactory.Services.CreateAsyncScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();

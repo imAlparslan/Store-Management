@@ -15,9 +15,9 @@ public class GroupRemovedFromProductDomainEventHandlerTests
         productGroupRepository.GetByIdAsync(productGroup.Id, default).ReturnsForAnyArgs(productGroup);
         var handler = new GroupRemovedFromProductDomainEventHandler(productGroupRepository);
         var notification = new GroupRemovedFromProductDomainEvent(productGroup.Id, productId);
-        
+
         await handler.Handle(notification, CancellationToken.None);
-        
+
         productGroup.ProductIds.Should().NotContain(productId);
 
     }

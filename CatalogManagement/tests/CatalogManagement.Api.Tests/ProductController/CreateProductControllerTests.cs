@@ -1,7 +1,10 @@
-﻿using CatalogManagement.Contracts.Products;
+﻿using CatalogManagement.Api.Tests.Fixtures;
+using CatalogManagement.Contracts.Products;
 
 namespace CatalogManagement.Api.Tests.ProductController;
-public class CreateProductControllerTests : IClassFixture<CatalogApiFactory>
+
+[Collection(nameof(ProductControllerCollectionFixture))]
+public class CreateProductControllerTests
 {
     private readonly HttpClient _client;
     private readonly CatalogApiFactory _catalogApiFactory;
@@ -11,7 +14,7 @@ public class CreateProductControllerTests : IClassFixture<CatalogApiFactory>
         _client = catalogApiFactory.CreateClient();
         _catalogApiFactory = catalogApiFactory;
 
-        RecreateDb();
+        ResetDB();
     }
 
     [Fact]
@@ -31,9 +34,7 @@ public class CreateProductControllerTests : IClassFixture<CatalogApiFactory>
     }
 
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
+    [MemberData(nameof(invalidStrings))]
     public async Task Create_ReturnsValidationError_WhenProductNameNullOrEmpty(string productName)
     {
         var request = CreateProductRequestFactory.CreateWithName(productName);
@@ -52,10 +53,8 @@ public class CreateProductControllerTests : IClassFixture<CatalogApiFactory>
     }
 
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
-    public async Task Create_ReturnsValidationError_WhenProdoctCodeNullOrEmpty(string productCode)
+    [MemberData(nameof(invalidStrings))]
+    public async Task Create_ReturnsValidationError_WhenProductCodeNullOrEmpty(string productCode)
     {
         var request = CreateProductRequestFactory.CreateWithCode(productCode);
 
@@ -73,10 +72,8 @@ public class CreateProductControllerTests : IClassFixture<CatalogApiFactory>
     }
 
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
-    public async Task Create_ReturnsValidationError_WhenProdoctDefinitionNullOrEmpty(string productDefinition)
+    [MemberData(nameof(invalidStrings))]
+    public async Task Create_ReturnsValidationError_WhenProductDefinitionNullOrEmpty(string productDefinition)
     {
         var request = CreateProductRequestFactory.CreateWithDefinition(productDefinition);
 
@@ -111,11 +108,12 @@ public class CreateProductControllerTests : IClassFixture<CatalogApiFactory>
         }
     }
 
-    private void RecreateDb()
+    private void ResetDB()
     {
         var scope = _catalogApiFactory.Services.CreateAsyncScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
         dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
     }
+    public static readonly TheoryData<string> invalidStrings = ["", " ", null];
 }

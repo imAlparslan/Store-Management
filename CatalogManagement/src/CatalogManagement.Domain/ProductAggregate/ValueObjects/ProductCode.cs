@@ -6,7 +6,7 @@ using CatalogManagement.Domain.ProductAggregate.Exceptions;
 namespace CatalogManagement.Domain.ProductAggregate.ValueObjects;
 public class ProductCode : ValueObject
 {
-    public string Value { get; private set; }
+    public string Value { get; private set; } = null!;
 
     public ProductCode(string code)
     {

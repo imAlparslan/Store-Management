@@ -37,7 +37,7 @@ public class UpdateProductGroupCommandHandlerTests
         {
             result.IsSuccess!.Should().BeFalse();
             result.Errors.Should().NotBeNullOrEmpty();
-            result.Errors![0].Should().Be(ProductGroupError.NotFoundById);
+            result.Errors.Should().Contain(ProductGroupError.NotFoundById);
         }
 
 

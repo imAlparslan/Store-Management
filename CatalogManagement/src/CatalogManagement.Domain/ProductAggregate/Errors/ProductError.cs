@@ -28,4 +28,14 @@ public class ProductError
        ErrorType.NotDeleted,
        "Product does not deleted.");
 
+    public static readonly Error ProductGroupNotDeletedFromProduct = new Error(
+       "Invalid.Product.ProductGroupNotDeleted",
+       ErrorType.NotUpdated,
+       "Product does not have the group.");
+
+    public static readonly Error ProductGroupNotAddedToProduct = new Error(
+       "Invalid.Product.ProductGroupNotAdded",
+       ErrorType.NotUpdated,
+       "Product group does not added to product.");
+
 }

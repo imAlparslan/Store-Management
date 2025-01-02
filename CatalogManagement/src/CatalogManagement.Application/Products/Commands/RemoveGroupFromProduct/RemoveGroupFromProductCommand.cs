@@ -1,7 +1,7 @@
-﻿using CatalogManagement.Domain.ProductAggregate;
+﻿using CatalogManagement.Application.Common.Interfaces;
+using CatalogManagement.Domain.ProductAggregate;
 using CatalogManagement.SharedKernel;
-using MediatR;
 
 namespace CatalogManagement.Application.Products.Commands.RemoveGroupFromProduct;
-public record RemoveGroupFromProductCommand(Guid GroupId, Guid ProductId)
-    : IRequest<Result<Product>>;
+public sealed record RemoveGroupFromProductCommand(Guid GroupId, Guid ProductId)
+    : ICommand<Result<Product>>;

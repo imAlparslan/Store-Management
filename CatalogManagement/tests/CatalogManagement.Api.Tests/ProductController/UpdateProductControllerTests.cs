@@ -1,7 +1,10 @@
-﻿using CatalogManagement.Contracts.Products;
+﻿using CatalogManagement.Api.Tests.Fixtures;
+using CatalogManagement.Contracts.Products;
 
 namespace CatalogManagement.Api.Tests.ProductController;
-public class UpdateProductControllerTests : IClassFixture<CatalogApiFactory>
+
+[Collection(nameof(ProductControllerCollectionFixture))]
+public class UpdateProductControllerTests
 {
     private readonly HttpClient _client;
     private readonly CatalogApiFactory _catalogApiFactory;
@@ -11,7 +14,7 @@ public class UpdateProductControllerTests : IClassFixture<CatalogApiFactory>
         _client = catalogApiFactory.CreateClient();
         _catalogApiFactory = catalogApiFactory;
 
-        RecreateDb();
+        ResetDB();
     }
 
     [Fact]
@@ -50,9 +53,7 @@ public class UpdateProductControllerTests : IClassFixture<CatalogApiFactory>
     }
 
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
+    [MemberData(nameof(invalidStrings))]
     public async Task Update_ReturnsValidationError_WhenProdoctNameNullOrEmpty(string productName)
     {
         CreateProductRequest createRequest = CreateProductRequestFactory.CreateValid();
@@ -74,10 +75,8 @@ public class UpdateProductControllerTests : IClassFixture<CatalogApiFactory>
     }
 
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
-    public async Task Update_ReturnsValidationError_WhenProdoctCodeNullOrEmpty(string productCode)
+    [MemberData(nameof(invalidStrings))]
+    public async Task Update_ReturnsValidationError_WhenProductCodeNullOrEmpty(string productCode)
     {
         CreateProductRequest createRequest = CreateProductRequestFactory.CreateValid();
         var createResponse = await _client.PostAsJsonAsync("http://localhost/api/products", createRequest);
@@ -98,9 +97,7 @@ public class UpdateProductControllerTests : IClassFixture<CatalogApiFactory>
     }
 
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
+    [MemberData(nameof(invalidStrings))]
     public async Task Update_ReturnsValidationError_WhenProdoctDefinitionNullOrEmpty(string productDefinition)
     {
         CreateProductRequest createRequest = CreateProductRequestFactory.CreateValid();
@@ -143,11 +140,13 @@ public class UpdateProductControllerTests : IClassFixture<CatalogApiFactory>
     }
 
     [Theory]
-    [MemberData(nameof(InvalidGuidData))]
+    [InlineData("00000000-0000-0000-0000-000000000000")]
     public async Task Update_ReturnsValidationError_WhenIdInvalid(Guid id)
     {
         UpdateProductRequest updateRequest = UpdateProductRequestFactory.CreateValid();
+
         var updatedResponse = await _client.PutAsJsonAsync($"http://localhost/api/products/{id}", updateRequest);
+
         using (AssertionScope scope = new())
         {
             updatedResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -158,16 +157,12 @@ public class UpdateProductControllerTests : IClassFixture<CatalogApiFactory>
         }
     }
 
-    private void RecreateDb()
+    private void ResetDB()
     {
         var scope = _catalogApiFactory.Services.CreateAsyncScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
         dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
     }
-    public static IEnumerable<object[]> InvalidGuidData => new List<object[]> {
-        new object[] { null! },
-        new object[] { Guid.Empty },
-        new object[] { default(Guid) }
-    };
+    public static readonly TheoryData<string> invalidStrings = ["", " ", null];
 }

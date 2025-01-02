@@ -1,7 +1,7 @@
-﻿using CatalogManagement.Domain.ProductGroupAggregate;
+﻿using CatalogManagement.Application.Common.Interfaces;
+using CatalogManagement.Domain.ProductGroupAggregate;
 using CatalogManagement.SharedKernel;
-using MediatR;
 
 namespace CatalogManagement.Application.ProductGroups;
-public record UpdateProductGroupCommand(Guid Id, string Name, string Description)
-    : IRequest<Result<ProductGroup>>;
+public sealed record UpdateProductGroupCommand(Guid Id, string Name, string Description)
+    : ICommand<Result<ProductGroup>>;

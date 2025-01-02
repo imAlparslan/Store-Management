@@ -2,7 +2,7 @@
 public class CreateProductGroupCommandHandlerTests
 {
     [Fact]
-    public async void Handler_ReturnsSuccessResult_WhenDataValid()
+    public async Task Handler_ReturnsSuccessResult_WhenDataValid()
     {
         var command = CreateProductGroupCommandFactory.CreateValid();
         var productGroup = ProductGroupFactory.CreateFromCreateCommand(command);

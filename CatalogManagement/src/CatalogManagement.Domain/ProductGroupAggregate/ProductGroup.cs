@@ -4,8 +4,8 @@ using CatalogManagement.Domain.ProductGroupAggregate.ValueObjects;
 namespace CatalogManagement.Domain.ProductGroupAggregate;
 public sealed class ProductGroup : AggregateRoot<ProductGroupId>
 {
-    public ProductGroupName Name { get; private set; }
-    public ProductGroupDescription Description { get; private set; }
+    public ProductGroupName Name { get; private set; } = null!;
+    public ProductGroupDescription Description { get; private set; } = null!;
 
     private readonly List<Guid> _productIds = new();
     public IReadOnlyList<Guid> ProductIds => _productIds;
@@ -19,19 +19,22 @@ public sealed class ProductGroup : AggregateRoot<ProductGroupId>
         Name = name;
     }
 
-    public void AddProduct(Guid productId)
+    public bool AddProduct(Guid productId)
     {
         if (!HasProduct(productId))
         {
             _productIds.Add(productId);
+            return true;
         }
+        return false;
     }
-    public void RemoveProduct(Guid productId)
+    public bool RemoveProduct(Guid productId)
     {
         if (HasProduct(productId))
         {
-            _productIds.Remove(productId);
+            return _productIds.Remove(productId);
         }
+        return false;
     }
     public bool HasProduct(Guid productId)
     {

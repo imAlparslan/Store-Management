@@ -18,6 +18,4 @@ public class NewGroupAddedToProductDomainEventHandlerTests
 
         productGroup.ProductIds.Should().Contain(productId);
     }
-
-
 }

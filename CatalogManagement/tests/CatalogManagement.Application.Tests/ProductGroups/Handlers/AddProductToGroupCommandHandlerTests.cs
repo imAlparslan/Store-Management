@@ -35,12 +35,34 @@ public class AddProductToGroupCommandHandlerTests
         mockProductGroupRepository.GetByIdAsync(Arg.Any<ProductGroupId>()).ReturnsNull();
         var handler = new AddProductToGroupCommandHandler(mockProductGroupRepository);
         var command = new AddProductToGroupCommand(Guid.NewGuid(), Guid.NewGuid());
+
         var result = await handler.Handle(command, default);
+
         using (AssertionScope scope = new())
         {
             result.IsSuccess.Should().BeFalse();
             result.Errors.Should().NotBeNullOrEmpty();
-            result.Errors![0].Should().Be(ProductGroupError.NotFoundById);
+            result.Errors.Should().HaveCount(1);
+            result.Errors.Should().Contain(ProductGroupError.NotFoundById);
         }
+    }
+
+    [Fact]
+    public async Task Handler_ReturnsProductNotAddedToProductGroupError_WhenProductNotAdded()
+    {
+        var productId = Guid.NewGuid();
+        var productGroup = ProductGroupFactory.CreateDefault();
+        productGroup.AddProduct(productId);
+        var mockProductGroupRepository = Substitute.For<IProductGroupRepository>();
+        mockProductGroupRepository.GetByIdAsync(default!).ReturnsForAnyArgs(productGroup);
+        var handler = new AddProductToGroupCommandHandler(mockProductGroupRepository);
+        var command = new AddProductToGroupCommand(productGroup.Id, productId);
+
+        var result = await handler.Handle(command, default);
+
+        result.IsSuccess.Should().BeFalse();
+        result.Errors.Should().NotBeNullOrEmpty();
+        result.Errors.Should().HaveCount(1);
+        result.Errors.Should().Contain(ProductGroupError.ProductNotAddedToProductGroup);
     }
 }

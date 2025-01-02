@@ -1,10 +1,11 @@
-﻿using CatalogManagement.Application.Common.Repositories;
+﻿using CatalogManagement.Application.Common.Interfaces;
+using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Domain.ProductAggregate;
 using CatalogManagement.SharedKernel;
-using MediatR;
 
 namespace CatalogManagement.Application.Products;
-internal class GetAllProductsQueryHandler(IProductRepository productRepository) : IRequestHandler<GetAllProductsQuery, Result<IEnumerable<Product>>>
+internal sealed class GetAllProductsQueryHandler(IProductRepository productRepository)
+    : IQueryHandler<GetAllProductsQuery, Result<IEnumerable<Product>>>
 {
     private readonly IProductRepository productRepository = productRepository;
 

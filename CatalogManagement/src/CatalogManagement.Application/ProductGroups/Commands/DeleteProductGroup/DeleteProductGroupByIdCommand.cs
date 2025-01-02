@@ -1,6 +1,6 @@
-﻿using CatalogManagement.SharedKernel;
-using MediatR;
+﻿using CatalogManagement.Application.Common.Interfaces;
+using CatalogManagement.SharedKernel;
 
 namespace CatalogManagement.Application.ProductGroups;
-public record DeleteProductGroupByIdCommand(Guid Id)
-    : IRequest<Result<bool>>;
+public sealed record DeleteProductGroupByIdCommand(Guid Id)
+    : ICommand<Result<bool>>;

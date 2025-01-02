@@ -1,7 +1,10 @@
-﻿using CatalogManagement.Contracts.ProductGroups;
+﻿using CatalogManagement.Api.Tests.Fixtures;
+using CatalogManagement.Contracts.ProductGroups;
 
 namespace CatalogManagement.Api.Tests.ProductGroupController;
-public class CreateProductGroupControllerTests : IClassFixture<CatalogApiFactory>
+
+[Collection(nameof(ProductGroupControllerCollectionFixture))]
+public class CreateProductGroupControllerTests
 {
     private readonly HttpClient _client;
     private readonly CatalogApiFactory _catalogApiFactory;
@@ -10,7 +13,7 @@ public class CreateProductGroupControllerTests : IClassFixture<CatalogApiFactory
         _client = catalogApiFactory.CreateClient();
         _catalogApiFactory = catalogApiFactory;
 
-        ReCreateDb();
+        ResetDB();
     }
 
     [Fact]
@@ -32,9 +35,7 @@ public class CreateProductGroupControllerTests : IClassFixture<CatalogApiFactory
     }
 
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
+    [MemberData(nameof(invalidStrings))]
     public async Task Create_ReturnsValidationError_WhenProdoctGroupNameNullOrEmpty(string productGroupName)
     {
         var request = CreateProductGroupRequestFactory.CreateWithName(productGroupName);
@@ -53,9 +54,7 @@ public class CreateProductGroupControllerTests : IClassFixture<CatalogApiFactory
     }
 
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
+    [MemberData(nameof(invalidStrings))]
     public async Task Create_ReturnsValidationError_WhenProductGroupDescriptionNullOrEmpty(string productGroupDescription)
     {
         var request = CreateProductGroupRequestFactory.CreateWithDescription(productGroupDescription);
@@ -90,11 +89,13 @@ public class CreateProductGroupControllerTests : IClassFixture<CatalogApiFactory
             error.Errors.Count.Should().Be(2);
         }
     }
-    private void ReCreateDb()
+    private void ResetDB()
     {
         var scope = _catalogApiFactory.Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
         db.Database.EnsureDeleted();
         db.Database.EnsureCreated();
     }
+    public static readonly TheoryData<string> invalidStrings = ["", " ", null];
+
 }

@@ -1,7 +1,7 @@
-﻿using CatalogManagement.Domain.ProductGroupAggregate;
+﻿using CatalogManagement.Application.Common.Interfaces;
+using CatalogManagement.Domain.ProductGroupAggregate;
 using CatalogManagement.SharedKernel;
-using MediatR;
 
 namespace CatalogManagement.Application.ProductGroups;
-public record GetProductGroupByIdQuery(Guid Id)
-    : IRequest<Result<ProductGroup>>;
+public sealed record GetProductGroupByIdQuery(Guid Id)
+    : IQuery<Result<ProductGroup>>;

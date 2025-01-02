@@ -1,12 +1,13 @@
-﻿using CatalogManagement.Application.Common.Repositories;
+﻿using CatalogManagement.Application.Common.Interfaces;
+using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Domain.ProductAggregate;
 using CatalogManagement.Domain.ProductAggregate.Errors;
 using CatalogManagement.Domain.ProductAggregate.Events;
 using CatalogManagement.SharedKernel;
-using MediatR;
 
 namespace CatalogManagement.Application.Products.Commands.RemoveGroupFromProduct;
-internal class RemoveGroupFromProductCommandHandler(IProductRepository productRepository) : IRequestHandler<RemoveGroupFromProductCommand, Result<Product>>
+internal sealed class RemoveGroupFromProductCommandHandler(IProductRepository productRepository)
+    : ICommandHandler<RemoveGroupFromProductCommand, Result<Product>>
 {
     private readonly IProductRepository productRepository = productRepository;
 
@@ -17,8 +18,15 @@ internal class RemoveGroupFromProductCommandHandler(IProductRepository productRe
         {
             return ProductError.NotFoundById;
         }
-        product.RemoveGroup(request.GroupId);
-        product.AddDomainEvent(new GroupRemovedFromProductDomainEvent(request.GroupId, request.ProductId));
-        return await productRepository.UpdateAsync(product, cancellationToken);
+
+        var result = product.RemoveGroup(request.GroupId);
+
+        if(result)
+        {
+            product.AddDomainEvent(new GroupRemovedFromProductDomainEvent(request.GroupId, request.ProductId));
+            return await productRepository.UpdateAsync(product, cancellationToken);
+        }
+
+        return ProductError.ProductGroupNotDeletedFromProduct;
     }
 }

@@ -1,12 +1,12 @@
-﻿using CatalogManagement.Application.Common.Repositories;
+﻿using CatalogManagement.Application.Common.Interfaces;
+using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Domain.ProductGroupAggregate.Errors;
 using CatalogManagement.Domain.ProductGroupAggregate.Events;
 using CatalogManagement.SharedKernel;
-using MediatR;
 
 namespace CatalogManagement.Application.ProductGroups;
 internal sealed class DeleteProductGroupByIdCommandHandler(IProductGroupRepository productGroupRepository)
-        : IRequestHandler<DeleteProductGroupByIdCommand, Result<bool>>
+        : ICommandHandler<DeleteProductGroupByIdCommand, Result<bool>>
 {
     private readonly IProductGroupRepository productGroupRepository = productGroupRepository;
 

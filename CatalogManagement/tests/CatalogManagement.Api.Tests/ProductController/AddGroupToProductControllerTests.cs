@@ -1,8 +1,11 @@
-﻿using CatalogManagement.Contracts.ProductGroups;
+﻿using CatalogManagement.Api.Tests.Fixtures;
+using CatalogManagement.Contracts.ProductGroups;
 using CatalogManagement.Contracts.Products;
 
 namespace CatalogManagement.Api.Tests.ProductController;
-public class AddGroupToProductControllerTests : IClassFixture<CatalogApiFactory>
+
+[Collection(nameof(ProductControllerCollectionFixture))]
+public class AddGroupToProductControllerTests
 {
     private readonly HttpClient _client;
     private readonly CatalogApiFactory _catalogApiFactory;
@@ -63,7 +66,7 @@ public class AddGroupToProductControllerTests : IClassFixture<CatalogApiFactory>
     }
 
     [Theory]
-    [MemberData(nameof(InvalidGuidData))]
+    [InlineData("00000000-0000-0000-0000-000000000000")]
     public async Task AddGroup_ReturnsBadRequest_WhenProductGroupIdInvalid(Guid invalidProductGroupId)
     {
         var response = await _client.PostAsJsonAsync($"http://localhost/api/products/{Guid.NewGuid()}/add-group", new AddGroupToProductRequest(invalidProductGroupId));
@@ -105,6 +108,7 @@ public class AddGroupToProductControllerTests : IClassFixture<CatalogApiFactory>
         CreateProductRequest request = CreateProductRequestFactory.CreateValid();
 
         var response = await _client.PostAsJsonAsync("http://localhost/api/products", request);
+
         return await response.Content.ReadFromJsonAsync<ProductResponse>();
 
     }
@@ -123,9 +127,4 @@ public class AddGroupToProductControllerTests : IClassFixture<CatalogApiFactory>
         dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
     }
-    public static IEnumerable<object[]> InvalidGuidData => new List<object[]> {
-        new object[] { null! },
-        new object[] { Guid.Empty },
-        new object[] { default(Guid) }
-    };
 }

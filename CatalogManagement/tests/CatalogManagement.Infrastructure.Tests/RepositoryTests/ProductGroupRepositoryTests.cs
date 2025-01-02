@@ -1,6 +1,5 @@
 ﻿using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Domain.ProductGroupAggregate;
-using CatalogManagement.Infrastructure.Tests.Common.Factories.ProductFactories;
 using CatalogManagement.Infrastructure.Tests.Common.Factories.ProductGroupFactories;
 using CatalogManagement.Infrastructure.Tests.Fixtures;
 
@@ -116,7 +115,7 @@ public class ProductGroupRepositoryTests : IClassFixture<ProductGroupRepositoryF
         productGroup.AddProduct(productId);
         _ = await _productGroupRepository.InsertAsync(productGroup);
 
-        var result = await _productGroupRepository.GetProductGroupsByContainigProductAsync(productId);
+        var result = await _productGroupRepository.GetProductGroupsByContainingProductAsync(productId);
 
         result.Should().HaveCount(1);
 

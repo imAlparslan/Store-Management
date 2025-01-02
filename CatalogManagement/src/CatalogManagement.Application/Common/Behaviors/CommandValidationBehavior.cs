@@ -3,9 +3,10 @@ using FluentValidation;
 using MediatR;
 
 namespace CatalogManagement.Application.Common.Behaviors;
-public class CommandValidationBehavior<TCommand, TResponse>
+public sealed class CommandValidationBehavior<TCommand, TResponse>
     : IPipelineBehavior<TCommand, TResponse>
     where TCommand : IRequest<TResponse>
+    where TResponse : IResult
 {
     private readonly IEnumerable<IValidator<TCommand>> _validators;
 

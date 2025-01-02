@@ -1,11 +1,12 @@
-﻿using CatalogManagement.Application.Common.Repositories;
+﻿using CatalogManagement.Application.Common.Interfaces;
+using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Domain.ProductAggregate;
 using CatalogManagement.Domain.ProductAggregate.Errors;
 using CatalogManagement.SharedKernel;
-using MediatR;
 
 namespace CatalogManagement.Application.Products;
-internal class GetProductByIdQueryHandler(IProductRepository productRepository) : IRequestHandler<GetProductByIdQuery, Result<Product>>
+internal sealed class GetProductByIdQueryHandler(IProductRepository productRepository)
+    : IQueryHandler<GetProductByIdQuery, Result<Product>>
 {
     private readonly IProductRepository productRepository = productRepository;
 
@@ -15,9 +16,9 @@ internal class GetProductByIdQueryHandler(IProductRepository productRepository) 
 
         if (product is null)
         {
-            return Result<Product>.Fail(ProductError.NotFoundById);
+            return ProductError.NotFoundById;
         }
 
-        return Result<Product>.Success(product);
+        return product;
     }
 }

@@ -3,9 +3,9 @@ using CatalogManagement.Domain.ProductAggregate.ValueObjects;
 namespace CatalogManagement.Domain.ProductAggregate;
 public sealed class Product : AggregateRoot<ProductId>
 {
-    public ProductName Name { get; private set; }
-    public ProductCode Code { get; private set; }
-    public ProductDefinition Definition { get; private set; }
+    public ProductName Name { get; private set; } = null!;
+    public ProductCode Code { get; private set; } = null!;
+    public ProductDefinition Definition { get; private set; } = null!;
 
     private readonly List<Guid> _groupIds = new();
     public IReadOnlyList<Guid> GroupIds => _groupIds.ToList();
@@ -30,12 +30,13 @@ public sealed class Product : AggregateRoot<ProductId>
         }
         return false;
     }
-    public void RemoveGroup(Guid groupId)
+    public bool RemoveGroup(Guid groupId)
     {
         if (HasGroup(groupId))
         {
-            _groupIds.Remove(groupId);
+            return _groupIds.Remove(groupId);
         }
+        return false;
     }
     public bool HasGroup(Guid groupId)
     {

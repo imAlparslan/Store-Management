@@ -6,7 +6,7 @@ using CatalogManagement.Domain.ProductGroupAggregate.Exceptions;
 namespace CatalogManagement.Domain.ProductGroupAggregate.ValueObjects;
 public class ProductGroupName : ValueObject
 {
-    public string Value { get; private set; }
+    public string Value { get; private set; } = null!;
     public ProductGroupName(string name)
     {
         Value = Guard.Against.NullOrWhiteSpace(

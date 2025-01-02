@@ -1,12 +1,12 @@
-﻿using CatalogManagement.Application.Common.Repositories;
+﻿using CatalogManagement.Application.Common.Interfaces;
+using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Domain.ProductAggregate;
 using CatalogManagement.Domain.ProductAggregate.ValueObjects;
 using CatalogManagement.SharedKernel;
-using MediatR;
 
 namespace CatalogManagement.Application.Products;
-internal class CreateProductCommandHandler(IProductRepository productRepository) 
-    : IRequestHandler<CreateProductCommand, Result<Product>>
+internal sealed class CreateProductCommandHandler(IProductRepository productRepository)
+    : ICommandHandler<CreateProductCommand, Result<Product>>
 {
     private readonly IProductRepository productRepository = productRepository;
 
@@ -18,8 +18,7 @@ internal class CreateProductCommandHandler(IProductRepository productRepository)
 
         Product product = new(productName, productCode, productDefinition);
 
-        await productRepository.InsertAsync(product, cancellationToken);
+        return await productRepository.InsertAsync(product, cancellationToken);
 
-        return Result<Product>.Success(product);
     }
 }

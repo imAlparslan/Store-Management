@@ -1,12 +1,12 @@
-﻿using CatalogManagement.Application.Common.Repositories;
+﻿using CatalogManagement.Application.Common.Interfaces;
+using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Domain.ProductGroupAggregate;
 using CatalogManagement.Domain.ProductGroupAggregate.ValueObjects;
 using CatalogManagement.SharedKernel;
-using MediatR;
 
 namespace CatalogManagement.Application.ProductGroups;
-internal class CreateProductGroupCommandHandler(IProductGroupRepository productGroupRepository)
-        : IRequestHandler<CreateProductGroupCommand, Result<ProductGroup>>
+internal sealed class CreateProductGroupCommandHandler(IProductGroupRepository productGroupRepository)
+        : ICommandHandler<CreateProductGroupCommand, Result<ProductGroup>>
 {
     private readonly IProductGroupRepository productGroupRepository = productGroupRepository;
 
