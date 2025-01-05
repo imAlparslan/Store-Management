@@ -15,14 +15,14 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.AddScoped<IDomainEventPublisherService, DomainEventPublisherService>();
-        services.AddScoped<DomainEventPublisher>();
+        services.AddScoped<DomainEventPublisherInterceptor>();
 
         services.AddDbContext<CatalogDbContext>(
             (sp, opt) =>
                 opt.UseSqlServer(
                     connectionString: configuration.GetConnectionString("MSSQL"),
                     sqlOption => sqlOption.EnableRetryOnFailure())
-            .AddInterceptors(sp.GetRequiredService<DomainEventPublisher>())
+            .AddInterceptors(sp.GetRequiredService<DomainEventPublisherInterceptor>())
             );
 
         services.AddScoped<IUnitOfWorkManager, UnitOfWorkManager>();

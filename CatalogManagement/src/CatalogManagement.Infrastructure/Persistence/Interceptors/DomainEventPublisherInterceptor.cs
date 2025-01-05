@@ -3,11 +3,11 @@ using CatalogManagement.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace CatalogManagement.Infrastructure.Persistence.Interceptors;
-public class DomainEventPublisher : SaveChangesInterceptor
+public class DomainEventPublisherInterceptor : SaveChangesInterceptor
 {
 
     private readonly IDomainEventPublisherService _publisher;
-    public DomainEventPublisher(IDomainEventPublisherService publisher)
+    public DomainEventPublisherInterceptor(IDomainEventPublisherService publisher)
     {
         _publisher = publisher;
     }

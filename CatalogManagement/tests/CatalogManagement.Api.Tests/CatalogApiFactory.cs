@@ -47,7 +47,7 @@ public class CatalogApiFactory
                 services.AddDbContext<CatalogDbContext>(
                     (sp, opt) => opt
                         .UseSqlServer(connectionString: connectionStringBuilder.ConnectionString)
-                        .AddInterceptors(sp.GetRequiredService<DomainEventPublisher>())
+                        .AddInterceptors(sp.GetRequiredService<DomainEventPublisherInterceptor>())
                     );
             });
 
