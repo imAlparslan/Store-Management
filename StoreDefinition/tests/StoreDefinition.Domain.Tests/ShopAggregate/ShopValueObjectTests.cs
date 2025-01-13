@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using StoreDefinition.Domain.Common.Exceptions;
+using StoreDefinition.Domain.ShopAggregateRoot.Entities;
 using StoreDefinition.Domain.ShopAggregateRoot.Errors;
 using StoreDefinition.Domain.ShopAggregateRoot.Exceptions;
 using StoreDefinition.Domain.ShopAggregateRoot.ValueObjects;

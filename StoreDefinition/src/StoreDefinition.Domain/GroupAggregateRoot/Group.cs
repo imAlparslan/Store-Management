@@ -2,12 +2,12 @@
 using StoreDefinition.Domain.GroupAggregateRoot.ValueObjects;
 
 namespace StoreDefinition.Domain.GroupAggregateRoot;
-public sealed class Group : AggregateRoot<GroupId>
+public class Group : AggregateRoot<GroupId>
 {
     public GroupName Name { get; private set; } = null!;
     public GroupDescription Description { get; private set; } = null!;
-    private readonly HashSet<Guid> _shopIds = new();
-    public IReadOnlyCollection<Guid> ShopIds => _shopIds;
+    private readonly List<Guid> _shopIds = new();
+    public IReadOnlyList<Guid> ShopIds => _shopIds;
 
     public Group(
         GroupName name,
@@ -25,11 +25,19 @@ public sealed class Group : AggregateRoot<GroupId>
     {
         Description = description;
     }
-    public bool AddShop(Guid shopId) => _shopIds.Add(shopId);
+    public bool AddShop(Guid shopId)
+    {
+        if (!HasShop(shopId))
+        {
+            _shopIds.Add(shopId);
+            return true;
+        }
+        return false;
+    }
     public bool RemoveShop(Guid shopId) => _shopIds.Remove(shopId);
     public bool HasShop(Guid shopId) => _shopIds.Contains(shopId);
 
-    public Group()
+    private Group()
     {
 
     }
