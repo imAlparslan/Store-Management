@@ -1,0 +1,22 @@
+
+
+
+services:
+    store-definition-db:
+        container_name: store-definition-db
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        ports:
+          - 14333:1433
+        environment:
+           ACCEPT_EULA: Y
+           MSSQL_SA_PASSWORD: Passw0r!d
+           MSSQL_PID: Developer
+        volumes:
+          - store-definition-db-volume:/var/opt/mssql/
+        healthcheck:
+          test: ["CMD-SHELL", "echo 'SELECT 1' | /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Passw0r!d -Q 'SELECT 1'"]
+          interval: 10s
+          timeout: 5s
+          retries: 3
+volumes:
+    store-definition-db-volume:
