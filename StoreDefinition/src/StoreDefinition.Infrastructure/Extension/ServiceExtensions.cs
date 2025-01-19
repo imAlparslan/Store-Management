@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StoreDefinition.Infrastructure.Persistence;
+using StoreDefinition.Infrastructure.Persistence.Interceptors;
+using StoreDefinition.Infrastructure.Services;
 
 namespace StoreDefinition.Infrastructure.Extension;
 public static class ServiceExtensions
@@ -10,8 +12,13 @@ public static class ServiceExtensions
     {
         services.AddDbContext<StoreDefinitionDbContext>(options =>
         {
-            options.UseSqlServer(
-                configuration.GetConnectionString("StoreDefinition"));
+            services.AddScoped<IDomainEventPublisherService, DomainEventPublisherService>();
+            services.AddScoped<DomainEventPublisherInterceptor>();
+
+            services.AddDbContext<StoreDefinitionDbContext>(
+                (sp, opt) =>
+                    opt.UseSqlServer(connectionString: configuration.GetConnectionString("StoreDefinition"))
+            .AddInterceptors(sp.GetRequiredService<DomainEventPublisherInterceptor>()));
 
             options.ConfigureWarnings(warnings =>
             {

@@ -1,4 +1,4 @@
-﻿using StoreDefinition.Application.Common.Interfaces;
+﻿using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Infrastructure.Persistence;
 
 namespace StoreDefinition.Infrastructure;

@@ -20,14 +20,13 @@ public class Shop : AggregateRoot<ShopId>
         Description = description;
         Address = address;
     }
-    public Shop()
+    private Shop()
     {
 
     }
 
     public bool AddGroup(Guid groupId)
     {
-
         if (!HasGroup(groupId))
         {
             _groupIds.Add(groupId);

@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using StoreDefinition.Application.Common.Interfaces;
+using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Infrastructure.Tests.Factories;
 using StoreDefinition.Infrastructure.Tests.Fixtures;
 
@@ -52,10 +52,10 @@ public class GroupRepositoryTests : IClassFixture<RepositoryFixture>
     }
 
     [Fact]
-    public async Task UpdateGroupAsync_RetunrsUpdatedGroup_WhenGroupExists()
+    public async Task UpdateGroupAsync_ReturnsUpdatedGroup_WhenGroupExists()
     {
         var updateName = GroupNameFactory.CreateCustom("Updated group name");
-        var updateDescription = GroupDescriptionFactory.CreateCustom("Updated group descrirption");
+        var updateDescription = GroupDescriptionFactory.CreateCustom("Updated group description");
         var group = GroupFactory.CreateValid();
         _ = await groupRepository.InsertGroupAsync(group);
 
@@ -68,16 +68,6 @@ public class GroupRepositoryTests : IClassFixture<RepositoryFixture>
         updatedGroup.Should().BeEquivalentTo(group);
         updatedGroup.Should().BeEquivalentTo(await groupRepository.GetGroupByIdAsync(group.Id));
 
-    }
-
-    [Fact]
-    public async Task UpdateGroupAsync_ReturnsNull_WhenIdNotExists()
-    {
-        var group = GroupFactory.CreateValid();
-
-        var result = await groupRepository.UpdateGroupAsync(group);
-
-        result.Should().BeNull();
     }
 
     [Fact]
@@ -131,11 +121,11 @@ public class GroupRepositoryTests : IClassFixture<RepositoryFixture>
     {
         var shopId = Guid.NewGuid();
         var groupHaveShopId1 = GroupFactory.CreateValid();
-            groupHaveShopId1.AddShop(shopId);
+        groupHaveShopId1.AddShop(shopId);
         var groupHaveShopId2 = GroupFactory.CreateValid();
-            groupHaveShopId2.AddShop(shopId);
+        groupHaveShopId2.AddShop(shopId);
         var groupHaveAnotherShopId = GroupFactory.CreateValid();
-            groupHaveAnotherShopId.AddShop(Guid.NewGuid());
+        groupHaveAnotherShopId.AddShop(Guid.NewGuid());
         var groupHaveNoShopId = GroupFactory.CreateValid();
         _ = await groupRepository.InsertGroupAsync(groupHaveShopId1);
         _ = await groupRepository.InsertGroupAsync(groupHaveShopId2);
@@ -143,7 +133,7 @@ public class GroupRepositoryTests : IClassFixture<RepositoryFixture>
         _ = await groupRepository.InsertGroupAsync(groupHaveNoShopId);
 
         var result = await groupRepository.GetGroupsByShopIdAsync(shopId);
-        
+
         result.Should().HaveCount(2);
         result.Should().Contain([groupHaveShopId1, groupHaveShopId2]);
         result.Should().NotContain([groupHaveAnotherShopId, groupHaveNoShopId]);
@@ -154,9 +144,9 @@ public class GroupRepositoryTests : IClassFixture<RepositoryFixture>
     {
         var shopId = Guid.NewGuid();
         var groupHaveAnotherShopId = GroupFactory.CreateValid();
-            groupHaveAnotherShopId.AddShop(Guid.NewGuid());
+        groupHaveAnotherShopId.AddShop(Guid.NewGuid());
         var groupHaveNoShopId = GroupFactory.CreateValid();
-        
+
         _ = await groupRepository.InsertGroupAsync(groupHaveAnotherShopId);
         _ = await groupRepository.InsertGroupAsync(groupHaveNoShopId);
 

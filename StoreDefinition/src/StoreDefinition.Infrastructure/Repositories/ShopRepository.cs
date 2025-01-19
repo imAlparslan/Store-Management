@@ -1,15 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using StoreDefinition.Application.Common.Interfaces;
+using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Domain.GroupAggregateRoot.ValueObjects;
 using StoreDefinition.Domain.ShopAggregateRoot;
 using StoreDefinition.Domain.ShopAggregateRoot.ValueObjects;
 using StoreDefinition.Infrastructure.Persistence;
 
 namespace StoreDefinition.Infrastructure.Repositories;
-public sealed class ShopRepository(StoreDefinitionDbContext dbcontext, IUnitOfWorkManager unitOfWorkManager)
+public sealed class ShopRepository(StoreDefinitionDbContext dbContext, IUnitOfWorkManager unitOfWorkManager)
     : IShopRepository
 {
-    private readonly StoreDefinitionDbContext _dbContext = dbcontext;
+    private readonly StoreDefinitionDbContext _dbContext = dbContext;
     private readonly IUnitOfWorkManager unitOfWorkManager = unitOfWorkManager;
 
     public async Task<bool> DeleteShopByIdAsync(ShopId shopId, CancellationToken cancellation = default)
@@ -59,13 +59,8 @@ public sealed class ShopRepository(StoreDefinitionDbContext dbcontext, IUnitOfWo
         return _dbContext.Stores.AsNoTracking().FirstOrDefaultAsync(x => x.Id == shopId, cancellation);
     }
 
-    public async Task<Shop?> UpdateShopAsync(Shop shop, CancellationToken cancellation = default)
+    public async Task<Shop> UpdateShopAsync(Shop shop, CancellationToken cancellation = default)
     {
-        var isExists = await _dbContext.Stores.AsNoTracking().AnyAsync(x => x.Id == shop.Id, cancellation);
-        if (!isExists)
-        {
-            return null;
-        }
         _dbContext.Stores.Update(shop);
 
         if (!unitOfWorkManager.IsUnitOfWorkManagerStarted())

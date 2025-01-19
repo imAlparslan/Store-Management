@@ -25,7 +25,7 @@ public class DomainEventRules : ArchUnitBase
             .That()
             .ImplementInterface(typeof(IDomainEvent))
             .Should()
-            .HaveNameEndingWith(ClassNameSuffixes.DomainEventSuffix)
+            .HaveNameEndingWith(ClassNameConstants.DomainEventSuffix)
             .Check(Architecture);
     }
 

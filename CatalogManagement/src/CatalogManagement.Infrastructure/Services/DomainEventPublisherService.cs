@@ -10,7 +10,7 @@ internal class DomainEventPublisherService(IMediator mediator) : IDomainEventPub
     {
         var events = domainEvents.ToList();
         domainEvents = new List<IDomainEvent>();
-        
+
         foreach (var @event in events)
         {
             await mediator.Publish(@event, cancellationToken);

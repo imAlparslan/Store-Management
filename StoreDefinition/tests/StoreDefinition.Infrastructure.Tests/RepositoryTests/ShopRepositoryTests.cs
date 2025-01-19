@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using StoreDefinition.Application.Common.Interfaces;
+using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Domain.ShopAggregateRoot;
 using StoreDefinition.Domain.ShopAggregateRoot.Entities;
 using StoreDefinition.Domain.ShopAggregateRoot.ValueObjects;
@@ -61,15 +61,7 @@ public class ShopRepositoryTests : IClassFixture<RepositoryFixture>
         updatedShop!.Description.Should().BeEquivalentTo(newDescription);
         updatedShop!.Address.Should().BeEquivalentTo(newAddress);
     }
-    [Fact]
-    public async Task UpdateShopAsync_RetunsNull_WhenShopNotExists()
-    {
-        var shop = ShopFactory.CreateValid();
 
-        var result = await shopRepository.UpdateShopAsync(shop);
-
-        result.Should().BeNull();
-    }
     [Fact]
     public async Task GetAllShopsByGroupIdAsync_ReturnsShops_WhenShopHaveGroupId()
     {

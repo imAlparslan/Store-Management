@@ -1,4 +1,4 @@
-﻿namespace StoreDefinition.Application.Common.Interfaces;
+﻿namespace StoreDefinition.Application.Common.Repositories;
 public interface IUnitOfWorkManager
 {
     bool IsUnitOfWorkManagerStarted();

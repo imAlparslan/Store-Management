@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using StoreDefinition.Application.Common.Interfaces;
+using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Domain.GroupAggregateRoot;
 using StoreDefinition.Domain.GroupAggregateRoot.ValueObjects;
 using StoreDefinition.Domain.ShopAggregateRoot.ValueObjects;
@@ -25,19 +25,15 @@ public sealed class GroupRepository(StoreDefinitionDbContext context, IUnitOfWor
         return _context.Groups.AsNoTracking().FirstOrDefaultAsync(g => g.Id == groupId, cancellation);
     }
 
-    public async Task<Group?> UpdateGroupAsync(Group group, CancellationToken cancellation = default)
+    public async Task<Group> UpdateGroupAsync(Group group, CancellationToken cancellation = default)
     {
-        var isExists = await _context.Groups.AsNoTracking().AnyAsync(g => g.Id == group.Id, cancellation);
-        if (isExists)
+        _context.Groups.Update(group);
+        
+        if (!_unitOfWorkManager.IsUnitOfWorkManagerStarted())
         {
-            _context.Groups.Update(group);
-            if (!_unitOfWorkManager.IsUnitOfWorkManagerStarted())
-            {
-                await _context.SaveChangesAsync(cancellation);
-                return group;
-            }
+            await _context.SaveChangesAsync(cancellation);
         }
-        return null;
+        return group;
     }
     public async Task<bool> DeleteGroupByIdAsync(GroupId groupId, CancellationToken cancellation = default)
     {
@@ -68,5 +64,4 @@ public sealed class GroupRepository(StoreDefinitionDbContext context, IUnitOfWor
             .Where(x => x.ShopIds.Contains(shopId))
             .ToListAsync(cancellation);
     }
-
 }

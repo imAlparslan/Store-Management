@@ -2,7 +2,7 @@
 
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using StoreDefinition.Application.Common.Interfaces;
+using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Infrastructure.Persistence;
 using StoreDefinition.Infrastructure.Repositories;
 using System.Threading.Tasks;
@@ -10,7 +10,7 @@ using Testcontainers.MsSql;
 
 public class RepositoryFixture : IAsyncLifetime
 {
-    private readonly MsSqlContainer _mssqlContainer = null!;
+    private readonly MsSqlContainer _mssqlContainer;
     private StoreDefinitionDbContext _storeDefinitionDbContext = null!;
     private IUnitOfWorkManager unitOfWorkManager = null!;
 

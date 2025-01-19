@@ -7,10 +7,10 @@ namespace StoreDefinition.Domain.ShopAggregateRoot.Entities;
 public sealed class ShopAddress : Entity<ShopAddressId>
 {
     //TODO: continue here
-    public string City { get; private set; } = null!;
-    public string Street { get; private set; } = null!;
+    public string City { get; private set; }
+    public string Street { get; private set; }
 
-    public ShopAddress(string city, string street, ShopAddressId? Id = null) : base(Id ?? ShopAddressId.CreateUnique())
+    public ShopAddress(string city, string street, ShopAddressId? id = null) : base(id ?? ShopAddressId.CreateUnique())
     {
         City = Guard.Against
             .NullOrWhiteSpace(
