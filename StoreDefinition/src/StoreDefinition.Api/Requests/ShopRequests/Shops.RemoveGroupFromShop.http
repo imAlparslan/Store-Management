@@ -1,0 +1,12 @@
+
+
+@shopGuid 6910ffe5-2812-44a0-8160-08c39c540016
+@groupGuid f3851c88-bc66-4e7f-a9ca-f45e5d6c4054
+
+
+POST {{BaseAddress}}/shops/{{shopGuid}}/remove-group
+Content-Type: application/json
+
+{
+	"groupId" : "{{groupGuid}}"
+}

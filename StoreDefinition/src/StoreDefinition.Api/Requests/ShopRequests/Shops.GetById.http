@@ -1,0 +1,5 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+
+@validGuid e96c692b-f07f-4b8c-9165-f3017a254dc6
+
+GET {{BaseAddress}}/shops/{{validGuid}}

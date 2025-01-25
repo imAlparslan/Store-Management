@@ -20,15 +20,15 @@ public sealed class GroupRepository(StoreDefinitionDbContext context, IUnitOfWor
         }
         return group;
     }
-    public Task<Group?> GetGroupByIdAsync(GroupId groupId, CancellationToken cancellation = default)
+    public async Task<Group?> GetGroupByIdAsync(GroupId groupId, CancellationToken cancellation = default)
     {
-        return _context.Groups.AsNoTracking().FirstOrDefaultAsync(g => g.Id == groupId, cancellation);
+        return await _context.Groups.FindAsync([groupId], cancellation);
     }
 
     public async Task<Group> UpdateGroupAsync(Group group, CancellationToken cancellation = default)
     {
         _context.Groups.Update(group);
-        
+
         if (!_unitOfWorkManager.IsUnitOfWorkManagerStarted())
         {
             await _context.SaveChangesAsync(cancellation);
@@ -37,7 +37,7 @@ public sealed class GroupRepository(StoreDefinitionDbContext context, IUnitOfWor
     }
     public async Task<bool> DeleteGroupByIdAsync(GroupId groupId, CancellationToken cancellation = default)
     {
-        var group = await _context.Groups.FirstOrDefaultAsync(g => g.Id == groupId, cancellation);
+        var group = await _context.Groups.FindAsync([groupId], cancellation);
         if (group is null)
         {
             return false;

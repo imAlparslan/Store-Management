@@ -1,0 +1,34 @@
+
+
+@validGroupId dc54bec6-e5b2-4d6b-90fd-9c5fdfcb6cdc
+
+//Valid request
+PUT {{BaseAddress}}/groups/{{validGroupId}}
+Content-Type: application/json
+{
+    "name": "update group name",
+    "description": "update group description"
+}
+
+###
+
+
+//Inalid request
+PUT {{BaseAddress}}/groups/{{validGroupId}}
+Content-Type: application/json
+{
+    "name": " ",
+    "description": " "
+}
+
+###
+
+//Inalid request
+PUT {{BaseAddress}}/groups/{{$guid}}
+Content-Type: application/json
+{
+    "name": "update group name",
+    "description": "update group description"
+}
+
+###

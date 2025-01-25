@@ -1,0 +1,23 @@
+
+// Valid request
+POST {{BaseAddress}}/shops
+Content-Type: application/json
+
+{
+    "name": "shop name",
+    "description": "shop description",
+    "city":"city",
+    "street":"street"
+}
+
+###
+// Invalid Request
+POST {{BaseAddress}}/shops
+Content-Type: application/json
+
+{
+    "name": "shop name",
+    "description": "shop description",
+    "city":" ",
+    "street":""
+}
