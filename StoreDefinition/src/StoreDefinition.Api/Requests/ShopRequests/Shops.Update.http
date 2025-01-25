@@ -1,0 +1,25 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+
+@validGuid e96c692b-f07f-4b8c-9165-f3017a254dc6
+
+PUT {{BaseAddress}}/shops/{{validGuid}}
+Content-Type: application/json
+
+{
+    "name": "updated shop name",
+    "description": "updated shop description",
+    "city":"updated city",
+    "street":"updated street"
+}
+
+###
+// Invalid Request
+PUT {{BaseAddress}}/shops/{{validGuid}}
+Content-Type: application/json
+
+{
+    "name": "shop name",
+    "description": "shop description",
+    "city":" ",
+    "street":""
+}

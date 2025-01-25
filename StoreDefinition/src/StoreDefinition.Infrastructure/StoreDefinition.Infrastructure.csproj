@@ -16,4 +16,7 @@
     <ProjectReference Include="..\StoreDefinition.Domain\StoreDefinition.Domain.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="StoreDefinition.Api.Tests"/>
+	</ItemGroup>
 </Project>

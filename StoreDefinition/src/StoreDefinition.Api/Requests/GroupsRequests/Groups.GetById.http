@@ -1,0 +1,10 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+
+@validGroupId dc54bec6-e5b2-4d6b-90fd-9c5fdfcb6cdc
+
+GET {{BaseAddress}}/groups/{{validGroupId}}
+
+
+###
+//Invalid request
+GET {{BaseAddress}}/groups/{{$guid}}

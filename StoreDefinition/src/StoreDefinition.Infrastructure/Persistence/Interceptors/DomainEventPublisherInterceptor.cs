@@ -3,7 +3,7 @@ using StoreDefinition.Domain.Common.Interfaces;
 using StoreDefinition.Infrastructure.Services;
 
 namespace StoreDefinition.Infrastructure.Persistence.Interceptors;
-internal class DomainEventPublisherInterceptor : SaveChangesInterceptor
+public class DomainEventPublisherInterceptor : SaveChangesInterceptor
 {
 
     private readonly IDomainEventPublisherService _publisher;

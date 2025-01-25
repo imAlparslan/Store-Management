@@ -1,0 +1,22 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+
+@validGroupId dc54bec6-e5b2-4d6b-90fd-9c5fdfcb6cdc
+
+//Valid request
+POST {{BaseAddress}}/groups/{{validGroupId}}/add-shop
+Content-Type : application/json
+
+{
+    "shopId": "e96c692b-f07f-4b8c-9165-f3017a254dc6"
+}
+
+###
+
+//Invalid request
+
+POST {{BaseAddress}}/groups/{{$guid}}/add-shop
+Content-Type : application/json
+
+{
+    "shopId": "e96c692b-f07f-4b8c-9165-f3017a254dc6"
+}

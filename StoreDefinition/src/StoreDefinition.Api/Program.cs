@@ -1,7 +1,7 @@
 using StoreDefinition.Application.Extensions;
 using StoreDefinition.Infrastructure.Extension;
-var builder = WebApplication.CreateBuilder(args);
 
+var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
@@ -14,7 +14,7 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.MapOpenApi("doc");
 }
 
 app.UseHttpsRedirection();
