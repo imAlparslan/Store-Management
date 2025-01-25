@@ -4,6 +4,7 @@ using StoreDefinition.Domain.ShopAggregateRoot;
 using StoreDefinition.SharedKernel;
 
 namespace StoreDefinition.Application.Shops.Queries.GetAllShops;
+
 internal sealed class GetAllShopsQueryHandler(IShopRepository shopRepository)
     : IQueryHandler<GetAllShopsQuery, Result<IEnumerable<Shop>>>
 {

@@ -5,6 +5,7 @@ using StoreDefinition.Infrastructure.Services;
 namespace StoreDefinition.Infrastructure.Persistence.Interceptors;
 public class DomainEventPublisherInterceptor : SaveChangesInterceptor
 {
+
     private readonly IDomainEventPublisherService _publisher;
     public DomainEventPublisherInterceptor(IDomainEventPublisherService publisher)
     {

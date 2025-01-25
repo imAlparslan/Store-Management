@@ -19,5 +19,4 @@
 	<ItemGroup>
 		<InternalsVisibleTo Include="StoreDefinition.Api.Tests"/>
 	</ItemGroup>
-
 </Project>
