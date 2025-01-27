@@ -19,4 +19,10 @@
 	<InternalsVisibleTo Include="CatalogManagement.Architecture.Tests" />
   </ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="CatalogManagement.Domain.Tests" />
+		<InternalsVisibleTo Include="CatalogManagement.Application.Tests" />
+		<InternalsVisibleTo Include="CatalogManagement.Infrastructure.Tests" />
+	</ItemGroup>
+
 </Project>

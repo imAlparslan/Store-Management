@@ -10,7 +10,7 @@ namespace StoreDefinition.Api.Mapping;
 public static class ShopsMappings
 {
     public static CreateShopCommand MapToCommand(this CreateShopRequest request)
-        => new CreateShopCommand(request.Description, request.City, request.Street);
+        => new CreateShopCommand(request.Description, request.City, request.Street, request.GroupIds);
 
     public static UpdateShopCommand MapToCommand(this UpdateShopRequest request, Guid id)
         => new UpdateShopCommand(id, request.Description, request.City, request.Street);

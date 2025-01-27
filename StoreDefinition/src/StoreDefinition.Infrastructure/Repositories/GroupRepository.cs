@@ -64,4 +64,20 @@ public sealed class GroupRepository(StoreDefinitionDbContext context, IUnitOfWor
             .Where(x => x.ShopIds.Contains(shopId))
             .ToListAsync(cancellation);
     }
+
+    public async Task<List<Group>> GetGroupsByIdsAsync(IReadOnlyList<Guid> groupIds, CancellationToken cancellationToken)
+    {
+        return await _context.Groups.AsNoTracking()
+            .Where(x => groupIds.Contains(x.Id))
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task UpdateAll(List<Group> groups, CancellationToken cancellation = default)
+    {
+        context.Groups.UpdateRange(groups);
+        if (!_unitOfWorkManager.IsUnitOfWorkManagerStarted())
+        {
+            await _context.SaveChangesAsync(cancellation);
+        }
+    }
 }

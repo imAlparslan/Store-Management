@@ -6,6 +6,7 @@ using StoreDefinition.Application.Shops.Commands.RemoveGroupFromShop;
 using StoreDefinition.Application.Tests.Common.Factories.ShopFactories;
 using StoreDefinition.Domain.ShopAggregateRoot;
 using StoreDefinition.Domain.ShopAggregateRoot.Errors;
+using StoreDefinition.Domain.ShopAggregateRoot.Events;
 using StoreDefinition.Domain.ShopAggregateRoot.ValueObjects;
 
 namespace StoreDefinition.Application.Tests.Shops.CommandHandlers;
@@ -33,7 +34,8 @@ public class RemoveGroupFromShopCommandHandlerTests
 
         result.IsSuccess.Should().BeTrue();
         result.Value!.HasGroup(groupId).Should().BeFalse();
-        result.Value!.GetDomainEvents().Should().HaveCount(1);
+        result.Value!.GetDomainEvents().Should()
+            .ContainEquivalentOf(new GroupRemovedFromShopDomainEvent(shop.Id, groupId));
         result.Errors.Should().BeNullOrEmpty();
     }
     [Fact]

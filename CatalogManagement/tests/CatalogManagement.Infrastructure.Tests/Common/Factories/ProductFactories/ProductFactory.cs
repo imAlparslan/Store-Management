@@ -5,7 +5,7 @@ internal class ProductFactory
     {
         return new Product(new ProductName("product name"),
             new ProductCode("product code"),
-            new ProductDefinition("product definition"));
+            new ProductDefinition("product definition"), []);
     }
 
     public static Product CreateRandom()
@@ -14,7 +14,7 @@ internal class ProductFactory
         var code = ProductCodeFactory.CreateRandom();
         var definition = ProductDefinitionFactory.CreateRandom();
 
-        return new Product(name, code, definition, Guid.NewGuid());
+        return new Product(name, code, definition, [], Guid.NewGuid());
     }
 
 }

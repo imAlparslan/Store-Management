@@ -23,7 +23,6 @@ internal sealed class RemoveGroupFromProductCommandHandler(IProductRepository pr
 
         if(result)
         {
-            product.AddDomainEvent(new GroupRemovedFromProductDomainEvent(request.GroupId, request.ProductId));
             return await productRepository.UpdateAsync(product, cancellationToken);
         }
 

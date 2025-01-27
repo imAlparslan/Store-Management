@@ -66,6 +66,5 @@ public class AddGroupToShopCommandHandlerTests
         result.Errors.Should().NotBeNullOrEmpty();
         result.Errors.Should().Contain(ShopErrors.GroupNotAddedToShop);
         result.Value.Should().BeNull();
-        shop.GetDomainEvents().Should().HaveCount(0);
     }
 }

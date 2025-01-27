@@ -21,7 +21,6 @@ internal sealed class RemoveGroupFromShopCommandHandler(IShopRepository shopRepo
         var result = shop.RemoveGroup(request.GroupId);
         if (result)
         {
-            shop.AddDomainEvent(new GroupRemovedFromShopDomainEvent(request.ShopId, request.GroupId));
             await shopRepository.UpdateShopAsync(shop, cancellationToken);
             return shop;
         }

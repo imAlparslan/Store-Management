@@ -2,7 +2,6 @@
 using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Domain.ShopAggregateRoot;
 using StoreDefinition.Domain.ShopAggregateRoot.Errors;
-using StoreDefinition.Domain.ShopAggregateRoot.Events;
 using StoreDefinition.SharedKernel;
 
 namespace StoreDefinition.Application.Shops.Commands.AddGroupToShop;
@@ -16,12 +15,11 @@ internal sealed class AddGroupToShopCommandHandler(IShopRepository shopRepositor
         {
             return ShopErrors.NotFoundById;
         }
-
+        //TODO: Check groups
         var result = shop.AddGroup(request.GroupId);
 
         if (result)
         {
-            shop.AddDomainEvent(new GroupAddedToShopDomainEvent(request.ShopId, request.GroupId));
             await _shopRepository.UpdateShopAsync(shop, cancellationToken);
             return shop;
         }

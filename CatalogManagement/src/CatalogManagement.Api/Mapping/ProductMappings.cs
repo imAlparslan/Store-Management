@@ -11,7 +11,7 @@ public static class ProductMappings
     public static ProductResponse MapToResponse(this Product product)
         => new ProductResponse(product.Id, product.Name, product.Code, product.Definition, product.GroupIds);
     public static CreateProductCommand MapToCommand(this CreateProductRequest request)
-       => new CreateProductCommand(request.ProductName, request.ProductCode, request.ProductDefinition);
+       => new CreateProductCommand(request.ProductName, request.ProductCode, request.ProductDefinition, request.GroupIds);
 
     public static UpdateProductCommand MapToCommand(this UpdateProductRequest request, Guid id)
        => new UpdateProductCommand(id, request.ProductName, request.ProductCode, request.ProductDefinition);

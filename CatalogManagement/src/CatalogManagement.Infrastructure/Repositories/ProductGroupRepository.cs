@@ -71,4 +71,22 @@ internal class ProductGroupRepository(CatalogDbContext catalogDbContext, IUnitOf
     {
         return await catalogDbContext.ProductGroups.AnyAsync(x => x.Id == productGroupId, cancellationToken);
     }
+
+    public async Task<List<ProductGroup>> GetByIdsAsync(IReadOnlyList<Guid> groupIds, CancellationToken cancellationToken)
+    {
+        return await catalogDbContext.ProductGroups
+            .AsNoTracking()
+            .Where(x => groupIds.Contains(x.Id))
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task UpdateRangeAsync(List<ProductGroup> groups, CancellationToken cancellationToken)
+    {
+        catalogDbContext.UpdateRange(groups);
+
+        if (!unitOfWorkManager.IsUnitOfWorkManagerStarted())
+        {
+            await catalogDbContext.SaveChangesAsync(cancellationToken);
+        }
+    }
 }

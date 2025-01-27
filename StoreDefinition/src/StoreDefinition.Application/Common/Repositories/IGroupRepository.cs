@@ -11,4 +11,6 @@ public interface IGroupRepository
     Task<IEnumerable<Group>> GetAllGroupsAsync(CancellationToken cancellation = default);
     Task<IEnumerable<Group>> GetGroupsByShopIdAsync(ShopId shopId, CancellationToken cancellation = default);
     Task<bool> DeleteGroupByIdAsync(GroupId groupId, CancellationToken cancellation = default);
+    Task<List<Group>> GetGroupsByIdsAsync(IReadOnlyList<Guid> groupIds, CancellationToken cancellationToken);
+    Task UpdateAll(List<Group> groups, CancellationToken cancellation = default);
 }

@@ -16,4 +16,9 @@
     <ProjectReference Include="..\StoreDefinition.SharedKernel\StoreDefinition.SharedKernel.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="StoreDefinition.Application.Tests" />
+		<InternalsVisibleTo Include="StoreDefinition.Infrastructure.Tests" />
+	</ItemGroup>
+
 </Project>

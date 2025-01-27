@@ -11,11 +11,13 @@ namespace StoreDefinition.Application.Tests.Shops.CommandHandlers;
 public class CreateShopCommandHandlerTests
 {
     private readonly CreateShopCommandHandler _handler;
-    private readonly IShopRepository _mockRepository;
+    private readonly IShopRepository _mockShopRepository;
+    private readonly IGroupRepository _mockGroupRepository;
     public CreateShopCommandHandlerTests()
     {
-        _mockRepository = Substitute.For<IShopRepository>();
-        _handler = new CreateShopCommandHandler(_mockRepository);
+        _mockShopRepository = Substitute.For<IShopRepository>();
+        _mockGroupRepository = Substitute.For<IGroupRepository>();
+        _handler = new CreateShopCommandHandler(_mockShopRepository, _mockGroupRepository);
     }
 
     [Fact]
@@ -23,7 +25,7 @@ public class CreateShopCommandHandlerTests
     {
         var command = CreateShopCommandFactory.CreateValid();
         var shop = ShopFactory.CreateCustom(command.Description, command.City, command.Street);
-        _mockRepository.InsertShopAsync(shop).ReturnsForAnyArgs(shop);
+        _mockShopRepository.InsertShopAsync(shop).ReturnsForAnyArgs(shop);
 
         var result = await _handler.Handle(command, default);
 
@@ -37,7 +39,7 @@ public class CreateShopCommandHandlerTests
     public void Handler_ThrowsShopException_WhenDescriptionInvalid(string invalid)
     {
         var command = CreateShopCommandFactory.CreateCustom(description: invalid);
-        _mockRepository.InsertShopAsync(Arg.Any<Shop>()).ReturnsForAnyArgs(ShopFactory.CreateValid());
+        _mockShopRepository.InsertShopAsync(Arg.Any<Shop>()).ReturnsForAnyArgs(ShopFactory.CreateValid());
         var result = () => _handler.Handle(command, default);
 
         using (AssertionScope scope = new())
@@ -67,7 +69,7 @@ public class CreateShopCommandHandlerTests
         var command = CreateShopCommandFactory.CreateCustom(street: invalid);
 
         var result = () => _handler.Handle(command, default);
-       
+
         using (AssertionScope scope = new())
         {
             result.Should().ThrowExactlyAsync<ShopException>();

@@ -32,8 +32,8 @@ public abstract class ControllerTestBase : IAsyncLifetime
     }
     protected async Task AddShopToGroup(Guid shopId, Guid groupId)
     {
-        var request = GroupRequestFactory.CreateAddShopToGroupRequest(shopId);
-        await _client.PostAsJsonAsync($"{GroupsBaseAddress}/{groupId}/add-shop", request);
+        var request = ShopsRequestFactory.CreateAddGroupToShopRequest(groupId);
+        await _client.PostAsJsonAsync($"{ShopsBaseAddress}/{shopId}/add-group", request);
     }
     public static readonly TheoryData<string> invalidStrings = ["", " ", null];
     public async Task DisposeAsync() => await Task.CompletedTask;
