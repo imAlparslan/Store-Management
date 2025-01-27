@@ -3,7 +3,7 @@ using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Domain.ProductAggregate.Events;
 
 namespace CatalogManagement.Application.ProductGroups.Events;
-internal class NewGroupAddedToProductDomainEventHandler(IProductGroupRepository productGroupRepository) : IDomainEventHandler<NewGroupAddedToProductDomainEvent>
+internal class GroupAddedToProductDomainEventHandler(IProductGroupRepository productGroupRepository) : IDomainEventHandler<NewGroupAddedToProductDomainEvent>
 {
     private readonly IProductGroupRepository productGroupRepository = productGroupRepository;
     public async Task Handle(NewGroupAddedToProductDomainEvent notification, CancellationToken cancellationToken)

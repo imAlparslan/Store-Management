@@ -8,7 +8,10 @@ Content-Type: application/json
 {
   "productName": "Product Name-2",
   "productCode": "ProductCode-2",
-  "productDefinition": "Product definition-2"
+  "productDefinition": "Product definition-2",
+  "GroupIds": [
+    "4b237115-9de7-4bd0-a933-e9403cd289d8"
+  ]
 }
 
 ###

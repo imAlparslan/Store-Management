@@ -1,2 +1,2 @@
 ﻿namespace StoreDefinition.Contracts.Shops;
-public sealed record CreateShopRequest(string Description, string City, string Street);
+public sealed record CreateShopRequest(string Description, string City, string Street, IReadOnlyList<Guid> GroupIds);

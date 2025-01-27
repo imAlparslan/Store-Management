@@ -3,5 +3,7 @@ using StoreDefinition.Domain.ShopAggregateRoot;
 using StoreDefinition.SharedKernel;
 
 namespace StoreDefinition.Application.Shops.Commands.CreateShop;
-public sealed record CreateShopCommand(string Description, string City, string Street)
-    : ICommand<Result<Shop>>;
+public sealed record CreateShopCommand(string Description,
+                                       string City,
+                                       string Street,
+                                       IReadOnlyList<Guid> GroupIds): ICommand<Result<Shop>>;

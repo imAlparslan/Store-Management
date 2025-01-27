@@ -24,7 +24,6 @@ internal sealed class AddGroupToProductCommandHandler(IProductRepository product
 
         if (isSuccess)
         {
-            product.AddDomainEvent(new NewGroupAddedToProductDomainEvent(request.GroupId, request.ProductId));
             return await productRepository.UpdateAsync(product, cancellationToken);
         }
 

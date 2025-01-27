@@ -12,7 +12,8 @@ public static class ShopsRequestFactory
         return new CreateShopRequest(
                 shopDescription,
                 city,
-                street);
+                street,
+                []);
     }
 
     public static UpdateShopRequest UpdateShopCreateRequest(

@@ -3,8 +3,9 @@
 @base = https://{{hostname}}:{{port}}/api
 
 
-@productId = 73ea84b7-60ef-4e7d-98be-09daaa18a7a5
-@productGroupId = 6651d453-d2dd-4f44-95fb-d798b69a5367
+@productId = 8c72dc4a-9c3d-4ca8-acfb-897dc700aafa
+@productGroupId = 4b237115-9de7-4bd0-a933-e9403cd289d8
+
 
 
 POST {{base}}/products/{{productId}}/remove-group

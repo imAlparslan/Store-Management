@@ -9,7 +9,7 @@ internal class ProductFactory
     {
         return new Product(new ProductName("product name"),
             new ProductCode("product code"),
-            new ProductDefinition("product definition"));
+            new ProductDefinition("product definition"), []);
     }
 
     public static Product CreateRandom()
@@ -18,17 +18,12 @@ internal class ProductFactory
         var code = ProductCodeFactory.CreateRandom();
         var definition = ProductDefinitionFactory.CreateRandom();
 
-        return new Product(name, code, definition, Guid.NewGuid());
+        return new Product(name, code, definition, [],Guid.NewGuid());
     }
 
     public static Product CreateFromCreateCommand(CreateProductCommand command)
     {
-        return new Product(new(command.ProductName), new(command.ProductCode), new(command.ProductDefinition));
-    }
-
-    public static Product CreateFromCreateCommand(UpdateProductCommand command)
-    {
-        return new Product(new(command.ProductName), new(command.ProductCode), new(command.ProductDefinition), command.Id);
+        return new Product(new(command.ProductName), new(command.ProductCode), new(command.ProductDefinition),command.GroupIds);
     }
 
 }

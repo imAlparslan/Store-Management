@@ -9,6 +9,7 @@ public static class ProductFactory
     {
         return new Product(new ProductName("product name"),
                            new ProductCode("product code"),
-                           new ProductDefinition("product definition"));
+                           new ProductDefinition("product definition"),
+                           []);
     }
 }

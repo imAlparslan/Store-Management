@@ -1,4 +1,5 @@
 ﻿using CatalogManagement.Domain.Common.Models;
+using CatalogManagement.Domain.ProductAggregate.Events;
 using CatalogManagement.Domain.ProductAggregate.ValueObjects;
 namespace CatalogManagement.Domain.ProductAggregate;
 public sealed class Product : AggregateRoot<ProductId>
@@ -10,21 +11,35 @@ public sealed class Product : AggregateRoot<ProductId>
     private readonly List<Guid> _groupIds = new();
     public IReadOnlyList<Guid> GroupIds => _groupIds.ToList();
 
-    public Product(ProductName name,
+    internal Product(ProductName name,
                    ProductCode code,
                    ProductDefinition definition,
+                   IReadOnlyList<Guid> groupIds,
                    ProductId? id = null)
                    : base(id ?? ProductId.CreateUnique())
     {
         Name = name;
         Code = code;
         Definition = definition;
+        _groupIds = groupIds.ToList();
+    }
+
+    public static Product Create(ProductName name,
+                   ProductCode code,
+                   ProductDefinition definition,
+                   IReadOnlyList<Guid> groupIds)
+    {
+
+        var product = new Product(name, code, definition, groupIds);
+        product.AddDomainEvent(new ProductCreatedDomainEvent(product));
+        return product;
     }
 
     public bool AddGroup(Guid groupId)
     {
         if (!HasGroup(groupId))
         {
+            AddDomainEvent(new NewGroupAddedToProductDomainEvent(groupId, Id));
             _groupIds.Add(groupId);
             return true;
         }
@@ -34,6 +49,7 @@ public sealed class Product : AggregateRoot<ProductId>
     {
         if (HasGroup(groupId))
         {
+            AddDomainEvent(new GroupRemovedFromProductDomainEvent(groupId, Id));
             return _groupIds.Remove(groupId);
         }
         return false;

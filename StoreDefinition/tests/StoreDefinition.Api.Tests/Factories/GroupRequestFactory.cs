@@ -9,9 +9,4 @@ public static class GroupRequestFactory
     public static UpdateGroupRequest CreateGroupUpdateRequest(string? groupName = "Group Name", string? groupDescription = "Group Description")
        => new UpdateGroupRequest(groupName, groupDescription);
 
-    public static AddShopToGroupRequest CreateAddShopToGroupRequest(Guid shopId)
-        => new AddShopToGroupRequest(shopId);
-
-    public static RemoveShopFromGroupRequest CreateRemoveShopFromGroupRequest(Guid shopId)
-        => new RemoveShopFromGroupRequest(shopId);
 }

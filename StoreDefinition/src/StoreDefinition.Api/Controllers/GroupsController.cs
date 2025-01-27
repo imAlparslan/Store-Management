@@ -62,19 +62,4 @@ public class GroupsController(IMediator mediator) : BaseApiController
             groups => Ok(groups.Select(g => g.MapToResponse())),
             Problem);
     }
-    [HttpPost(GroupsEndpoints.AddShopToGroup)]
-    public async Task<IActionResult> AddShopToGroup(Guid id, [FromBody] AddShopToGroupRequest request)
-    {
-        var command = request.MapToCommand(id);
-        var result = await mediator.Send(command);
-        return result.Match(group => Ok(group.MapToResponse()), Problem);
-    }
-
-    [HttpPost(GroupsEndpoints.RemoveShopFromGroup)]
-    public async Task<IActionResult> RemoveShopFromGroup(Guid id, [FromBody] RemoveShopFromGroupRequest request)
-    {
-        var command = request.MapToCommand(id);
-        var result = await mediator.Send(command);
-        return result.Match(group => Ok(group.MapToResponse()), Problem);
-    }
 }

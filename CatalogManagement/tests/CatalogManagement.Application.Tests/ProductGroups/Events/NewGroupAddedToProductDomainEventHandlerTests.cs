@@ -11,7 +11,7 @@ public class NewGroupAddedToProductDomainEventHandlerTests
         var productGroupRepository = Substitute.For<IProductGroupRepository>();
         var productGroup = ProductGroupFactory.CreateRandom();
         productGroupRepository.GetByIdAsync(productGroup.Id, default).ReturnsForAnyArgs(productGroup);
-        var handler = new NewGroupAddedToProductDomainEventHandler(productGroupRepository);
+        var handler = new GroupAddedToProductDomainEventHandler(productGroupRepository);
         var notification = new NewGroupAddedToProductDomainEvent(productGroup.Id, productId);
 
         await handler.Handle(notification, CancellationToken.None);

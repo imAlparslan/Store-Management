@@ -1,5 +1,4 @@
 ﻿using CatalogManagement.Application.Products.Commands.RemoveGroupFromProduct;
-using CatalogManagement.Domain.ProductAggregate;
 using CatalogManagement.Domain.ProductAggregate.Events;
 
 namespace CatalogManagement.Application.Tests.Products.Handlers;
@@ -20,8 +19,8 @@ public class RemoveGroupFromProductCommandHandlerTests
         var result = await handler.Handle(command, default);
 
         result.Value!.GroupIds.Should().NotContain(group.Id);
-        result.Value.GetDomainEvents().Should().HaveCount(1);
-        result.Value.GetDomainEvents().Should().ContainItemsAssignableTo<GroupRemovedFromProductDomainEvent>();
+        result.Value.GetDomainEvents().Should()
+            .ContainEquivalentOf(new GroupRemovedFromProductDomainEvent(group.Id, product.Id));
     }
 
     [Fact]
