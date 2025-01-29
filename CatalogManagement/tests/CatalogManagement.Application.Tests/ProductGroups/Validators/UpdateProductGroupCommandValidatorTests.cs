@@ -3,11 +3,16 @@
 namespace CatalogManagement.Application.Tests.ProductGroups.Validators;
 public class UpdateProductGroupCommandValidatorTests
 {
+    private readonly UpdateProductGroupCommandValidator validator;
+    public UpdateProductGroupCommandValidatorTests()
+    {
+        validator = new();
+    }
+
     [Fact]
     public void Validator_ReturnsValidResult_WhenDataValid()
     {
         var command = UpdateProductGroupCommandFactory.CreateValid();
-        var validator = new UpdateProductGroupCommandValidator();
 
         var result = validator.Validate(command);
 
@@ -26,7 +31,6 @@ public class UpdateProductGroupCommandValidatorTests
     public void Validator_ReturnsValidationError_WhenDataInvalid(Guid id, string group, string productGroupDescription)
     {
         var command = UpdateProductGroupCommandFactory.CreateCustom(id, group, productGroupDescription);
-        var validator = new UpdateProductGroupCommandValidator();
 
         var result = validator.Validate(command);
 
@@ -39,16 +43,11 @@ public class UpdateProductGroupCommandValidatorTests
         }
     }
 
-
-
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
+    [ClassData(typeof(InvalidStringData))]
     public void Validator_ReturnsValidationError_WhenProductGroupNameInvalid(string productGroupName)
     {
         var command = UpdateProductGroupCommandFactory.CreateWithName(productGroupName);
-        var validator = new UpdateProductGroupCommandValidator();
 
         var result = validator.Validate(command);
 
@@ -61,13 +60,11 @@ public class UpdateProductGroupCommandValidatorTests
         }
     }
 
-
     [Theory]
-    [MemberData(nameof(InvalidGuidData))]
+    [ClassData(typeof(InvalidGuidData))]
     public void Validator_ReturnsValidationError_WhenProductIdInvalid(Guid productGroupId)
     {
         var command = UpdateProductGroupCommandFactory.CreateWithId(productGroupId);
-        var validator = new UpdateProductGroupCommandValidator();
 
         var result = validator.Validate(command);
 
@@ -81,13 +78,10 @@ public class UpdateProductGroupCommandValidatorTests
     }
 
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
+    [ClassData(typeof(InvalidStringData))]
     public void Validator_ReturnsValidationError_WhenProductGroupDescriptionInvalid(string productGroupDescription)
     {
         var command = UpdateProductGroupCommandFactory.CreateWithDefinition(productGroupDescription);
-        var validator = new UpdateProductGroupCommandValidator();
 
         var result = validator.Validate(command);
 
@@ -99,9 +93,4 @@ public class UpdateProductGroupCommandValidatorTests
                 .Contain([nameof(command.Description)]);
         }
     }
-    public static IEnumerable<object[]> InvalidGuidData => new List<object[]> {
-        new object[] { null! },
-        new object[] { Guid.Empty },
-        new object[] { default(Guid) }
-    };
 }

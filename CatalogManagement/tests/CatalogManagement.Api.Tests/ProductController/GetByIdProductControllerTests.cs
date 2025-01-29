@@ -1,30 +1,24 @@
-﻿using CatalogManagement.Api.Tests.Fixtures;
+﻿using CatalogManagement.Api.Tests.Common;
+using CatalogManagement.Api.Tests.Fixtures;
 using CatalogManagement.Contracts.Products;
 
 namespace CatalogManagement.Api.Tests.ProductController;
 
 [Collection(nameof(ProductControllerCollectionFixture))]
-public class GetByIdProductControllerTests
+public class GetByIdProductControllerTests : ControllerTestBase
 {
-    private readonly HttpClient _client;
-    private readonly CatalogApiFactory _catalogApiFactory;
-
-    public GetByIdProductControllerTests(CatalogApiFactory catalogApiFactory)
+    public GetByIdProductControllerTests(CatalogApiFactory catalogApiFactory) : base(catalogApiFactory)
     {
-        _client = catalogApiFactory.CreateClient();
-        _catalogApiFactory = catalogApiFactory;
-
-        ResetDB();
     }
 
     [Fact]
     public async Task GetById_ReturnsProduct_WhenProductExists()
     {
         CreateProductRequest request = CreateProductRequestFactory.CreateValid();
-        var response = await _client.PostAsJsonAsync("http://localhost/api/products", request);
+        var response = await _client.PostAsJsonAsync($"{ProductBaseAddress}", request);
         ProductResponse? createdProduct = await response.Content.ReadFromJsonAsync<ProductResponse>();
 
-        var getByIdResponse = await _client.GetAsync($"http://localhost/api/products/{createdProduct!.Id}");
+        var getByIdResponse = await _client.GetAsync($"{ProductBaseAddress}/{createdProduct!.Id}");
 
         using (AssertionScope scope = new())
         {
@@ -40,7 +34,7 @@ public class GetByIdProductControllerTests
     {
         var id = Guid.NewGuid();
 
-        var getByIdResponse = await _client.GetAsync($"http://localhost/api/products/{id}");
+        var getByIdResponse = await _client.GetAsync($"{ProductBaseAddress}/{id}");
 
         getByIdResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
 
@@ -50,7 +44,7 @@ public class GetByIdProductControllerTests
     [InlineData("00000000-0000-0000-0000-000000000000")]
     public async Task GetById_ReturnsValidationError_WhenIdInvalid(Guid id)
     {
-        var result = await _client.GetAsync($"http://localhost/api/products/{id}");
+        var result = await _client.GetAsync($"{ProductBaseAddress}/{id}");
         using (AssertionScope scope = new())
         {
             result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -59,12 +53,5 @@ public class GetByIdProductControllerTests
             error!.Title.Should().Be("One or more validation errors occurred.");
             error.Errors.Count.Should().Be(1);
         }
-    }
-    private void ResetDB()
-    {
-        var scope = _catalogApiFactory.Services.CreateAsyncScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
-        dbContext.Database.EnsureDeleted();
-        dbContext.Database.EnsureCreated();
     }
 }

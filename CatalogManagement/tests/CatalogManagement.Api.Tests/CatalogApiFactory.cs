@@ -15,6 +15,7 @@ public class CatalogApiFactory
     : WebApplicationFactory<IApiAssemblyMarker>, IAsyncLifetime
 {
     private readonly MsSqlContainer _mssqlContainer = null!;
+    public HttpClient Client { get; private set; } = default!;
 
     public CatalogApiFactory()
     {
@@ -32,9 +33,9 @@ public class CatalogApiFactory
         builder.ConfigureTestServices(
             services =>
             {
-                services.RemoveAll(typeof(DbContextOptions<CatalogDbContext>));
-                services.RemoveAll(typeof(CatalogDbContext));
-                services.RemoveAll(typeof(IDomainEventPublisherService));
+                services.RemoveAll<DbContextOptions<CatalogDbContext>>();
+                services.RemoveAll<CatalogDbContext>();
+                services.RemoveAll<IDomainEventPublisherService>();
 
                 var connectionStringBuilder = new SqlConnectionStringBuilder()
                 {
@@ -52,10 +53,17 @@ public class CatalogApiFactory
             });
 
     }
-
+    public async Task ResetDb()
+    {
+        var scope = Services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
+        await dbContext.Database.EnsureDeletedAsync();
+        await dbContext.Database.EnsureCreatedAsync();
+    }
     public async Task InitializeAsync()
     {
         await _mssqlContainer.StartAsync();
+        Client = CreateClient();
     }
 
     async Task IAsyncLifetime.DisposeAsync()

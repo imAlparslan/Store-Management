@@ -1,22 +1,16 @@
-﻿using CatalogManagement.Api.Tests.Fixtures;
+﻿using CatalogManagement.Api.Tests.Common;
+using CatalogManagement.Api.Tests.Fixtures;
 using CatalogManagement.Contracts.ProductGroups;
 using CatalogManagement.Contracts.Products;
 
 namespace CatalogManagement.Api.Tests.ProductController;
 
 [Collection(nameof(ProductControllerCollectionFixture))]
-public class AddGroupToProductControllerTests
+public class AddGroupToProductControllerTests : ControllerTestBase
 {
-    private readonly HttpClient _client;
-    private readonly CatalogApiFactory _catalogApiFactory;
 
-    public AddGroupToProductControllerTests(CatalogApiFactory catalogApiFactory)
+    public AddGroupToProductControllerTests(CatalogApiFactory catalogApiFactory) : base(catalogApiFactory)
     {
-        _client = catalogApiFactory.CreateClient();
-        _catalogApiFactory = catalogApiFactory;
-
-        ResetDB();
-
     }
 
     [Fact]
@@ -26,7 +20,7 @@ public class AddGroupToProductControllerTests
         var insertedProductGroup = await InsertProductGroup();
         var addGroupRequest = new AddGroupToProductRequest(insertedProductGroup!.Id);
 
-        var response = await _client.PostAsJsonAsync($"http://localhost/api/products/{insertedProduct!.Id}/add-group", addGroupRequest);
+        var response = await _client.PostAsJsonAsync($"{ProductBaseAddress}/{insertedProduct!.Id}/add-group", addGroupRequest);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.Should().NotBeNull();
@@ -42,9 +36,9 @@ public class AddGroupToProductControllerTests
         var insertedProduct = await InsertProduct();
         var insertedProductGroup = await InsertProductGroup();
         var addGroupRequest = new AddGroupToProductRequest(insertedProductGroup!.Id);
-        var response = await _client.PostAsJsonAsync($"http://localhost/api/products/{insertedProduct!.Id}/add-group", addGroupRequest);
+        var response = await _client.PostAsJsonAsync($"{ProductBaseAddress}/{insertedProduct!.Id}/add-group", addGroupRequest);
 
-        var productGroupByIdResponse = await _client.GetAsync($"http://localhost/api/product-groups/{insertedProductGroup.Id}");
+        var productGroupByIdResponse = await _client.GetAsync($"{ProductGroupBaseAddress}/{insertedProductGroup.Id}");
 
         var productGroup = await productGroupByIdResponse.Content.ReadFromJsonAsync<ProductGroupResponse>();
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -56,7 +50,7 @@ public class AddGroupToProductControllerTests
     [InlineData("00000000-0000-0000-0000-000000000000")]
     public async Task AddGroup_ReturnsBadRequest_WhenProductIdInvalid(Guid invalidProductId)
     {
-        var response = await _client.PostAsJsonAsync($"http://localhost/api/products/{invalidProductId}/add-group", new AddGroupToProductRequest(Guid.NewGuid()));
+        var response = await _client.PostAsJsonAsync($"{ProductBaseAddress}/{invalidProductId}/add-group", new AddGroupToProductRequest(Guid.NewGuid()));
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         var errors = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
@@ -69,7 +63,7 @@ public class AddGroupToProductControllerTests
     [InlineData("00000000-0000-0000-0000-000000000000")]
     public async Task AddGroup_ReturnsBadRequest_WhenProductGroupIdInvalid(Guid invalidProductGroupId)
     {
-        var response = await _client.PostAsJsonAsync($"http://localhost/api/products/{Guid.NewGuid()}/add-group", new AddGroupToProductRequest(invalidProductGroupId));
+        var response = await _client.PostAsJsonAsync($"{ProductBaseAddress}/{Guid.NewGuid()}/add-group", new AddGroupToProductRequest(invalidProductGroupId));
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         var errors = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
@@ -82,7 +76,7 @@ public class AddGroupToProductControllerTests
     [InlineData("00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000000")]
     public async Task AddGroup_ReturnsBadRequest_WhenDataInvalid(Guid invalidProductId, Guid invalidProductGroupId)
     {
-        var response = await _client.PostAsJsonAsync($"http://localhost/api/products/{invalidProductId}/add-group", new AddGroupToProductRequest(invalidProductGroupId));
+        var response = await _client.PostAsJsonAsync($"{ProductBaseAddress}/{invalidProductId}/add-group", new AddGroupToProductRequest(invalidProductGroupId));
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         var errors = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
@@ -98,7 +92,7 @@ public class AddGroupToProductControllerTests
         var insertedProductGroup = await InsertProductGroup();
         var addGroupRequest = new AddGroupToProductRequest(insertedProductGroup!.Id);
 
-        var response = await _client.PostAsJsonAsync($"http://localhost/api/products/{Guid.NewGuid()}/add-group", addGroupRequest);
+        var response = await _client.PostAsJsonAsync($"{ProductBaseAddress}/{Guid.NewGuid()}/add-group", addGroupRequest);
 
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
@@ -107,7 +101,7 @@ public class AddGroupToProductControllerTests
     {
         CreateProductRequest request = CreateProductRequestFactory.CreateValid();
 
-        var response = await _client.PostAsJsonAsync("http://localhost/api/products", request);
+        var response = await _client.PostAsJsonAsync($"{ProductBaseAddress}", request);
 
         return await response.Content.ReadFromJsonAsync<ProductResponse>();
 
@@ -116,15 +110,7 @@ public class AddGroupToProductControllerTests
     {
         CreateProductGroupRequest request = CreateProductGroupRequestFactory.CreateValid();
 
-        HttpResponseMessage response = await _client.PostAsJsonAsync("http://localhost/api/product-groups", request);
+        HttpResponseMessage response = await _client.PostAsJsonAsync($"{ProductGroupBaseAddress}", request);
         return await response.Content.ReadFromJsonAsync<ProductGroupResponse>();
-
-    }
-    private void ResetDB()
-    {
-        var scope = _catalogApiFactory.Services.CreateAsyncScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
-        dbContext.Database.EnsureDeleted();
-        dbContext.Database.EnsureCreated();
     }
 }

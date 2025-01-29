@@ -1,28 +1,33 @@
 ﻿using CatalogManagement.Application.Products.Commands.AddGroup;
 
 namespace CatalogManagement.Application.Tests.Products.Validators;
+
 public class AddGroupToProductCommandValidatorTests
 {
+    private readonly AddGroupToProductCommandValidator validator;
+
+    public AddGroupToProductCommandValidatorTests()
+    {
+        validator = new AddGroupToProductCommandValidator();
+    }
 
     [Fact]
-    public async Task Validator_ReturnsValidResult_WhenDataValid()
+    public void Validator_ReturnsValidResult_WhenDataValid()
     {
         var command = new AddGroupToProductCommand(Guid.NewGuid(), Guid.NewGuid());
-        var validator = new AddGroupToProductCommandValidator();
 
-        var result = await validator.ValidateAsync(command);
+        var result = validator.Validate(command);
 
         result.IsValid.Should().BeTrue();
     }
 
     [Theory]
-    [MemberData(nameof(InvalidGuidData))]
-    public async Task Validator_ReturnsValidationProblem_WhenProductGroupIdInvalid(Guid invalidProductGroupId)
+    [ClassData(typeof(InvalidGuidData))]
+    public void Validator_ReturnsValidationProblem_WhenProductGroupIdInvalid(Guid invalidProductGroupId)
     {
         var command = new AddGroupToProductCommand(Guid.NewGuid(), invalidProductGroupId);
-        var validator = new AddGroupToProductCommandValidator();
 
-        var result = await validator.ValidateAsync(command, CancellationToken.None);
+        var result = validator.Validate(command);
 
         result.IsValid.Should().BeFalse();
         result.Errors.Count.Should().Be(1);
@@ -31,13 +36,12 @@ public class AddGroupToProductCommandValidatorTests
     }
 
     [Theory]
-    [MemberData(nameof(InvalidGuidData))]
-    public async Task Validator_ReturnsValidationProblem_WhenProductIdInvalid(Guid invalidProductId)
+    [ClassData(typeof(InvalidGuidData))]
+    public void Validator_ReturnsValidationProblem_WhenProductIdInvalid(Guid invalidProductId)
     {
         var command = new AddGroupToProductCommand(invalidProductId, Guid.NewGuid());
-        var validator = new AddGroupToProductCommandValidator();
 
-        var result = await validator.ValidateAsync(command, CancellationToken.None);
+        var result = validator.Validate(command);
 
         result.IsValid.Should().BeFalse();
         result.Errors.Count.Should().Be(1);
@@ -46,12 +50,11 @@ public class AddGroupToProductCommandValidatorTests
     }
 
     [Fact]
-    public async Task Validator_ReturnsValidationProblem_WhenDataInvalid()
+    public void Validator_ReturnsValidationProblem_WhenDataInvalid()
     {
         var command = new AddGroupToProductCommand(Guid.Empty, Guid.Empty);
-        var validator = new AddGroupToProductCommandValidator();
 
-        var result = await validator.ValidateAsync(command, CancellationToken.None);
+        var result = validator.Validate(command);
 
         result.IsValid.Should().BeFalse();
         result.Errors.Count.Should().Be(2);
@@ -59,9 +62,4 @@ public class AddGroupToProductCommandValidatorTests
             .Should().Contain([nameof(command.ProductId), nameof(command.GroupId)]);
     }
 
-    public static IEnumerable<object[]> InvalidGuidData => new List<object[]> {
-        new object[] { null! },
-        new object[] { Guid.Empty },
-        new object[] { default(Guid) }
-    };
 }

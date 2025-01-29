@@ -1,19 +1,14 @@
-﻿using CatalogManagement.Api.Tests.Fixtures;
+﻿using CatalogManagement.Api.Tests.Common;
+using CatalogManagement.Api.Tests.Fixtures;
 using CatalogManagement.Contracts.ProductGroups;
 
 namespace CatalogManagement.Api.Tests.ProductGroupController;
 
 [Collection(nameof(ProductGroupControllerCollectionFixture))]
-public class CreateProductGroupControllerTests
+public class CreateProductGroupControllerTests : ControllerTestBase
 {
-    private readonly HttpClient _client;
-    private readonly CatalogApiFactory _catalogApiFactory;
-    public CreateProductGroupControllerTests(CatalogApiFactory catalogApiFactory)
+    public CreateProductGroupControllerTests(CatalogApiFactory catalogApiFactory) : base(catalogApiFactory)
     {
-        _client = catalogApiFactory.CreateClient();
-        _catalogApiFactory = catalogApiFactory;
-
-        ResetDB();
     }
 
     [Fact]
@@ -21,26 +16,26 @@ public class CreateProductGroupControllerTests
     {
         CreateProductGroupRequest request = CreateProductGroupRequestFactory.CreateValid();
 
-        var response = await _client.PostAsJsonAsync("http://localhost/api/product-groups", request);
+        var response = await _client.PostAsJsonAsync($"{ProductGroupBaseAddress}", request);
 
         using (AssertionScope scope = new())
         {
             response.StatusCode.Should().Be(HttpStatusCode.Created);
             ProductGroupResponse? productGroupResponse = await response.Content.ReadFromJsonAsync<ProductGroupResponse>();
             productGroupResponse.Should().NotBeNull();
-            response.Headers.Location!.ToString().Should().Be($"http://localhost/api/product-groups/{productGroupResponse!.Id}");
+            response.Headers.Location!.ToString().Should().Be($"{ProductGroupBaseAddress}/{productGroupResponse!.Id}");
             productGroupResponse.Should().NotBeNull();
             productGroupResponse.Should().BeEquivalentTo(request);
         }
     }
 
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [MemberData(nameof(InvalidStrings))]
     public async Task Create_ReturnsValidationError_WhenProdoctGroupNameNullOrEmpty(string productGroupName)
     {
         var request = CreateProductGroupRequestFactory.CreateWithName(productGroupName);
 
-        var response = await _client.PostAsJsonAsync("http://localhost/api/product-groups", request);
+        var response = await _client.PostAsJsonAsync($"{ProductGroupBaseAddress}", request);
 
         using (AssertionScope scope = new())
         {
@@ -54,12 +49,12 @@ public class CreateProductGroupControllerTests
     }
 
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [MemberData(nameof(InvalidStrings))]
     public async Task Create_ReturnsValidationError_WhenProductGroupDescriptionNullOrEmpty(string productGroupDescription)
     {
         var request = CreateProductGroupRequestFactory.CreateWithDescription(productGroupDescription);
 
-        var response = await _client.PostAsJsonAsync("http://localhost/api/product-groups", request);
+        var response = await _client.PostAsJsonAsync($"{ProductGroupBaseAddress}", request);
 
         using (AssertionScope scope = new())
         {
@@ -77,7 +72,7 @@ public class CreateProductGroupControllerTests
     {
         var request = CreateProductGroupRequestFactory.CreateCustom("", "");
 
-        var response = await _client.PostAsJsonAsync("http://localhost/api/product-groups", request);
+        var response = await _client.PostAsJsonAsync($"{ProductGroupBaseAddress}", request);
 
         using (AssertionScope scope = new())
         {
@@ -89,13 +84,4 @@ public class CreateProductGroupControllerTests
             error.Errors.Count.Should().Be(2);
         }
     }
-    private void ResetDB()
-    {
-        var scope = _catalogApiFactory.Services.CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
-        db.Database.EnsureDeleted();
-        db.Database.EnsureCreated();
-    }
-    public static readonly TheoryData<string> invalidStrings = ["", " ", null];
-
 }

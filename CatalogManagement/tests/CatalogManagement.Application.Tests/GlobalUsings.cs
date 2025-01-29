@@ -4,6 +4,7 @@ global using CatalogManagement.Application.Products;
 global using CatalogManagement.Application.Tests.Common.Factories.CommandFactories;
 global using CatalogManagement.Application.Tests.Common.Factories.ProductFactories;
 global using CatalogManagement.Application.Tests.Common.Factories.ProductGroupFactories;
+global using CatalogManagement.Application.Tests.Common.InvalidData;
 global using CatalogManagement.Domain.ProductAggregate.Errors;
 global using CatalogManagement.Domain.ProductAggregate.Exceptions;
 global using CatalogManagement.Domain.ProductAggregate.ValueObjects;

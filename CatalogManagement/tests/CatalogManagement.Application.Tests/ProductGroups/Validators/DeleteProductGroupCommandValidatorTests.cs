@@ -3,11 +3,16 @@
 namespace CatalogManagement.Application.Tests.ProductGroups.Validators;
 public class DeleteProductGroupCommandValidatorTests
 {
+    private readonly DeleteProductGroupByIdCommandValidator validator;
+    public DeleteProductGroupCommandValidatorTests()
+    {
+        validator = new();
+    }
+
     [Fact]
     public void Validator_ReturnsSuccess_WhenIdValid()
     {
         var command = new DeleteProductGroupByIdCommand(Guid.NewGuid());
-        var validator = new DeleteProductGroupByIdCommandValidator();
 
         var result = validator.Validate(command);
 
@@ -19,11 +24,10 @@ public class DeleteProductGroupCommandValidatorTests
     }
 
     [Theory]
-    [MemberData(nameof(InvalidGuidData))]
+    [ClassData(typeof(InvalidGuidData))]
     public void Validator_ReturnsValidationError_WhenProductIdInvalid(Guid id)
     {
         var command = new DeleteProductGroupByIdCommand(id);
-        var validator = new DeleteProductGroupByIdCommandValidator();
 
         var result = validator.Validate(command);
 
@@ -36,9 +40,4 @@ public class DeleteProductGroupCommandValidatorTests
                 .ContainSingle(nameof(command.Id));
         }
     }
-    public static IEnumerable<object[]> InvalidGuidData => new List<object[]> {
-        new object[] { null! },
-        new object[] { Guid.Empty },
-        new object[] { default(Guid) }
-    };
 }

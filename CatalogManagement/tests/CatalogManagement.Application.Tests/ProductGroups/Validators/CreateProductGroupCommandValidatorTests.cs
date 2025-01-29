@@ -3,11 +3,15 @@
 namespace CatalogManagement.Application.Tests.ProductGroups.Validators;
 public class CreateProductGroupCommandValidatorTests
 {
+    private readonly CreateProductGroupCommandValidator validator;
+    public CreateProductGroupCommandValidatorTests()
+    {
+        validator = new();
+    }
     [Fact]
     public void Validator_ReturnsValidResult_WhenDataValid()
     {
         var command = CreateProductGroupCommandFactory.CreateValid();
-        var validator = new CreateProductGroupCommandValidator();
 
         var result = validator.Validate(command);
 
@@ -25,7 +29,6 @@ public class CreateProductGroupCommandValidatorTests
     public void Validator_ReturnsInvalidResult_WhenDataInvalid(string productName, string productGroupDescription)
     {
         var command = CreateProductGroupCommandFactory.CreateCustom(productName, productGroupDescription);
-        var validator = new CreateProductGroupCommandValidator();
 
         var result = validator.Validate(command);
 
@@ -40,13 +43,10 @@ public class CreateProductGroupCommandValidatorTests
 
 
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
+    [ClassData(typeof(InvalidStringData))]
     public void Validator_ReturnsInvalidResult_WhenProductNameInvalid(string productGroup)
     {
         var command = CreateProductGroupCommandFactory.CreateWithName(productGroup);
-        var validator = new CreateProductGroupCommandValidator();
 
         var result = validator.Validate(command);
 
@@ -60,13 +60,10 @@ public class CreateProductGroupCommandValidatorTests
     }
 
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
+    [ClassData(typeof(InvalidStringData))]
     public void Validator_ReturnsInvalidResult_WhenProductGroupDescriptionInvalid(string productGroupDescription)
     {
         var command = CreateProductGroupCommandFactory.CreateWithDefinition(productGroupDescription);
-        var validator = new CreateProductGroupCommandValidator();
 
         var result = validator.Validate(command);
 

@@ -1,14 +1,20 @@
 ﻿namespace CatalogManagement.Application.Tests.Products.Handlers;
 public class GetProductGroupsByIdQueryHandlerTests
 {
+    private readonly IProductRepository productRepository;
+    private readonly GetProductByIdQueryHandler handler;
+    public GetProductGroupsByIdQueryHandlerTests()
+    {
+        productRepository = Substitute.For<IProductRepository>();
+        handler = new GetProductByIdQueryHandler(productRepository);
+    }
+
     [Fact]
     public async Task Handler_ReturnsProduct_WhenIdExists()
     {
         var product = ProductFactory.CreateDefault();
         var command = new GetProductByIdQuery(product.Id);
-        var productRepository = Substitute.For<IProductRepository>();
         productRepository.GetByIdAsync(Arg.Any<ProductId>()).Returns(product);
-        var handler = new GetProductByIdQueryHandler(productRepository);
 
         var result = await handler.Handle(command, default);
 
@@ -26,9 +32,7 @@ public class GetProductGroupsByIdQueryHandlerTests
     {
         var product = ProductFactory.CreateDefault();
         var command = new GetProductByIdQuery(product.Id);
-        var productRepository = Substitute.For<IProductRepository>();
         productRepository.GetByIdAsync(Arg.Any<ProductId>()).ReturnsNull();
-        var handler = new GetProductByIdQueryHandler(productRepository);
 
         var result = await handler.Handle(command, default);
 

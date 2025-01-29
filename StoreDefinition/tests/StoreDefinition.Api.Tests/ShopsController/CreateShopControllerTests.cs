@@ -11,7 +11,7 @@ namespace StoreDefinition.Api.Tests.ShopsController;
 
 [Collection(nameof(ShopsControllerCollectionFixture))]
 public class CreateShopControllerTests(StoreDefinitionApiFactory apiFactory)
-    : ControllerTestBase(apiFactory), IAsyncLifetime
+    : ControllerTestBase(apiFactory)
 {
     [Fact]
     public async Task Create_ReturnsCreatedProduct_WhenRequestValid()

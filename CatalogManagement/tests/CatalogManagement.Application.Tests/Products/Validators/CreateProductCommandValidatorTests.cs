@@ -3,11 +3,16 @@
 namespace CatalogManagement.Application.Tests.Products.Validators;
 public class CreateProductCommandValidatorTests
 {
+    private readonly CreateProductCommandValidator validator;
+    public CreateProductCommandValidatorTests()
+    {
+        validator = new();
+    }
+
     [Fact]
     public void Validator_ReturnsValidResult_WhenDataValid()
     {
         var command = CreateProductCommandFactory.CreateValid();
-        var validator = new CreateProductCommandValidator();
 
         var result = validator.Validate(command);
 
@@ -25,7 +30,6 @@ public class CreateProductCommandValidatorTests
     public void Validator_ReturnsInvalidResult_WhenDataInvalid(string productName, string productCode, string productDefinition)
     {
         var command = CreateProductCommandFactory.CreateCustom(productName, productCode, productDefinition);
-        var validator = new CreateProductCommandValidator();
 
         var result = validator.Validate(command);
 
@@ -40,13 +44,10 @@ public class CreateProductCommandValidatorTests
 
 
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
+    [ClassData(typeof(InvalidStringData))]
     public void Validator_ReturnsInvalidResult_WhenProductNameInvalid(string productName)
     {
         var command = CreateProductCommandFactory.CreateWithName(productName);
-        var validator = new CreateProductCommandValidator();
 
         var result = validator.Validate(command);
 
@@ -59,13 +60,10 @@ public class CreateProductCommandValidatorTests
         }
     }
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
+    [ClassData(typeof(InvalidStringData))]
     public void Validator_ReturnsInvalidResult_WhenProductCodeInvalid(string productCode)
     {
         var command = CreateProductCommandFactory.CreateWithCode(productCode);
-        var validator = new CreateProductCommandValidator();
 
         var result = validator.Validate(command);
 
@@ -79,13 +77,10 @@ public class CreateProductCommandValidatorTests
     }
 
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
+    [ClassData(typeof(InvalidStringData))]
     public void Validator_ReturnsInvalidResult_WhenProductDefinitionInvalid(string productDefinition)
     {
         var command = CreateProductCommandFactory.CreateWithDefinition(productDefinition);
-        var validator = new CreateProductCommandValidator();
 
         var result = validator.Validate(command);
 

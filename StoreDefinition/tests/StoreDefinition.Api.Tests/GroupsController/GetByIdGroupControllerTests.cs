@@ -2,7 +2,7 @@
 
 [Collection(nameof(GroupsControllerCollectionFixture))]
 public class GetByIdGroupControllerTests(StoreDefinitionApiFactory apiFactory)
-    : ControllerTestBase(apiFactory), IAsyncLifetime
+    : ControllerTestBase(apiFactory)
 {
     [Fact]
     public async Task GetById_ReturnsGroupResponse_WhenGroupExists()

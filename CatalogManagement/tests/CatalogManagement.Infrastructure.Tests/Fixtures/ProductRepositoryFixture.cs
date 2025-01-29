@@ -8,8 +8,8 @@ using Testcontainers.MsSql;
 namespace CatalogManagement.Infrastructure.Tests.Fixtures;
 public class ProductRepositoryFixture : IAsyncLifetime
 {
-    public IProductRepository _productRepository = null!;
-    public IUnitOfWorkManager _unitOfWorkManager = null!;
+    public IProductRepository productRepository = null!;
+    public IUnitOfWorkManager unitOfWorkManager = null!;
     private readonly MsSqlContainer _mssqlContainer = null!;
 
     private CatalogDbContext _catalogDbContext = null!;
@@ -38,18 +38,17 @@ public class ProductRepositoryFixture : IAsyncLifetime
 
         _catalogDbContext = new CatalogDbContext(connectionOption);
 
-        _unitOfWorkManager = new UnitOfWorkManager(_catalogDbContext);
-        _productRepository = new ProductRepository(_catalogDbContext, _unitOfWorkManager);
+        unitOfWorkManager = new UnitOfWorkManager(_catalogDbContext);
+        productRepository = new ProductRepository(_catalogDbContext, unitOfWorkManager);
     }
 
     public async Task DisposeAsync()
     {
         await _mssqlContainer.DisposeAsync();
     }
-
-    public void RecreateDb()
+    public async Task ResetDb()
     {
-        _catalogDbContext.Database.EnsureDeleted();
-        _catalogDbContext.Database.EnsureCreated();
+        await _catalogDbContext.Database.EnsureDeletedAsync();
+        await _catalogDbContext.Database.EnsureCreatedAsync();
     }
 }

@@ -2,7 +2,7 @@
 using CatalogManagement.Domain.ProductAggregate.Events;
 
 namespace CatalogManagement.Application.Tests.ProductGroups.Events;
-public class NewGroupAddedToProductDomainEventHandlerTests
+public class GroupAddedToProductDomainEventHandlerTests
 {
     [Fact]
     public async Task Handler_AddsProductIdToProductGroup_WhenProductGroupExists()

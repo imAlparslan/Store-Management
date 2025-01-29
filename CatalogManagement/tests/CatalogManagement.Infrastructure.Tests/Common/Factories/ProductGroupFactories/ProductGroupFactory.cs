@@ -4,16 +4,10 @@ using CatalogManagement.Domain.ProductGroupAggregate.ValueObjects;
 namespace CatalogManagement.Infrastructure.Tests.Common.Factories.ProductGroupFactories;
 internal static class ProductGroupFactory
 {
-    public static ProductGroup CreateDefault()
+    public static ProductGroup Create()
     {
-        return new ProductGroup(new ProductGroupName("product group name"),
-            new ProductGroupDescription("product description"));
-    }
-
-    public static ProductGroup CreateRandom()
-    {
-        var name = ProductGroupNameFactory.CreateRandom();
-        var description = ProductGroupDescriptionFactory.CreateRandom();
+        var name = ProductGroupNameFactory.Create();
+        var description = ProductGroupDescriptionFactory.Create();
 
         return new ProductGroup(name, description);
     }

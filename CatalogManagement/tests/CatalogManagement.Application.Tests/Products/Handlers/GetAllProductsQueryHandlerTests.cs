@@ -3,14 +3,19 @@
 namespace CatalogManagement.Application.Tests.Products.Handlers;
 public class GetAllProductGroupQueryHandlerTests
 {
+    private readonly IProductRepository productRepository;
+    private readonly GetAllProductsQueryHandler handler;
+    public GetAllProductGroupQueryHandlerTests()
+    {
+        productRepository = Substitute.For<IProductRepository>();
+        handler = new GetAllProductsQueryHandler(productRepository);
+    }
     [Fact]
     public async Task Handler_ReturnsProductList_WhenProductsExist()
     {
         var products = new List<Product>() { ProductFactory.CreateRandom(), ProductFactory.CreateRandom() };
         var command = new GetAllProductsQuery();
-        var productRepository = Substitute.For<IProductRepository>();
         productRepository.GetAllAsync().Returns(products);
-        var handler = new GetAllProductsQueryHandler(productRepository);
 
         var result = await handler.Handle(command, default);
 
@@ -26,9 +31,7 @@ public class GetAllProductGroupQueryHandlerTests
     public async Task Handler_ReturnsEmptyList_WhenNoProductsExist()
     {
         var command = new GetAllProductsQuery();
-        var productRepository = Substitute.For<IProductRepository>();
         productRepository.GetAllAsync().Returns(Enumerable.Empty<Product>());
-        var handler = new GetAllProductsQueryHandler(productRepository);
 
         var result = await handler.Handle(command, default);
 

@@ -10,7 +10,7 @@ public interface IProductGroupRepository
     Task<ProductGroup?> GetByIdAsync(ProductGroupId productGroupId, CancellationToken cancellationToken = default);
     Task<IEnumerable<ProductGroup>> GetAllAsync(CancellationToken cancellationToken = default);
     Task<bool> DeleteByIdAsync(ProductGroupId productGroupId, CancellationToken cancellationToken = default);
-    Task<IEnumerable<ProductGroup>> GetProductGroupsByContainingProductAsync(Guid productId, CancellationToken cancellationToken = default);
+    Task<IEnumerable<ProductGroup>> GetProductGroupsByProductIdAsync(Guid productId, CancellationToken cancellationToken = default);
     Task<List<ProductGroup>> GetByIdsAsync(IReadOnlyList<Guid> groupIds, CancellationToken cancellationToken);
     Task UpdateRangeAsync(List<ProductGroup> groups, CancellationToken cancellationToken);
 }

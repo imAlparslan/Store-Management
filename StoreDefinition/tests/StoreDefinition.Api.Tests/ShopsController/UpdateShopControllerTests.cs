@@ -11,7 +11,7 @@ namespace StoreDefinition.Api.Tests.ShopsController;
 [Collection(nameof(ShopsControllerCollectionFixture))]
 
 public class UpdateShopControllerTests(StoreDefinitionApiFactory apiFactory)
-    : ControllerTestBase(apiFactory), IAsyncLifetime
+    : ControllerTestBase(apiFactory)
 {
     [Fact]
     public async Task Update_ReturnsUpdatedShop_WhenRequestValid()

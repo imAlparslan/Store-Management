@@ -1,20 +1,14 @@
-﻿using CatalogManagement.Api.Tests.Fixtures;
+﻿using CatalogManagement.Api.Tests.Common;
+using CatalogManagement.Api.Tests.Fixtures;
 using CatalogManagement.Contracts.Products;
 
 namespace CatalogManagement.Api.Tests.ProductController;
 
 [Collection(nameof(ProductControllerCollectionFixture))]
-public class CreateProductControllerTests
+public class CreateProductControllerTests : ControllerTestBase
 {
-    private readonly HttpClient _client;
-    private readonly CatalogApiFactory _catalogApiFactory;
-
-    public CreateProductControllerTests(CatalogApiFactory catalogApiFactory)
+    public CreateProductControllerTests(CatalogApiFactory catalogApiFactory):base(catalogApiFactory)
     {
-        _client = catalogApiFactory.CreateClient();
-        _catalogApiFactory = catalogApiFactory;
-
-        ResetDB();
     }
 
     [Fact]
@@ -22,24 +16,24 @@ public class CreateProductControllerTests
     {
         CreateProductRequest request = CreateProductRequestFactory.CreateValid();
 
-        var response = await _client.PostAsJsonAsync("http://localhost/api/products", request);
+        var response = await _client.PostAsJsonAsync($"{ProductBaseAddress}", request);
 
         using (AssertionScope scope = new())
         {
             ProductResponse? productResponse = await response.Content.ReadFromJsonAsync<ProductResponse>();
             productResponse.Should().NotBeNull();
             response.StatusCode.Should().Be(HttpStatusCode.Created);
-            response.Headers.Location!.ToString().Should().Be($"http://localhost/api/products/{productResponse!.Id}");
+            response.Headers.Location!.ToString().Should().Be($"{ProductBaseAddress}/{productResponse!.Id}");
         }
     }
 
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [MemberData(nameof(InvalidStrings))]
     public async Task Create_ReturnsValidationError_WhenProductNameNullOrEmpty(string productName)
     {
         var request = CreateProductRequestFactory.CreateWithName(productName);
 
-        var response = await _client.PostAsJsonAsync("http://localhost/api/products", request);
+        var response = await _client.PostAsJsonAsync($"{ProductBaseAddress}", request);
 
         using (AssertionScope scope = new())
         {
@@ -53,12 +47,12 @@ public class CreateProductControllerTests
     }
 
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [MemberData(nameof(InvalidStrings))]
     public async Task Create_ReturnsValidationError_WhenProductCodeNullOrEmpty(string productCode)
     {
         var request = CreateProductRequestFactory.CreateWithCode(productCode);
 
-        var response = await _client.PostAsJsonAsync("http://localhost/api/products", request);
+        var response = await _client.PostAsJsonAsync($"{ProductBaseAddress}", request);
 
         using (AssertionScope scope = new())
         {
@@ -72,12 +66,12 @@ public class CreateProductControllerTests
     }
 
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [MemberData(nameof(InvalidStrings))]
     public async Task Create_ReturnsValidationError_WhenProductDefinitionNullOrEmpty(string productDefinition)
     {
         var request = CreateProductRequestFactory.CreateWithDefinition(productDefinition);
 
-        var response = await _client.PostAsJsonAsync("http://localhost/api/products", request);
+        var response = await _client.PostAsJsonAsync($"{ProductBaseAddress}", request);
 
         using (AssertionScope scope = new())
         {
@@ -95,7 +89,7 @@ public class CreateProductControllerTests
     {
         var request = CreateProductRequestFactory.CreateCustom("", "", "");
 
-        var response = await _client.PostAsJsonAsync("http://localhost/api/products", request);
+        var response = await _client.PostAsJsonAsync($"{ProductBaseAddress}", request);
 
         using (AssertionScope scope = new())
         {
@@ -107,13 +101,4 @@ public class CreateProductControllerTests
             error.Errors.Count.Should().Be(3);
         }
     }
-
-    private void ResetDB()
-    {
-        var scope = _catalogApiFactory.Services.CreateAsyncScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
-        dbContext.Database.EnsureDeleted();
-        dbContext.Database.EnsureCreated();
-    }
-    public static readonly TheoryData<string> invalidStrings = ["", " ", null];
 }

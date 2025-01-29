@@ -2,6 +2,7 @@
 using ArchUnitNET.xUnit;
 using CatalogManagement.Application.Common.Interfaces;
 using CatalogManagement.Architecture.Tests.Commons;
+using CatalogManagement.Architecture.Tests.Constants;
 
 namespace CatalogManagement.Architecture.Tests.ApplicationLayerRules;
 
@@ -15,7 +16,7 @@ public class CommandRules : ArchUnitBase
             .That()
             .ImplementInterface(typeof(ICommand<>))
             .Should()
-            .HaveNameEndingWith("Command")
+            .HaveNameEndingWith(ClassNameConstants.CommandSuffix)
             .WithoutRequiringPositiveResults()
             .Check(Architecture);
     }

@@ -4,7 +4,7 @@ namespace StoreDefinition.Api.Tests.ShopsController;
 
 [Collection(nameof(ShopsControllerCollectionFixture))]
 public class RemoveGroupFromShopControllerTests(StoreDefinitionApiFactory apiFactory)
-    : ControllerTestBase(apiFactory), IAsyncLifetime
+    : ControllerTestBase(apiFactory)
 {
     [Fact]
     public async Task RemoveGroupFromShop_ReturnsShopResponse_WhenGroupRemoved()

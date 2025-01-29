@@ -4,20 +4,20 @@ using CatalogManagement.Infrastructure.Tests.Fixtures;
 
 namespace CatalogManagement.Infrastructure.Tests.RepositoryTests;
 
-public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>
+public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>, IAsyncLifetime
 {
     private readonly IProductRepository _productRepository;
+    private readonly Func<Task> _dbReset;
     public ProductRepositoryTests(ProductRepositoryFixture productRepositoryFixture)
     {
-        _productRepository = productRepositoryFixture._productRepository;
-
-        productRepositoryFixture.RecreateDb();
+        _productRepository = productRepositoryFixture.productRepository;
+        _dbReset = productRepositoryFixture.ResetDb;
     }
 
     [Fact]
-    public async Task Find_By_Id_Should_Return_Correct_Product()
+    public async Task FindById_ReturnsProduct_WhenProductExists()
     {
-        var product = ProductFactory.CreateRandom();
+        var product = ProductFactory.Create();
 
         var inserted = await _productRepository.InsertAsync(product);
         var result = await _productRepository.GetByIdAsync(product.Id);
@@ -30,11 +30,11 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>
     }
 
     [Fact]
-    public async Task Delete_By_Id_Should_Delete_And_Return_True_When_Id_Correct()
+    public async Task DeleteById_ReturnsTrue_WhenProductDeleted()
     {
-        var product = ProductFactory.CreateRandom();
+        var product = ProductFactory.Create();
         _ = await _productRepository.InsertAsync(product);
-        
+
         var result = await _productRepository.DeleteByIdAsync(product.Id);
         var isExists = await _productRepository.IsExistsAsync(product.Id);
 
@@ -46,9 +46,9 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>
     }
 
     [Fact]
-    public async Task Insert_Product_Should_Return_Inserted_Product()
+    public async Task InsertProduct_ReturnsInsertedProduct_WhenProductInserted()
     {
-        var product = ProductFactory.CreateRandom();
+        var product = ProductFactory.Create();
 
         var inserted = await _productRepository.InsertAsync(product);
         var isExists = await _productRepository.IsExistsAsync(product.Id);
@@ -61,11 +61,11 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>
     }
 
     [Fact]
-    public async Task Update_Product_Name_Should_Return_Product_With_New_Name()
+    public async Task UpdateProduct_ReturnsUpdatedProduct_WhenNameUpdated()
     {
-        var product = ProductFactory.CreateRandom();
+        var product = ProductFactory.Create();
         var oldName = product.Name;
-        var newName = ProductNameFactory.CreateRandom();
+        var newName = ProductNameFactory.Create("updated name");
 
         var inserted = await _productRepository.InsertAsync(product);
         inserted.ChangeName(newName);
@@ -81,11 +81,11 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>
     }
 
     [Fact]
-    public async Task Update_Product_Code_Should_Return_Product_With_New_Code()
+    public async Task UpdateProduct_ReturnsUpdatedProduct_WhenCodeUpdated()
     {
-        var product = ProductFactory.CreateRandom();
+        var product = ProductFactory.Create();
         var oldCode = product.Code;
-        var newCode = ProductCodeFactory.CreateRandom();
+        var newCode = ProductCodeFactory.Create("updated code");
 
         var inserted = await _productRepository.InsertAsync(product);
         inserted.ChangeCode(newCode);
@@ -101,11 +101,11 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>
     }
 
     [Fact]
-    public async Task Update_Product_Definition_Should_Return_Product_With_New_Definition()
+    public async Task UpdateProduct_ReturnsUpdatedProduct_WhenDefinitionUpdated()
     {
-        var product = ProductFactory.CreateRandom();
+        var product = ProductFactory.Create();
         var oldDefinition = product.Definition;
-        var newDefinition = ProductDefinitionFactory.CreateRandom();
+        var newDefinition = ProductDefinitionFactory.Create("updated definition");
 
         var inserted = await _productRepository.InsertAsync(product);
         inserted.ChangeDefinition(newDefinition);
@@ -121,22 +121,25 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>
     }
 
     [Fact]
-    public async Task Get_All_Should_Return_Collection()
+    public async Task GetAll_ReturnsEmptyCollection_WhenNoProductExists()
     {
         var result = await _productRepository.GetAllAsync();
 
-        result.Should().BeAssignableTo(typeof(List<Product>));
+        result.Should().BeEmpty();
     }
 
     [Fact]
     public async Task GetByGroup_Returns_Collection()
     {
         var groupId = Guid.NewGuid();
-        var product = ProductFactory.CreateRandom();
+        var product = ProductFactory.Create();
         product.AddGroup(groupId);
         _ = await _productRepository.InsertAsync(product);
         var result = await _productRepository.GetByGroupAsync(groupId);
         result.Should().HaveCount(1);
     }
 
+    public async Task InitializeAsync() => await _dbReset();
+
+    public Task DisposeAsync() => Task.CompletedTask;
 }

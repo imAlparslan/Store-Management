@@ -4,6 +4,14 @@ using CatalogManagement.Domain.ProductAggregate.Events;
 namespace CatalogManagement.Application.Tests.Products.Handlers;
 public class RemoveGroupFromProductCommandHandlerTests
 {
+    private readonly IProductRepository productRepository;
+    private readonly RemoveGroupFromProductCommandHandler handler;
+    public RemoveGroupFromProductCommandHandlerTests()
+    {
+        productRepository = Substitute.For<IProductRepository>();
+        handler = new RemoveGroupFromProductCommandHandler(productRepository);
+    }
+
     [Fact]
     public async Task Handler_ShouldReturn_Product_WhenDataValid()
     {
@@ -11,10 +19,8 @@ public class RemoveGroupFromProductCommandHandlerTests
         var group = ProductGroupFactory.CreateDefault();
         product.AddGroup(group.Id);
         var command = new RemoveGroupFromProductCommand(group.Id, product.Id);
-        var repo = Substitute.For<IProductRepository>();
-        repo.GetByIdAsync(default!).ReturnsForAnyArgs(product);
-        repo.UpdateAsync(default!).ReturnsForAnyArgs(product);
-        var handler = new RemoveGroupFromProductCommandHandler(repo);
+        productRepository.GetByIdAsync(default!).ReturnsForAnyArgs(product);
+        productRepository.UpdateAsync(default!).ReturnsForAnyArgs(product);
 
         var result = await handler.Handle(command, default);
 
@@ -27,9 +33,7 @@ public class RemoveGroupFromProductCommandHandlerTests
     public async Task Handler_ShouldReturn_NotFoundError_WhenProductNotFound()
     {
         var command = new RemoveGroupFromProductCommand(Guid.NewGuid(), Guid.NewGuid());
-        var repo = Substitute.For<IProductRepository>();
-        repo.GetByIdAsync(default!).ReturnsNull();
-        var handler = new RemoveGroupFromProductCommandHandler(repo);
+        productRepository.GetByIdAsync(default!).ReturnsNull();
 
         var result = await handler.Handle(command, default);
 
@@ -41,9 +45,7 @@ public class RemoveGroupFromProductCommandHandlerTests
     {
         var product = ProductFactory.CreateDefault();
         var command = new RemoveGroupFromProductCommand(Guid.NewGuid(), product.Id);
-        var repo = Substitute.For<IProductRepository>();
-        repo.GetByIdAsync(default!).ReturnsForAnyArgs(product);
-        var handler = new RemoveGroupFromProductCommandHandler(repo);
+        productRepository.GetByIdAsync(default!).ReturnsForAnyArgs(product);
 
         var result = await handler.Handle(command, default);
 

@@ -1,30 +1,24 @@
-﻿using CatalogManagement.Api.Tests.Fixtures;
+﻿using CatalogManagement.Api.Tests.Common;
+using CatalogManagement.Api.Tests.Fixtures;
 using CatalogManagement.Contracts.ProductGroups;
 
 namespace CatalogManagement.Api.Tests.ProductGroupController;
 
 [Collection(nameof(ProductGroupControllerCollectionFixture))]
-public class GetByIdProductGroupControllerTests
+public class GetByIdProductGroupControllerTests : ControllerTestBase
 {
-    private readonly HttpClient _client;
-    private readonly CatalogApiFactory _catalogApiFactory;
-
-    public GetByIdProductGroupControllerTests(CatalogApiFactory catalogApiFactory)
+    public GetByIdProductGroupControllerTests(CatalogApiFactory catalogApiFactory):base(catalogApiFactory)
     {
-        _client = catalogApiFactory.CreateClient();
-        _catalogApiFactory = catalogApiFactory;
-
-        ResetDB();
     }
 
     [Fact]
     public async Task GetById_ReturnsProductGroup_WhenProductGroupExists()
     {
         CreateProductGroupRequest request = CreateProductGroupRequestFactory.CreateValid();
-        var response = await _client.PostAsJsonAsync("http://localhost/api/product-groups", request);
+        var response = await _client.PostAsJsonAsync($"{ProductGroupBaseAddress}", request);
         ProductGroupResponse? createdProductGroup = await response.Content.ReadFromJsonAsync<ProductGroupResponse>();
 
-        var getByIdResponse = await _client.GetAsync($"http://localhost/api/product-groups/{createdProductGroup!.Id}");
+        var getByIdResponse = await _client.GetAsync($"{ProductGroupBaseAddress}/{createdProductGroup!.Id}");
 
         using (AssertionScope scope = new())
         {
@@ -40,7 +34,7 @@ public class GetByIdProductGroupControllerTests
     {
         var id = Guid.NewGuid();
 
-        var getByIdResponse = await _client.GetAsync($"http://localhost/api/product-groups/{id}");
+        var getByIdResponse = await _client.GetAsync($"{ProductGroupBaseAddress}/{id}");
 
         getByIdResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
 
@@ -50,7 +44,7 @@ public class GetByIdProductGroupControllerTests
     [InlineData("00000000-0000-0000-0000-000000000000")]
     public async Task GetById_ReturnsValidationError_WhenIdInvalid(Guid id)
     {
-        var result = await _client.GetAsync($"http://localhost/api/product-groups/{id}");
+        var result = await _client.GetAsync($"{ProductGroupBaseAddress}/{id}");
         using (AssertionScope scope = new())
         {
             result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -59,12 +53,5 @@ public class GetByIdProductGroupControllerTests
             error!.Title.Should().Be("One or more validation errors occurred.");
             error.Errors.Count.Should().Be(1);
         }
-    }
-    private void ResetDB()
-    {
-        var scope = _catalogApiFactory.Services.CreateAsyncScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
-        dbContext.Database.EnsureDeleted();
-        dbContext.Database.EnsureCreated();
     }
 }
