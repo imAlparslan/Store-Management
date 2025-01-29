@@ -2,7 +2,7 @@
 
 [Collection(nameof(GroupsControllerCollectionFixture))]
 public class GetAllGroupsControllerTests(StoreDefinitionApiFactory apiFactory)
-    : ControllerTestBase(apiFactory), IAsyncLifetime
+    : ControllerTestBase(apiFactory)
 {
     [Fact]
     public async Task GetAll_ReturnsGroupsResponseCollection_WhenGroupsExist()

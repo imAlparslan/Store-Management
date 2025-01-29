@@ -2,7 +2,7 @@
 
 [Collection(nameof(GroupsControllerCollectionFixture))]
 public class UpdateGroupControllerTests(StoreDefinitionApiFactory apiFactory)
-    : ControllerTestBase(apiFactory), IAsyncLifetime
+    : ControllerTestBase(apiFactory)
 {
 
     [Fact]

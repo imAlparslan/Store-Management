@@ -3,23 +3,27 @@
 namespace CatalogManagement.Application.Tests.Products.Validators;
 public class RemoveGroupFromProductCommandValidatorTests
 {
+    private readonly RemoveGroupFromProductCommandValidator validator;
+    public RemoveGroupFromProductCommandValidatorTests()
+    {
+        validator = new();
+    }
+
     [Fact]
-    public async Task Validator_ReturnsValidResult_WhenDataValid()
+    public void Validator_ReturnsValidResult_WhenDataValid()
     {
         var command = new RemoveGroupFromProductCommand(Guid.NewGuid(), Guid.NewGuid());
-        var validator = new RemoveGroupFromProductCommandValidator();
 
-        var result = await validator.ValidateAsync(command);
+        var result = validator.Validate(command);
 
         result.IsValid.Should().BeTrue();
     }
     [Fact]
-    public async Task Validator_ReturnsValidationProblem_WhenDataInvalid()
+    public void Validator_ReturnsValidationProblem_WhenDataInvalid()
     {
         var command = new RemoveGroupFromProductCommand(Guid.Empty, Guid.Empty);
-        var validator = new RemoveGroupFromProductCommandValidator();
 
-        var result = await validator.ValidateAsync(command, CancellationToken.None);
+        var result = validator.Validate(command);
 
         result.IsValid.Should().BeFalse();
         result.Errors.Count().Should().Be(2);
@@ -27,13 +31,12 @@ public class RemoveGroupFromProductCommandValidatorTests
             .Should().Contain([nameof(command.ProductId), nameof(command.GroupId)]);
     }
     [Theory]
-    [MemberData(nameof(InvalidGuidData))]
-    public async Task Validator_ReturnsValidationProblem_WhenProductGroupIdInvalid(Guid invalidProductGroupId)
+    [ClassData(typeof(InvalidGuidData))]
+    public void Validator_ReturnsValidationProblem_WhenProductGroupIdInvalid(Guid invalidProductGroupId)
     {
         var command = new RemoveGroupFromProductCommand(invalidProductGroupId, Guid.NewGuid());
-        var validator = new RemoveGroupFromProductCommandValidator();
 
-        var result = await validator.ValidateAsync(command, CancellationToken.None);
+        var result = validator.Validate(command);
 
         result.IsValid.Should().BeFalse();
         result.Errors.Count().Should().Be(1);
@@ -41,23 +44,16 @@ public class RemoveGroupFromProductCommandValidatorTests
             .Should().Contain(nameof(command.GroupId));
     }
     [Theory]
-    [MemberData(nameof(InvalidGuidData))]
-    public async Task Validator_ReturnsValidationProblem_WhenProductIdInvalid(Guid invalidProductId)
+    [ClassData(typeof(InvalidGuidData))]
+    public void Validator_ReturnsValidationProblem_WhenProductIdInvalid(Guid invalidProductId)
     {
         var command = new RemoveGroupFromProductCommand(Guid.NewGuid(), invalidProductId);
-        var validator = new RemoveGroupFromProductCommandValidator();
 
-        var result = await validator.ValidateAsync(command, CancellationToken.None);
+        var result = validator.Validate(command);
 
         result.IsValid.Should().BeFalse();
         result.Errors.Count().Should().Be(1);
         result.Errors.Select(x => x.PropertyName)
             .Should().Contain(nameof(command.ProductId));
     }
-
-    public static IEnumerable<object[]> InvalidGuidData => new List<object[]> {
-        new object[] { null! },
-        new object[] { Guid.Empty },
-        new object[] { default(Guid) }
-    };
 }

@@ -3,11 +3,16 @@
 namespace CatalogManagement.Application.Tests.ProductGroups.Validators;
 public class GetProductGroupByIdQuertValidatorTests
 {
+    private readonly GetProductGroupByIdQueryValidator validator;
+    public GetProductGroupByIdQuertValidatorTests()
+    {
+        validator = new();
+    }
+
     [Fact]
     public void Validator_ReturnsValid_WhenProductIdValid()
     {
         var query = new GetProductGroupByIdQuery(Guid.NewGuid());
-        var validator = new GetProductGroupByIdQueryValidator();
 
         var result = validator.Validate(query);
 
@@ -19,11 +24,10 @@ public class GetProductGroupByIdQuertValidatorTests
     }
 
     [Theory]
-    [MemberData(nameof(InvalidGuidData))]
+    [ClassData(typeof(InvalidGuidData))]
     public void Validator_ReturnsValidationError_WhenProductIdInvalid(Guid productGroupId)
     {
         var query = new GetProductGroupByIdQuery(productGroupId);
-        var validator = new GetProductGroupByIdQueryValidator();
 
         var result = validator.Validate(query);
 
@@ -35,11 +39,5 @@ public class GetProductGroupByIdQuertValidatorTests
                 .Contain([nameof(query.Id)]);
         }
     }
-
-    public static IEnumerable<object[]> InvalidGuidData => new List<object[]> {
-            new object[] { null! },
-            new object[] { Guid.Empty },
-            new object[] { default(Guid) }
-        };
 }
 

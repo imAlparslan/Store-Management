@@ -1,30 +1,24 @@
-﻿using CatalogManagement.Api.Tests.Fixtures;
+﻿using CatalogManagement.Api.Tests.Common;
+using CatalogManagement.Api.Tests.Fixtures;
 using CatalogManagement.Contracts.ProductGroups;
 
 namespace CatalogManagement.Api.Tests.ProductGroupController;
 
 [Collection(nameof(ProductGroupControllerCollectionFixture))]
-public class GetAllProductGroupControllerTests
+public class GetAllProductGroupControllerTests: ControllerTestBase
 {
-    private readonly HttpClient _client;
-    private readonly CatalogApiFactory _catalogApiFactory;
-
-    public GetAllProductGroupControllerTests(CatalogApiFactory catalogApiFactory)
+    public GetAllProductGroupControllerTests(CatalogApiFactory catalogApiFactory):base(catalogApiFactory)
     {
-        _client = catalogApiFactory.CreateClient();
-        _catalogApiFactory = catalogApiFactory;
-
-        ResetDB();
     }
 
     [Fact]
     public async Task GetAll_ReturnsProductGroups_WhenProductGroupsExist()
     {
         CreateProductGroupRequest createRequest = CreateProductGroupRequestFactory.CreateValid();
-        var createResponse = await _client.PostAsJsonAsync("http://localhost/api/product-groups", createRequest);
+        var createResponse = await _client.PostAsJsonAsync($"{ProductGroupBaseAddress}", createRequest);
         var createdProductGroup = await createResponse.Content.ReadFromJsonAsync<ProductGroupResponse>();
 
-        var productGroups = await _client.GetAsync("http://localhost/api/product-groups");
+        var productGroups = await _client.GetAsync($"{ProductGroupBaseAddress}");
 
         using (AssertionScope scope = new())
         {
@@ -40,7 +34,7 @@ public class GetAllProductGroupControllerTests
     [Fact]
     public async Task GetAll_ReturnsEmptyResult_WhenNotProductGroupsExist()
     {
-        var productGroups = await _client.GetAsync("http://localhost/api/product-groups");
+        var productGroups = await _client.GetAsync($"{ProductGroupBaseAddress}");
 
         using (AssertionScope scope = new())
         {
@@ -48,13 +42,5 @@ public class GetAllProductGroupControllerTests
             var productsResponse = await productGroups.Content.ReadFromJsonAsync<IEnumerable<ProductGroupResponse>>();
             productsResponse.Should().BeEmpty();
         }
-    }
-
-    private void ResetDB()
-    {
-        var scope = _catalogApiFactory.Services.CreateAsyncScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
-        dbContext.Database.EnsureDeleted();
-        dbContext.Database.EnsureCreated();
     }
 }

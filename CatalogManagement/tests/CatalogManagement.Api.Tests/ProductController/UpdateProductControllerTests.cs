@@ -1,31 +1,25 @@
-﻿using CatalogManagement.Api.Tests.Fixtures;
+﻿using CatalogManagement.Api.Tests.Common;
+using CatalogManagement.Api.Tests.Fixtures;
 using CatalogManagement.Contracts.Products;
 
 namespace CatalogManagement.Api.Tests.ProductController;
 
 [Collection(nameof(ProductControllerCollectionFixture))]
-public class UpdateProductControllerTests
+public class UpdateProductControllerTests: ControllerTestBase
 {
-    private readonly HttpClient _client;
-    private readonly CatalogApiFactory _catalogApiFactory;
-
-    public UpdateProductControllerTests(CatalogApiFactory catalogApiFactory)
+    public UpdateProductControllerTests(CatalogApiFactory catalogApiFactory):base(catalogApiFactory)
     {
-        _client = catalogApiFactory.CreateClient();
-        _catalogApiFactory = catalogApiFactory;
-
-        ResetDB();
     }
 
     [Fact]
     public async Task Update_UpdatesProduct_WhenDataValid()
     {
         CreateProductRequest createRequest = CreateProductRequestFactory.CreateValid();
-        var createResponse = await _client.PostAsJsonAsync("http://localhost/api/products", createRequest);
+        var createResponse = await _client.PostAsJsonAsync($"{ProductBaseAddress}", createRequest);
         ProductResponse? createdProduct = await createResponse.Content.ReadFromJsonAsync<ProductResponse>();
         UpdateProductRequest updateRequest = UpdateProductRequestFactory.CreateValid();
 
-        var updatedResponse = await _client.PutAsJsonAsync($"http://localhost/api/products/{createdProduct!.Id}", updateRequest);
+        var updatedResponse = await _client.PutAsJsonAsync($"{ProductBaseAddress}/{createdProduct!.Id}", updateRequest);
 
         using (AssertionScope scope = new())
         {
@@ -42,7 +36,7 @@ public class UpdateProductControllerTests
         var id = Guid.NewGuid();
         var updateRequest = UpdateProductRequestFactory.CreateValid();
 
-        var response = await _client.PutAsJsonAsync($"http://localhost/api/products/{id}", updateRequest);
+        var response = await _client.PutAsJsonAsync($"{ProductBaseAddress}/{id}", updateRequest);
 
         using (AssertionScope scope = new())
         {
@@ -53,15 +47,15 @@ public class UpdateProductControllerTests
     }
 
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [MemberData(nameof(InvalidStrings))]
     public async Task Update_ReturnsValidationError_WhenProdoctNameNullOrEmpty(string productName)
     {
         CreateProductRequest createRequest = CreateProductRequestFactory.CreateValid();
-        var createResponse = await _client.PostAsJsonAsync("http://localhost/api/products", createRequest);
+        var createResponse = await _client.PostAsJsonAsync($"{ProductBaseAddress}", createRequest);
         ProductResponse? createdProduct = await createResponse.Content.ReadFromJsonAsync<ProductResponse>();
         UpdateProductRequest updateRequest = UpdateProductRequestFactory.CreateWithName(productName);
 
-        var updatedResponse = await _client.PutAsJsonAsync($"http://localhost/api/products/{createdProduct!.Id}", updateRequest);
+        var updatedResponse = await _client.PutAsJsonAsync($"{ProductBaseAddress}/{createdProduct!.Id}", updateRequest);
 
         using (AssertionScope scope = new())
         {
@@ -75,15 +69,15 @@ public class UpdateProductControllerTests
     }
 
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [MemberData(nameof(InvalidStrings))]
     public async Task Update_ReturnsValidationError_WhenProductCodeNullOrEmpty(string productCode)
     {
         CreateProductRequest createRequest = CreateProductRequestFactory.CreateValid();
-        var createResponse = await _client.PostAsJsonAsync("http://localhost/api/products", createRequest);
+        var createResponse = await _client.PostAsJsonAsync($"{ProductBaseAddress}", createRequest);
         ProductResponse? createdProduct = await createResponse.Content.ReadFromJsonAsync<ProductResponse>();
         UpdateProductRequest updateRequest = UpdateProductRequestFactory.CreateWithCode(productCode);
 
-        var updatedResponse = await _client.PutAsJsonAsync($"http://localhost/api/products/{createdProduct!.Id}", updateRequest);
+        var updatedResponse = await _client.PutAsJsonAsync($"{ProductBaseAddress}/{createdProduct!.Id}", updateRequest);
 
         using (AssertionScope scope = new())
         {
@@ -97,15 +91,15 @@ public class UpdateProductControllerTests
     }
 
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [MemberData(nameof(InvalidStrings))]
     public async Task Update_ReturnsValidationError_WhenProdoctDefinitionNullOrEmpty(string productDefinition)
     {
         CreateProductRequest createRequest = CreateProductRequestFactory.CreateValid();
-        var createResponse = await _client.PostAsJsonAsync("http://localhost/api/products", createRequest);
+        var createResponse = await _client.PostAsJsonAsync($"{ProductBaseAddress}", createRequest);
         ProductResponse? createdProduct = await createResponse.Content.ReadFromJsonAsync<ProductResponse>();
         UpdateProductRequest updateRequest = UpdateProductRequestFactory.CreateWithDefinition(productDefinition);
 
-        var updatedResponse = await _client.PutAsJsonAsync($"http://localhost/api/products/{createdProduct!.Id}", updateRequest);
+        var updatedResponse = await _client.PutAsJsonAsync($"{ProductBaseAddress}/{createdProduct!.Id}", updateRequest);
 
         using (AssertionScope scope = new())
         {
@@ -122,11 +116,11 @@ public class UpdateProductControllerTests
     public async Task Update_ReturnsValidationErrors_WhenDataInvalid()
     {
         CreateProductRequest createRequest = CreateProductRequestFactory.CreateValid();
-        var createResponse = await _client.PostAsJsonAsync("http://localhost/api/products", createRequest);
+        var createResponse = await _client.PostAsJsonAsync($"{ProductBaseAddress}", createRequest);
         ProductResponse? createdProduct = await createResponse.Content.ReadFromJsonAsync<ProductResponse>();
         UpdateProductRequest updateRequest = UpdateProductRequestFactory.CreateCustom("", "", "");
 
-        var updatedResponse = await _client.PutAsJsonAsync($"http://localhost/api/products/{createdProduct!.Id}", updateRequest);
+        var updatedResponse = await _client.PutAsJsonAsync($"{ProductBaseAddress}/{createdProduct!.Id}", updateRequest);
 
         using (AssertionScope scope = new())
         {
@@ -145,7 +139,7 @@ public class UpdateProductControllerTests
     {
         UpdateProductRequest updateRequest = UpdateProductRequestFactory.CreateValid();
 
-        var updatedResponse = await _client.PutAsJsonAsync($"http://localhost/api/products/{id}", updateRequest);
+        var updatedResponse = await _client.PutAsJsonAsync($"{ProductBaseAddress}/{id}", updateRequest);
 
         using (AssertionScope scope = new())
         {
@@ -156,13 +150,4 @@ public class UpdateProductControllerTests
             error.Errors.Count.Should().Be(1);
         }
     }
-
-    private void ResetDB()
-    {
-        var scope = _catalogApiFactory.Services.CreateAsyncScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
-        dbContext.Database.EnsureDeleted();
-        dbContext.Database.EnsureCreated();
-    }
-    public static readonly TheoryData<string> invalidStrings = ["", " ", null];
 }

@@ -2,6 +2,7 @@
 using ArchUnitNET.xUnit;
 using CatalogManagement.Application.Common.Interfaces;
 using CatalogManagement.Architecture.Tests.Commons;
+using CatalogManagement.Architecture.Tests.Constants;
 
 namespace CatalogManagement.Architecture.Tests.ApplicationLayerRules;
 public class QueryRules : ArchUnitBase
@@ -14,7 +15,7 @@ public class QueryRules : ArchUnitBase
             .That()
             .ImplementInterface(typeof(IQuery<>))
             .Should()
-            .HaveNameEndingWith("Query")
+            .HaveNameEndingWith(ClassNameConstants.QuerySuffix)
             .WithoutRequiringPositiveResults()
             .Check(Architecture);
     }

@@ -3,8 +3,6 @@
 namespace CatalogManagement.Infrastructure.Tests.Common.Factories.ProductGroupFactories;
 internal static class ProductGroupDescriptionFactory
 {
-    public static ProductGroupDescription CreateRandom()
-    {
-        return new ProductGroupDescription(Guid.NewGuid().ToString());
-    }
+    public static ProductGroupDescription Create(string description = "group description")
+        => new ProductGroupDescription(description);
 }

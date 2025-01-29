@@ -1,14 +1,20 @@
 ﻿namespace CatalogManagement.Application.Tests.Products.Handlers;
 public class CreateProductCommandHandlerTests
 {
+    private readonly IProductRepository productRepository;
+    private readonly CreateProductCommandHandler handler;
+    public CreateProductCommandHandlerTests()
+    {
+        productRepository = Substitute.For<IProductRepository>();
+        handler = new CreateProductCommandHandler(productRepository);
+    }
+
     [Fact]
     public async Task Handler_ReturnsSuccessResult_WhenDataValid()
     {
         var command = CreateProductCommandFactory.CreateValid();
         var product = ProductFactory.CreateFromCreateCommand(command);
-        var productRepository = Substitute.For<IProductRepository>();
         productRepository.InsertAsync(default!).ReturnsForAnyArgs(product);
-        var handler = new CreateProductCommandHandler(productRepository);
 
         var result = await handler.Handle(command, default);
 
@@ -24,13 +30,10 @@ public class CreateProductCommandHandlerTests
     }
 
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
+    [ClassData(typeof(InvalidStringData))]
     public void Handler_ThrowsException_WhenProductNameInvalid(string productName)
     {
         var command = CreateProductCommandFactory.CreateWithName(productName);
-        var handler = new CreateProductCommandHandler(default!);
 
         var result = () => handler.Handle(command, default);
 
@@ -42,13 +45,10 @@ public class CreateProductCommandHandlerTests
 
 
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
+    [ClassData(typeof(InvalidStringData))]
     public void Handler_ThrowsException_WhenProductCodeInvalid(string productCode)
     {
         var command = CreateProductCommandFactory.CreateWithCode(productCode);
-        var handler = new CreateProductCommandHandler(default!);
 
         var result = () => handler.Handle(command, default);
 
@@ -59,13 +59,10 @@ public class CreateProductCommandHandlerTests
     }
 
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
+    [ClassData(typeof(InvalidStringData))]
     public void Handler_ThrowsException_WhenProductDefinitionInvalid(string productDefinition)
     {
         var command = CreateProductCommandFactory.CreateWithDefinition(productDefinition);
-        var handler = new CreateProductCommandHandler(default!);
 
         var result = () => handler.Handle(command, default);
 

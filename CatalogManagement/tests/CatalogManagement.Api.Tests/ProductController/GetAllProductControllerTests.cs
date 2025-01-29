@@ -1,30 +1,24 @@
-﻿using CatalogManagement.Api.Tests.Fixtures;
+﻿using CatalogManagement.Api.Tests.Common;
+using CatalogManagement.Api.Tests.Fixtures;
 using CatalogManagement.Contracts.Products;
 
 namespace CatalogManagement.Api.Tests.ProductController;
 
 [Collection(nameof(ProductControllerCollectionFixture))]
-public class GetAllProductControllerTests
+public class GetAllProductControllerTests : ControllerTestBase
 {
-    private readonly HttpClient _client;
-    private readonly CatalogApiFactory _catalogApiFactory;
-
-    public GetAllProductControllerTests(CatalogApiFactory catalogApiFactory)
+    public GetAllProductControllerTests(CatalogApiFactory catalogApiFactory):base(catalogApiFactory)
     {
-        _client = catalogApiFactory.CreateClient();
-        _catalogApiFactory = catalogApiFactory;
-
-        ResetDB();
     }
 
     [Fact]
     public async Task GetAll_ReturnsProducts_WhenProductsExist()
     {
         CreateProductRequest createRequest = CreateProductRequestFactory.CreateValid();
-        var createResponse = await _client.PostAsJsonAsync("http://localhost/api/products", createRequest);
+        var createResponse = await _client.PostAsJsonAsync($"{ProductBaseAddress}", createRequest);
         var createdProduct = await createResponse.Content.ReadFromJsonAsync<ProductResponse>();
 
-        var products = await _client.GetAsync("http://localhost/api/products");
+        var products = await _client.GetAsync($"{ProductBaseAddress}");
 
         using (AssertionScope scope = new())
         {
@@ -40,7 +34,7 @@ public class GetAllProductControllerTests
     [Fact]
     public async Task GetAll_ReturnsEmptyResult_WhenNotProductsExist()
     {
-        var products = await _client.GetAsync("http://localhost/api/products");
+        var products = await _client.GetAsync($"{ProductBaseAddress}");
 
         using (AssertionScope scope = new())
         {
@@ -48,13 +42,5 @@ public class GetAllProductControllerTests
             var productsResponse = await products.Content.ReadFromJsonAsync<IEnumerable<ProductResponse>>();
             productsResponse.Should().BeEmpty();
         }
-    }
-
-    private void ResetDB()
-    {
-        var scope = _catalogApiFactory.Services.CreateAsyncScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
-        dbContext.Database.EnsureDeleted();
-        dbContext.Database.EnsureCreated();
     }
 }

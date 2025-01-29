@@ -1,15 +1,21 @@
 ﻿namespace CatalogManagement.Application.Tests.Products.Handlers;
 public class UpdateProductGroupCommandHandlerTests
 {
+    private readonly IProductRepository productRepository;
+    private readonly UpdateProductCommandHandler handler;
+    public UpdateProductGroupCommandHandlerTests()
+    {
+        productRepository = Substitute.For<IProductRepository>();
+        handler = new UpdateProductCommandHandler(productRepository);
+    }
+
     [Fact]
     public async Task Handler_ReturnsProduct_WhenDataValid()
     {
         var product = ProductFactory.CreateDefault();
         var command = UpdateProductCommandFactory.CreateValid();
-        var productRepository = Substitute.For<IProductRepository>();
         productRepository.GetByIdAsync(default!).ReturnsForAnyArgs(product);
         productRepository.UpdateAsync(default!).ReturnsForAnyArgs(product);
-        var handler = new UpdateProductCommandHandler(productRepository);
 
         var result = await handler.Handle(command, default);
 
@@ -27,9 +33,7 @@ public class UpdateProductGroupCommandHandlerTests
     [Fact]
     public async Task Handler_ReturnsProductError_WhenIdNotExists()
     {
-        var productRepository = Substitute.For<IProductRepository>();
         productRepository.GetByIdAsync(Arg.Any<ProductId>()).ReturnsNull();
-        var handler = new UpdateProductCommandHandler(productRepository);
         var command = UpdateProductCommandFactory.CreateValid();
 
         var result = await handler.Handle(command, default);
@@ -40,20 +44,14 @@ public class UpdateProductGroupCommandHandlerTests
             result.Errors.Should().NotBeNullOrEmpty();
             result.Errors![0].Should().Be(ProductError.NotFoundById);
         }
-
-
     }
 
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
+    [ClassData(typeof(InvalidStringData))]
     public void Handler_ThrowsException_WhenProductNameInvalid(string productName)
     {
-        var productRepository = Substitute.For<IProductRepository>();
         productRepository.GetByIdAsync(Arg.Any<ProductId>()).Returns(ProductFactory.CreateDefault());
         var command = UpdateProductCommandFactory.CreateWithName(productName);
-        var handler = new UpdateProductCommandHandler(productRepository);
 
         var result = () => handler.Handle(command, default);
 
@@ -63,15 +61,12 @@ public class UpdateProductGroupCommandHandlerTests
         }
     }
 
-
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
+    [ClassData(typeof(InvalidStringData))]
     public void Handler_ThrowsException_WhenProductCodeInvalid(string productCode)
     {
-        var command = CreateProductCommandFactory.CreateWithCode(productCode);
-        var handler = new CreateProductCommandHandler(default!);
+        productRepository.GetByIdAsync(Arg.Any<ProductId>()).Returns(ProductFactory.CreateDefault());
+        var command = UpdateProductCommandFactory.CreateWithCode(productCode);
 
         var result = () => handler.Handle(command, default);
 
@@ -81,15 +76,12 @@ public class UpdateProductGroupCommandHandlerTests
         }
     }
 
-
     [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
+    [ClassData(typeof(InvalidStringData))]
     public void Handler_ThrowsException_WhenProductDefinitionInvalid(string productDefinition)
     {
-        var command = CreateProductCommandFactory.CreateWithDefinition(productDefinition);
-        var handler = new CreateProductCommandHandler(default!);
+        productRepository.GetByIdAsync(Arg.Any<ProductId>()).Returns(ProductFactory.CreateDefault());
+        var command = UpdateProductCommandFactory.CreateWithDefinition(productDefinition);
 
         var result = () => handler.Handle(command, default);
 

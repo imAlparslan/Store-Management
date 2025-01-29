@@ -1,31 +1,26 @@
-﻿using CatalogManagement.Api.Tests.Fixtures;
+﻿using CatalogManagement.Api.Tests.Common;
+using CatalogManagement.Api.Tests.Fixtures;
 using CatalogManagement.Contracts.ProductGroups;
 
 namespace CatalogManagement.Api.Tests.ProductGroupController;
 
 [Collection(nameof(ProductGroupControllerCollectionFixture))]
-public class UpdateProductGroupControllerTests
+public class UpdateProductGroupControllerTests : ControllerTestBase
 {
-    private readonly HttpClient _client;
-    private readonly CatalogApiFactory _catalogApiFactory;
-
-    public UpdateProductGroupControllerTests(CatalogApiFactory catalogApiFactory)
+    public UpdateProductGroupControllerTests(CatalogApiFactory catalogApiFactory) : base(catalogApiFactory)
     {
-        _client = catalogApiFactory.CreateClient();
-        _catalogApiFactory = catalogApiFactory;
-
-        ResetDB();
     }
+
 
     [Fact]
     public async Task Update_UpdatesProductGroup_WhenDataValid()
     {
         CreateProductGroupRequest createRequest = CreateProductGroupRequestFactory.CreateValid();
-        var createResponse = await _client.PostAsJsonAsync("http://localhost/api/product-groups", createRequest);
+        var createResponse = await _client.PostAsJsonAsync($"{ProductGroupBaseAddress}", createRequest);
         ProductGroupResponse? createdProductGroup = await createResponse.Content.ReadFromJsonAsync<ProductGroupResponse>();
         UpdateProductGroupRequest updateRequest = UpdateProductGroupRequestFactory.CreateValid();
 
-        var updatedResponse = await _client.PutAsJsonAsync($"http://localhost/api/product-groups/{createdProductGroup!.Id}", updateRequest);
+        var updatedResponse = await _client.PutAsJsonAsync($"{ProductGroupBaseAddress}/{createdProductGroup!.Id}", updateRequest);
 
         using (AssertionScope scope = new())
         {
@@ -42,7 +37,7 @@ public class UpdateProductGroupControllerTests
         var id = Guid.NewGuid();
         var updateRequest = UpdateProductGroupRequestFactory.CreateValid();
 
-        var response = await _client.PutAsJsonAsync($"http://localhost/api/product-groups/{id}", updateRequest);
+        var response = await _client.PutAsJsonAsync($"{ProductGroupBaseAddress} /{id}", updateRequest);
 
         using (AssertionScope scope = new())
         {
@@ -53,15 +48,15 @@ public class UpdateProductGroupControllerTests
     }
 
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [MemberData(nameof(InvalidStrings))]
     public async Task Update_ReturnsValidationError_WhenProductGroupNameNullOrEmpty(string productGroupName)
     {
         UpdateProductGroupRequest createRequest = UpdateProductGroupRequestFactory.CreateValid();
-        var createResponse = await _client.PostAsJsonAsync("http://localhost/api/product-groups", createRequest);
+        var createResponse = await _client.PostAsJsonAsync($"{ProductGroupBaseAddress}", createRequest);
         ProductGroupResponse? createdProduct = await createResponse.Content.ReadFromJsonAsync<ProductGroupResponse>();
         UpdateProductGroupRequest updateRequest = UpdateProductGroupRequestFactory.CreateWithName(productGroupName);
 
-        var updatedResponse = await _client.PutAsJsonAsync($"http://localhost/api/product-groups/{createdProduct!.Id}", updateRequest);
+        var updatedResponse = await _client.PutAsJsonAsync($"{ProductGroupBaseAddress}/{createdProduct!.Id}", updateRequest);
 
         using (AssertionScope scope = new())
         {
@@ -75,15 +70,15 @@ public class UpdateProductGroupControllerTests
     }
 
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [MemberData(nameof(InvalidStrings))]
     public async Task Update_ReturnsValidationError_WhenProductGroupDescriptionNullOrEmpty(string productGroupDescription)
     {
         UpdateProductGroupRequest createRequest = UpdateProductGroupRequestFactory.CreateValid();
-        var createResponse = await _client.PostAsJsonAsync("http://localhost/api/product-groups", createRequest);
+        var createResponse = await _client.PostAsJsonAsync($"{ProductGroupBaseAddress}", createRequest);
         ProductGroupResponse? createdProductGroup = await createResponse.Content.ReadFromJsonAsync<ProductGroupResponse>();
         UpdateProductGroupRequest updateRequest = UpdateProductGroupRequestFactory.CreateWithDescription(productGroupDescription);
 
-        var updatedResponse = await _client.PutAsJsonAsync($"http://localhost/api/product-groups/{createdProductGroup!.Id}", updateRequest);
+        var updatedResponse = await _client.PutAsJsonAsync($"{ProductGroupBaseAddress}/{createdProductGroup!.Id}", updateRequest);
 
         using (AssertionScope scope = new())
         {
@@ -100,11 +95,11 @@ public class UpdateProductGroupControllerTests
     public async Task Update_ReturnsValidationErrors_WhenDataInvalid()
     {
         CreateProductGroupRequest createRequest = CreateProductGroupRequestFactory.CreateValid();
-        var createResponse = await _client.PostAsJsonAsync("http://localhost/api/product-groups", createRequest);
+        var createResponse = await _client.PostAsJsonAsync($"{ProductGroupBaseAddress}", createRequest);
         ProductGroupResponse? createdProductGroup = await createResponse.Content.ReadFromJsonAsync<ProductGroupResponse>();
         UpdateProductGroupRequest updateRequest = UpdateProductGroupRequestFactory.CreateCustom("", "");
 
-        var updatedResponse = await _client.PutAsJsonAsync($"http://localhost/api/product-groups/{createdProductGroup!.Id}", updateRequest);
+        var updatedResponse = await _client.PutAsJsonAsync($"{ProductGroupBaseAddress}/{createdProductGroup!.Id}", updateRequest);
 
         using (AssertionScope scope = new())
         {
@@ -122,7 +117,7 @@ public class UpdateProductGroupControllerTests
     public async Task Update_ReturnsValidationError_WhenIdInvalid(Guid id)
     {
         UpdateProductGroupRequest updateRequest = UpdateProductGroupRequestFactory.CreateValid();
-        var updatedResponse = await _client.PutAsJsonAsync($"http://localhost/api/product-groups/{id}", updateRequest);
+        var updatedResponse = await _client.PutAsJsonAsync($"{ProductGroupBaseAddress}/{id}", updateRequest);
         using (AssertionScope scope = new())
         {
             updatedResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -132,14 +127,4 @@ public class UpdateProductGroupControllerTests
             error.Errors.Count.Should().Be(1);
         }
     }
-
-    private void ResetDB()
-    {
-        var scope = _catalogApiFactory.Services.CreateAsyncScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
-        dbContext.Database.EnsureDeleted();
-        dbContext.Database.EnsureCreated();
-    }
-    public static readonly TheoryData<string> invalidStrings = ["", " ", null];
-
 }

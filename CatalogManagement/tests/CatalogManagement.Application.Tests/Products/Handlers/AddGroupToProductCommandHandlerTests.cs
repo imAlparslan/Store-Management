@@ -4,16 +4,21 @@ using CatalogManagement.Domain.ProductAggregate.Events;
 namespace CatalogManagement.Application.Tests.Products.Handlers;
 public class AddGroupToProductCommandHandlerTests
 {
+    private readonly IProductRepository productRepository;
+    private readonly AddGroupToProductCommandHandler handler;
+    public AddGroupToProductCommandHandlerTests()
+    {
+        productRepository = Substitute.For<IProductRepository>();
+        handler = new AddGroupToProductCommandHandler(productRepository);
+    }
     [Fact]
     public async Task Handler_ShouldReturn_Product_WhenDataValid()
     {
         var product = ProductFactory.CreateDefault();
         var group = ProductGroupFactory.CreateDefault();
         var command = new AddGroupToProductCommand(product.Id, group.Id);
-        var repo = Substitute.For<IProductRepository>();
-        repo.GetByIdAsync(default!).ReturnsForAnyArgs(product);
-        repo.UpdateAsync(default!).ReturnsForAnyArgs(product);
-        var handler = new AddGroupToProductCommandHandler(repo);
+        productRepository.GetByIdAsync(default!).ReturnsForAnyArgs(product);
+        productRepository.UpdateAsync(default!).ReturnsForAnyArgs(product);
 
         var result = await handler.Handle(command, default);
 
@@ -26,9 +31,7 @@ public class AddGroupToProductCommandHandlerTests
     public async Task Handler_ShouldReturn_NotFoundError_WhenProductNotFound()
     {
         var command = new AddGroupToProductCommand(Guid.NewGuid(), Guid.NewGuid());
-        var repo = Substitute.For<IProductRepository>();
-        repo.GetByIdAsync(default!).ReturnsNull();
-        var handler = new AddGroupToProductCommandHandler(repo);
+        productRepository.GetByIdAsync(default!).ReturnsNull();
 
         var result = await handler.Handle(command, default);
 
@@ -44,9 +47,7 @@ public class AddGroupToProductCommandHandlerTests
         var product = ProductFactory.CreateDefault();
         product.AddGroup(productGroupId);
         var command = new AddGroupToProductCommand(product.Id, productGroupId);
-        var repo = Substitute.For<IProductRepository>();
-        repo.GetByIdAsync(default!).ReturnsForAnyArgs(product);
-        var handler = new AddGroupToProductCommandHandler(repo);
+        productRepository.GetByIdAsync(default!).ReturnsForAnyArgs(product);
 
         var result = await handler.Handle(command, default);
 

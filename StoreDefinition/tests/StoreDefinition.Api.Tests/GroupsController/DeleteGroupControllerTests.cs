@@ -4,7 +4,7 @@ namespace StoreDefinition.Api.Tests.GroupsController;
 
 [Collection(nameof(GroupsControllerCollectionFixture))]
 public class DeleteGroupControllerTests(StoreDefinitionApiFactory apiFactory) :
-    ControllerTestBase(apiFactory), IAsyncLifetime
+    ControllerTestBase(apiFactory)
 {
     [Fact]
     public async Task Delete_ReturnsOk_WhenGroupDeleted()
