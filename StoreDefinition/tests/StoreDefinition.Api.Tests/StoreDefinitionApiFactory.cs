@@ -35,9 +35,9 @@ public class StoreDefinitionApiFactory : WebApplicationFactory<IApiAssemblyMarke
         builder.ConfigureTestServices(
             services =>
             {
-                services.RemoveAll(typeof(DbContextOptions<StoreDefinitionDbContext>));
-                services.RemoveAll(typeof(StoreDefinitionDbContext));
-                services.RemoveAll(typeof(IDomainEventPublisherService));
+                services.RemoveAll<DbContextOptions<StoreDefinitionDbContext>>();
+                services.RemoveAll<StoreDefinitionDbContext>();
+                services.RemoveAll<IDomainEventPublisherService>();
 
                 var connectionStringBuilder = new SqlConnectionStringBuilder()
                 {

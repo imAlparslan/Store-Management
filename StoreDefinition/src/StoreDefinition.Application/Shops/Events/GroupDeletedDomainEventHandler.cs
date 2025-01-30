@@ -8,7 +8,7 @@ internal class GroupDeletedDomainEventHandler(IShopRepository shopRepository) : 
     private readonly IShopRepository shopRepository = shopRepository;
     public async Task Handle(GroupDeletedDomainEvent notification, CancellationToken cancellationToken)
     {
-        var shops = await shopRepository.GetShopsByGroupIdAsync(notification.GroupId);
+        var shops = await shopRepository.GetShopsByGroupIdAsync(notification.GroupId,cancellationToken);
         //TODO: Unit of work
         foreach (var shop in shops)
         {

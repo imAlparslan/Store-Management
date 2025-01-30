@@ -1,9 +1,8 @@
 ﻿namespace CatalogManagement.Application.Tests.Common.InvalidData;
-public class InvalidGuidData : TheoryData<Guid>
+public class InvalidGuidData : TheoryData<string>
 {
     public InvalidGuidData()
     {
-        Add(Guid.Empty);
-        Add(default);
+        Add(Guid.Empty.ToString());
     }
 }

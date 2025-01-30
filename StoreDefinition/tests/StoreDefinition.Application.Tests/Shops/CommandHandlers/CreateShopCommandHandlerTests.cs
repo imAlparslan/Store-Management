@@ -12,12 +12,10 @@ public class CreateShopCommandHandlerTests
 {
     private readonly CreateShopCommandHandler _handler;
     private readonly IShopRepository _mockShopRepository;
-    private readonly IGroupRepository _mockGroupRepository;
     public CreateShopCommandHandlerTests()
     {
         _mockShopRepository = Substitute.For<IShopRepository>();
-        _mockGroupRepository = Substitute.For<IGroupRepository>();
-        _handler = new CreateShopCommandHandler(_mockShopRepository, _mockGroupRepository);
+        _handler = new CreateShopCommandHandler(_mockShopRepository);
     }
 
     [Fact]

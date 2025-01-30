@@ -74,7 +74,7 @@ public sealed class GroupRepository(StoreDefinitionDbContext context, IUnitOfWor
 
     public async Task UpdateAll(List<Group> groups, CancellationToken cancellation = default)
     {
-        context.Groups.UpdateRange(groups);
+        _context.Groups.UpdateRange(groups);
         if (!_unitOfWorkManager.IsUnitOfWorkManagerStarted())
         {
             await _context.SaveChangesAsync(cancellation);

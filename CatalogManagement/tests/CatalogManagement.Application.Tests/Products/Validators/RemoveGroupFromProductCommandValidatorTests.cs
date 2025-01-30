@@ -26,7 +26,7 @@ public class RemoveGroupFromProductCommandValidatorTests
         var result = validator.Validate(command);
 
         result.IsValid.Should().BeFalse();
-        result.Errors.Count().Should().Be(2);
+        result.Errors.Should().HaveCount(2);
         result.Errors.Select(x => x.PropertyName)
             .Should().Contain([nameof(command.ProductId), nameof(command.GroupId)]);
     }
@@ -39,7 +39,7 @@ public class RemoveGroupFromProductCommandValidatorTests
         var result = validator.Validate(command);
 
         result.IsValid.Should().BeFalse();
-        result.Errors.Count().Should().Be(1);
+        result.Errors.Should().HaveCount(1);
         result.Errors.Select(x => x.PropertyName)
             .Should().Contain(nameof(command.GroupId));
     }
@@ -52,7 +52,7 @@ public class RemoveGroupFromProductCommandValidatorTests
         var result = validator.Validate(command);
 
         result.IsValid.Should().BeFalse();
-        result.Errors.Count().Should().Be(1);
+        result.Errors.Should().HaveCount(1);
         result.Errors.Select(x => x.PropertyName)
             .Should().Contain(nameof(command.ProductId));
     }

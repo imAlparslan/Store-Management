@@ -6,7 +6,7 @@ using StoreDefinition.Domain.GroupAggregateRoot.Exceptions;
 namespace StoreDefinition.Domain.GroupAggregateRoot.ValueObjects;
 public sealed class GroupName : ValueObject
 {
-    public string Value { get; private set; } = null!;
+    public string Value { get; private set; }
 
     public GroupName(string value)
     {

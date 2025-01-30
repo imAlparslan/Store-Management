@@ -17,14 +17,14 @@ public abstract class ControllerTestBase : IAsyncLifetime
 
     }
 
-    protected async Task<ShopResponse> InsertShop()
+    protected async Task<ShopResponse?> InsertShop()
     {
         CreateShopRequest request = ShopsRequestFactory.CreateShopCreateRequest();
         var response = await _client.PostAsJsonAsync(ShopsBaseAddress, request);
         return await response.Content.ReadFromJsonAsync<ShopResponse>();
     }
 
-    protected async Task<GroupResponse> InsertGroup()
+    protected async Task<GroupResponse?> InsertGroup()
     {
         CreateGroupRequest request = GroupRequestFactory.CreateGroupCreateRequest();
         var response = await _client.PostAsJsonAsync(GroupsBaseAddress, request);

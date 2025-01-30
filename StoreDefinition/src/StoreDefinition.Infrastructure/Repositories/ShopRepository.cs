@@ -56,7 +56,7 @@ public sealed class ShopRepository(StoreDefinitionDbContext dbContext, IUnitOfWo
     }
     public async Task<Shop?> GetShopByIdAsync(ShopId shopId, CancellationToken cancellation = default)
     {
-        return await _dbContext.Stores.FindAsync(shopId, cancellation);
+        return await _dbContext.Stores.FindAsync([shopId], cancellation);
     }
 
     public async Task<Shop> UpdateShopAsync(Shop shop, CancellationToken cancellation = default)

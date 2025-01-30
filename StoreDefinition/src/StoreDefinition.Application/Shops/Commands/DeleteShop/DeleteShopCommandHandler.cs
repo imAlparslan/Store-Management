@@ -11,7 +11,7 @@ internal sealed class DeleteShopCommandHandler(IShopRepository shopRepository) :
 
     public async Task<Result<bool>> Handle(DeleteShopCommand request, CancellationToken cancellationToken)
     {
-        var result = await _shopRepository.GetShopByIdAsync(request.ShopId);
+        var result = await _shopRepository.GetShopByIdAsync(request.ShopId,cancellationToken);
 
         if (result is null)
         {

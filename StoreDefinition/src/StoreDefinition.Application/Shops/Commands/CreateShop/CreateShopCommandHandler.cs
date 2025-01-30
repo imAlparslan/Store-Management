@@ -6,11 +6,10 @@ using StoreDefinition.Domain.ShopAggregateRoot.ValueObjects;
 using StoreDefinition.SharedKernel;
 
 namespace StoreDefinition.Application.Shops.Commands.CreateShop;
-internal sealed class CreateShopCommandHandler(IShopRepository shopRepository, IGroupRepository groupRepository)
+internal sealed class CreateShopCommandHandler(IShopRepository shopRepository)
         : ICommandHandler<CreateShopCommand, Result<Shop>>
 {
     private readonly IShopRepository _shopRepository = shopRepository;
-    private readonly IGroupRepository _groupRepository = groupRepository;
 
     public async Task<Result<Shop>> Handle(CreateShopCommand request, CancellationToken cancellationToken)
     {
@@ -21,7 +20,7 @@ internal sealed class CreateShopCommandHandler(IShopRepository shopRepository, I
 
         var shop = Shop.CreateNew(shopDescription, address, request.GroupIds);
 
-        var result = await _shopRepository.InsertShopAsync(shop, cancellationToken);
+        await _shopRepository.InsertShopAsync(shop, cancellationToken);
 
         return shop;
     }

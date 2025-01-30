@@ -3,6 +3,9 @@
 namespace CatalogManagement.Domain.ProductGroupAggregate.Errors;
 public static class ProductGroupError
 {
+    static ProductGroupError()
+    {
+    }
     public static readonly Error InvalidName = new Error(
         "Invalid.ProductGroup.ProductGroupName",
         ErrorType.Validation,

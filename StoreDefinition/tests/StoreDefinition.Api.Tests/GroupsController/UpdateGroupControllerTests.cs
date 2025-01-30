@@ -11,7 +11,7 @@ public class UpdateGroupControllerTests(StoreDefinitionApiFactory apiFactory)
         var group = await InsertGroup();
         var request = GroupRequestFactory.CreateGroupUpdateRequest();
 
-        var response = await _client.PutAsJsonAsync($"{GroupsBaseAddress}/{group.Id}", request);
+        var response = await _client.PutAsJsonAsync($"{GroupsBaseAddress}/{group!.Id}", request);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         var groupResponse = await response.Content.ReadFromJsonAsync<GroupResponse>();
@@ -45,7 +45,7 @@ public class UpdateGroupControllerTests(StoreDefinitionApiFactory apiFactory)
         var group = await InsertGroup();
         var request = GroupRequestFactory.CreateGroupUpdateRequest(groupName: invalid);
 
-        var response = await _client.PutAsJsonAsync($"{GroupsBaseAddress}/{group.Id}", request);
+        var response = await _client.PutAsJsonAsync($"{GroupsBaseAddress}/{group!.Id}", request);
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
@@ -60,7 +60,7 @@ public class UpdateGroupControllerTests(StoreDefinitionApiFactory apiFactory)
         var group = await InsertGroup();
         var request = GroupRequestFactory.CreateGroupUpdateRequest(groupDescription: invalid);
 
-        var response = await _client.PutAsJsonAsync($"{GroupsBaseAddress}/{group.Id}", request);
+        var response = await _client.PutAsJsonAsync($"{GroupsBaseAddress}/{group!.Id}", request);
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
@@ -74,7 +74,7 @@ public class UpdateGroupControllerTests(StoreDefinitionApiFactory apiFactory)
         var group = await InsertGroup();
         var request = GroupRequestFactory.CreateGroupUpdateRequest(groupName: "", groupDescription: "");
 
-        var response = await _client.PutAsJsonAsync($"{GroupsBaseAddress}/{group.Id}", request);
+        var response = await _client.PutAsJsonAsync($"{GroupsBaseAddress}/{group!.Id}", request);
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();

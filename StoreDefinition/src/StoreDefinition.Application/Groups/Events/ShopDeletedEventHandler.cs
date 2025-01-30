@@ -9,7 +9,7 @@ internal sealed class ShopDeletedEventHandler(IGroupRepository groupRepository)
     private readonly IGroupRepository groupRepository = groupRepository;
     public async Task Handle(ShopDeletedDomainEvent notification, CancellationToken cancellationToken)
     {
-        var groups = await groupRepository.GetGroupsByShopIdAsync(notification.ShopId);
+        var groups = await groupRepository.GetGroupsByShopIdAsync(notification.ShopId,cancellationToken);
         //TODO:UNIT OF WORK
         foreach (var group in groups)
         {

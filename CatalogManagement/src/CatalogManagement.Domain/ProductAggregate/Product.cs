@@ -9,7 +9,7 @@ public sealed class Product : AggregateRoot<ProductId>
     public ProductDefinition Definition { get; private set; } = null!;
 
     private readonly List<Guid> _groupIds = new();
-    public IReadOnlyList<Guid> GroupIds => _groupIds.ToList();
+    public IReadOnlyList<Guid> GroupIds => _groupIds;
 
     internal Product(ProductName name,
                    ProductCode code,

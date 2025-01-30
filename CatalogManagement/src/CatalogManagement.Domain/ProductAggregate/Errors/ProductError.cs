@@ -1,8 +1,11 @@
 ﻿using CatalogManagement.SharedKernel;
 
 namespace CatalogManagement.Domain.ProductAggregate.Errors;
-public class ProductError
+public static class ProductError
 {
+    static ProductError()
+    {
+    }
     public static readonly Error InvalidName = new Error(
         "Invalid.Product.ProductName",
         ErrorType.Validation,

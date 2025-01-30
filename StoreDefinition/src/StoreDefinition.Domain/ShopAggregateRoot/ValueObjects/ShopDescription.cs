@@ -6,7 +6,7 @@ using StoreDefinition.Domain.ShopAggregateRoot.Exceptions;
 namespace StoreDefinition.Domain.ShopAggregateRoot.ValueObjects;
 public sealed class ShopDescription : ValueObject
 {
-    public string Value { get; private set; } = null!;
+    public string Value { get; private set; }
 
     public ShopDescription(string value)
     {
