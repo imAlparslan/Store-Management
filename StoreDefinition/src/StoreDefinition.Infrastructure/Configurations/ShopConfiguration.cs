@@ -2,8 +2,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using StoreDefinition.Domain.ShopAggregateRoot;
 using StoreDefinition.Infrastructure.Converters;
-using StoreDefinition.Infrastructure.Extension;
-using System.Collections.Immutable;
 
 namespace StoreDefinition.Infrastructure.Configurations;
 internal class ShopConfiguration : IEntityTypeConfiguration<Shop>

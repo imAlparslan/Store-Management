@@ -1,9 +1,6 @@
-﻿using StoreDefinition.Application.Common.Interfaces;
-using StoreDefinition.Application.Common.Repositories;
+﻿using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Domain.ShopAggregateRoot;
 using StoreDefinition.Domain.ShopAggregateRoot.Errors;
-using StoreDefinition.Domain.ShopAggregateRoot.Events;
-using StoreDefinition.SharedKernel;
 
 namespace StoreDefinition.Application.Shops.Commands.RemoveGroupFromShop;
 internal sealed class RemoveGroupFromShopCommandHandler(IShopRepository shopRepository)

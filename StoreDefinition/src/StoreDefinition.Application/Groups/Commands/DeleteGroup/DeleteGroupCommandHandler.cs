@@ -1,8 +1,6 @@
-﻿using StoreDefinition.Application.Common.Interfaces;
-using StoreDefinition.Application.Common.Repositories;
+﻿using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Domain.GroupAggregateRoot.Errors;
 using StoreDefinition.Domain.GroupAggregateRoot.Events;
-using StoreDefinition.SharedKernel;
 
 namespace StoreDefinition.Application.Groups.Commands.DeleteGroup;
 internal sealed class DeleteGroupCommandHandler(IGroupRepository groupRepository) : ICommandHandler<DeleteGroupCommand, Result<bool>>

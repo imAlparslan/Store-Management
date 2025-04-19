@@ -1,8 +1,6 @@
-﻿using StoreDefinition.Application.Common.Interfaces;
-using StoreDefinition.Application.Common.Repositories;
+﻿using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Domain.ShopAggregateRoot.Errors;
 using StoreDefinition.Domain.ShopAggregateRoot.Events;
-using StoreDefinition.SharedKernel;
 
 namespace StoreDefinition.Application.Shops.Commands.DeleteShop;
 internal sealed class DeleteShopCommandHandler(IShopRepository shopRepository) : ICommandHandler<DeleteShopCommand, Result<bool>>
@@ -11,7 +9,7 @@ internal sealed class DeleteShopCommandHandler(IShopRepository shopRepository) :
 
     public async Task<Result<bool>> Handle(DeleteShopCommand request, CancellationToken cancellationToken)
     {
-        var result = await _shopRepository.GetShopByIdAsync(request.ShopId,cancellationToken);
+        var result = await _shopRepository.GetShopByIdAsync(request.ShopId, cancellationToken);
 
         if (result is null)
         {

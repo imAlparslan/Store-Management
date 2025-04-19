@@ -12,7 +12,7 @@ public class DeleteShopCommandValidatorTests
         var validator = new DeleteShopCommandValidator();
 
         var result = validator.Validate(command);
-        
+
         result.IsValid.Should().BeTrue();
     }
 

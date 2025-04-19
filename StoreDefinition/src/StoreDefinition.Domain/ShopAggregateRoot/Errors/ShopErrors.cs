@@ -1,11 +1,9 @@
-﻿using StoreDefinition.SharedKernel;
-
-namespace StoreDefinition.Domain.ShopAggregateRoot.Errors;
+﻿namespace StoreDefinition.Domain.ShopAggregateRoot.Errors;
 public class ShopErrors
 {
     private ShopErrors()
     {
-        
+
     }
     public static readonly Error InvalidDescription = new Error(
         "Invalid.Shop.ShopDescription",

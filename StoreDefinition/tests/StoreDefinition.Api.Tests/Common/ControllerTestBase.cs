@@ -1,8 +1,6 @@
-﻿using StoreDefinition.Api.Tests.Factories;
-using StoreDefinition.Contracts.Shops;
-using System.Net.Http.Json;
+﻿using StoreDefinition.Contracts.Shops;
 
-namespace StoreDefinition.Api.Tests;
+namespace StoreDefinition.Api.Tests.Common;
 public abstract class ControllerTestBase : IAsyncLifetime
 {
     protected readonly HttpClient _client;

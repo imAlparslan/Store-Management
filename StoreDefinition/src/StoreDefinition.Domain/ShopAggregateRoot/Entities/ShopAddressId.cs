@@ -1,6 +1,4 @@
-﻿using StoreDefinition.Domain.Common.Models;
-
-namespace StoreDefinition.Domain.ShopAggregateRoot.Entities;
+﻿namespace StoreDefinition.Domain.ShopAggregateRoot.Entities;
 public class ShopAddressId : ValueObject
 {
     public Guid Value { get; }

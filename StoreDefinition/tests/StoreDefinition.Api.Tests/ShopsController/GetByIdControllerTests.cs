@@ -1,11 +1,6 @@
-﻿using FluentAssertions;
-using FluentAssertions.Execution;
-using Microsoft.AspNetCore.Mvc;
-using StoreDefinition.Api.Tests.Factories;
-using StoreDefinition.Api.Tests.Fixtures;
+﻿using FluentAssertions.Execution;
+using StoreDefinition.Api.Tests.Common;
 using StoreDefinition.Contracts.Shops;
-using System.Net;
-using System.Net.Http.Json;
 
 namespace StoreDefinition.Api.Tests.ShopsController;
 [Collection(nameof(ShopsControllerCollectionFixture))]
@@ -26,7 +21,8 @@ public class GetByIdControllerTests(StoreDefinitionApiFactory apiFactory)
             var shopResponse = await response.Content.ReadFromJsonAsync<ShopResponse>();
             shopResponse.Should().NotBeNull();
             shopResponse!.Id.Should().Be(shop.Id);
-        };
+        }
+        ;
     }
 
     [Fact]
@@ -48,6 +44,7 @@ public class GetByIdControllerTests(StoreDefinitionApiFactory apiFactory)
             var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
             error.Should().NotBeNull();
             error.Errors.Should().HaveCount(1);
-        };
+        }
+        ;
     }
 }

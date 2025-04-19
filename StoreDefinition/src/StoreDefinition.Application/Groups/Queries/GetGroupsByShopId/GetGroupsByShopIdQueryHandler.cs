@@ -1,7 +1,5 @@
-﻿using StoreDefinition.Application.Common.Interfaces;
-using StoreDefinition.Application.Common.Repositories;
+﻿using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Domain.GroupAggregateRoot;
-using StoreDefinition.SharedKernel;
 
 namespace StoreDefinition.Application.Groups.Queries.GetGroupsByShopId;
 internal sealed class GetGroupsByShopIdQueryHandler(IGroupRepository groupRepository) : IQueryHandler<GetGroupsByShopIdQuery, Result<IEnumerable<Group>>>

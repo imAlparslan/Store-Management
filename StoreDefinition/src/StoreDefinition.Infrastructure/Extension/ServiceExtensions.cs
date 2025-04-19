@@ -29,7 +29,7 @@ public static class ServiceExtensions
         services.AddScoped<IUnitOfWorkManager, UnitOfWorkManager>();
         services.AddScoped<IShopRepository, ShopRepository>();
         services.AddScoped<IGroupRepository, GroupRepository>();
-      
+
         return services;
     }
 }

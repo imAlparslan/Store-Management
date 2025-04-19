@@ -1,4 +1,6 @@
-﻿namespace StoreDefinition.Api.Tests.GroupsController;
+﻿using StoreDefinition.Api.Tests.Common;
+
+namespace StoreDefinition.Api.Tests.GroupsController;
 
 [Collection(nameof(GroupsControllerCollectionFixture))]
 public class UpdateGroupControllerTests(StoreDefinitionApiFactory apiFactory)
@@ -32,9 +34,9 @@ public class UpdateGroupControllerTests(StoreDefinitionApiFactory apiFactory)
     public async Task Update_ReturnsBadRequest_WhenGroupIdInvalid()
     {
         var request = GroupRequestFactory.CreateGroupUpdateRequest();
-        
+
         var response = await _client.PutAsJsonAsync($"{GroupsBaseAddress}/{Guid.Empty}", request);
-        
+
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
 

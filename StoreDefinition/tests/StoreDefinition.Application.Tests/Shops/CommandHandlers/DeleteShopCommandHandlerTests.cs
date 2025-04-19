@@ -4,7 +4,6 @@ using NSubstitute.ReturnsExtensions;
 using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Application.Shops.Commands.DeleteShop;
 using StoreDefinition.Application.Tests.Common.Factories.ShopFactories;
-using StoreDefinition.Domain.ShopAggregateRoot;
 using StoreDefinition.Domain.ShopAggregateRoot.Errors;
 using StoreDefinition.Domain.ShopAggregateRoot.ValueObjects;
 

@@ -1,9 +1,5 @@
-﻿using FluentAssertions;
-using StoreDefinition.Api.Tests.Factories;
-using StoreDefinition.Api.Tests.Fixtures;
+﻿using StoreDefinition.Api.Tests.Common;
 using StoreDefinition.Contracts.Shops;
-using System.Net;
-using System.Net.Http.Json;
 
 namespace StoreDefinition.Api.Tests.ShopsController;
 
@@ -51,9 +47,9 @@ public class AddGroupToShopControllerTests(StoreDefinitionApiFactory apiFactory)
         var shop = await InsertShop();
         var group = await InsertGroup();
         var request = ShopsRequestFactory.CreateAddGroupToShopRequest(group.Id);
-        
+
         var response = await _client.PostAsJsonAsync($"{ShopsBaseAddress}/{shop.Id}/add-group", request);
-        
+
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         var groupResponse = await _client.GetFromJsonAsync<GroupResponse>($"{GroupsBaseAddress}/{group.Id}");
         groupResponse!.ShopsIds.Should().Contain(shop.Id);

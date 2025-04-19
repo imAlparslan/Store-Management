@@ -27,5 +27,5 @@ public class ApplicationLayerDependencyTests : ArchUnitBase
             .Should()
             .NotDependOnAny(PresentationLayer)
             .Check(Architecture);
-    }   
+    }
 }

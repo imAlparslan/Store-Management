@@ -1,7 +1,5 @@
-﻿using StoreDefinition.Application.Common.Interfaces;
-using StoreDefinition.Application.Common.Repositories;
+﻿using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Domain.ShopAggregateRoot;
-using StoreDefinition.SharedKernel;
 
 namespace StoreDefinition.Application.Shops.Queries.GetShopsByGroupId;
 internal sealed class GetShopsByGroupIdQueryHandler(IShopRepository shopRepository)

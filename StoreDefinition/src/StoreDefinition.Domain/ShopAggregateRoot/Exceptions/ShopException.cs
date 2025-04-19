@@ -1,7 +1,4 @@
-﻿using StoreDefinition.Domain.Common.Exceptions;
-using StoreDefinition.SharedKernel;
-
-namespace StoreDefinition.Domain.ShopAggregateRoot.Exceptions;
+﻿namespace StoreDefinition.Domain.ShopAggregateRoot.Exceptions;
 public class ShopException : DomainException
 {
     private ShopException(string code, string? message) : base(code, message)

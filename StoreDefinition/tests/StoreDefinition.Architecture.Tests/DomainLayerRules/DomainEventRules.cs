@@ -1,7 +1,6 @@
 ﻿using ArchUnitNET.Fluent;
 using ArchUnitNET.xUnit;
 using StoreDefinition.Architecture.Tests.Common;
-using StoreDefinition.Domain.Common.Interfaces;
 
 namespace StoreDefinition.Architecture.Tests.DomainLayerRules;
 public class DomainEventRules : ArchUnitBase

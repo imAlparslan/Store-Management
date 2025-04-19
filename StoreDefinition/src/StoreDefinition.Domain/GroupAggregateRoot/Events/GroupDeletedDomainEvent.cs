@@ -1,5 +1,4 @@
-﻿using StoreDefinition.Domain.Common.Interfaces;
-using StoreDefinition.Domain.GroupAggregateRoot.ValueObjects;
+﻿using StoreDefinition.Domain.GroupAggregateRoot.ValueObjects;
 
 namespace StoreDefinition.Domain.GroupAggregateRoot.Events;
 public sealed record GroupDeletedDomainEvent(GroupId GroupId) : IDomainEvent;

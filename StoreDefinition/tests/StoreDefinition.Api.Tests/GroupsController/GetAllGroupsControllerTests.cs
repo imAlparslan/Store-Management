@@ -1,4 +1,6 @@
-﻿namespace StoreDefinition.Api.Tests.GroupsController;
+﻿using StoreDefinition.Api.Tests.Common;
+
+namespace StoreDefinition.Api.Tests.GroupsController;
 
 [Collection(nameof(GroupsControllerCollectionFixture))]
 public class GetAllGroupsControllerTests(StoreDefinitionApiFactory apiFactory)
