@@ -1,4 +1,4 @@
-﻿namespace InventoryManagement.Domain.StockAggregateRoot.ValueObjects;
+namespace InventoryManagement.Domain.StockAggregateRoot.ValueObjects;
 public sealed class StockId : ValueObject
 {
     public Guid Value { get; }

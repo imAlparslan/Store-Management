@@ -1,1 +1,1 @@
-﻿global using SharedKernel.Domain.Common.Models;
+global using SharedKernel.Domain.Common.Models;
