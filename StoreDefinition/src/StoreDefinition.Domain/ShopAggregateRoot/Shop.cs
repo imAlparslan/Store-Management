@@ -1,5 +1,4 @@
-﻿using StoreDefinition.Domain.Common.Models;
-using StoreDefinition.Domain.ShopAggregateRoot.Entities;
+﻿using StoreDefinition.Domain.ShopAggregateRoot.Entities;
 using StoreDefinition.Domain.ShopAggregateRoot.Events;
 using StoreDefinition.Domain.ShopAggregateRoot.ValueObjects;
 
@@ -49,7 +48,7 @@ public class Shop : AggregateRoot<ShopId>
     }
     public bool RemoveGroup(Guid groupId)
     {
-        var isRemoved =_groupIds.Remove(groupId);
+        var isRemoved = _groupIds.Remove(groupId);
         if (isRemoved)
         {
             AddDomainEvent(new GroupRemovedFromShopDomainEvent(Id, groupId));

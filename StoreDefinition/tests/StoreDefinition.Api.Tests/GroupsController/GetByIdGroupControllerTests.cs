@@ -8,9 +8,9 @@ public class GetByIdGroupControllerTests(StoreDefinitionApiFactory apiFactory)
     public async Task GetById_ReturnsGroupResponse_WhenGroupExists()
     {
         var group = await InsertGroup();
-        
+
         var response = await _client.GetAsync($"{GroupsBaseAddress}/{group.Id}");
-        
+
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         var groupResponse = await response.Content.ReadFromJsonAsync<GroupResponse>();
         groupResponse.Should().NotBeNull();
@@ -22,14 +22,14 @@ public class GetByIdGroupControllerTests(StoreDefinitionApiFactory apiFactory)
     public async Task GetById_ReturnsNotFound_WhenGroupNotFound()
     {
         var response = await _client.GetAsync($"{GroupsBaseAddress}/{Guid.NewGuid()}");
-     
+
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
     [Fact]
     public async Task GetById_ReturnsBadRequest_WhenGroupIdInvalid()
     {
         var response = await _client.GetAsync($"{GroupsBaseAddress}/{Guid.Empty}");
-     
+
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
 }

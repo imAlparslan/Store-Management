@@ -32,9 +32,9 @@ public class UpdateGroupControllerTests(StoreDefinitionApiFactory apiFactory)
     public async Task Update_ReturnsBadRequest_WhenGroupIdInvalid()
     {
         var request = GroupRequestFactory.CreateGroupUpdateRequest();
-        
+
         var response = await _client.PutAsJsonAsync($"{GroupsBaseAddress}/{Guid.Empty}", request);
-        
+
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
 

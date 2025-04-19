@@ -1,6 +1,4 @@
-﻿using StoreDefinition.Domain.Common.Models;
-
-namespace StoreDefinition.Domain.GroupAggregateRoot.ValueObjects;
+﻿namespace StoreDefinition.Domain.GroupAggregateRoot.ValueObjects;
 public sealed class GroupId : ValueObject
 {
     public Guid Value { get; }

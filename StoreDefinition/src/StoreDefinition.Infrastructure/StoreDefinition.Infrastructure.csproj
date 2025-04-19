@@ -12,11 +12,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\SharedKernel\SharedKernel.Domain.Common\SharedKernel.Domain.Common.csproj" />
     <ProjectReference Include="..\StoreDefinition.Application\StoreDefinition.Application.csproj" />
     <ProjectReference Include="..\StoreDefinition.Domain\StoreDefinition.Domain.csproj" />
   </ItemGroup>
 
 	<ItemGroup>
-		<InternalsVisibleTo Include="StoreDefinition.Api.Tests"/>
+		<InternalsVisibleTo Include="StoreDefinition.Api.Tests" />
 	</ItemGroup>
 </Project>

@@ -1,6 +1,4 @@
-﻿using StoreDefinition.Domain.Common.Models;
-
-namespace StoreDefinition.Domain.ShopAggregateRoot.ValueObjects;
+﻿namespace StoreDefinition.Domain.ShopAggregateRoot.ValueObjects;
 public sealed class ShopId : ValueObject
 {
     public Guid Value { get; }

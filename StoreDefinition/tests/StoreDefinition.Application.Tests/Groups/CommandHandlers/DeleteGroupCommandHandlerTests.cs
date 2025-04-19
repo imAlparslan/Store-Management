@@ -25,7 +25,7 @@ public class DeleteGroupCommandHandlerTests
         groupRepository.GetGroupByIdAsync(Arg.Any<GroupId>()).ReturnsForAnyArgs(group);
         var command = new DeleteGroupCommand(group.Id);
 
-        var result = await handler.Handle(command,default);
+        var result = await handler.Handle(command, default);
 
         result.IsSuccess.Should().BeTrue();
         await groupRepository.ReceivedWithAnyArgs(1).DeleteGroupByIdAsync(Arg.Any<GroupId>());

@@ -1,8 +1,6 @@
-﻿using StoreDefinition.Application.Common.Interfaces;
-using StoreDefinition.Application.Common.Repositories;
+﻿using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Domain.GroupAggregateRoot;
 using StoreDefinition.Domain.GroupAggregateRoot.ValueObjects;
-using StoreDefinition.SharedKernel;
 
 namespace StoreDefinition.Application.Groups.Commands.CreateGroup;
 internal sealed class CreateGroupCommandHandler(IGroupRepository groupRepository) : ICommandHandler<CreateGroupCommand, Result<Group>>

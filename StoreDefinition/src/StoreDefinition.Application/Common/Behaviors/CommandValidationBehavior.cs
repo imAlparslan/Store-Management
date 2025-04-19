@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using MediatR;
-using StoreDefinition.SharedKernel;
 
 namespace StoreDefinition.Application.Common.Behaviors;
 public sealed class CommandValidationBehavior<TCommand, TResponse>

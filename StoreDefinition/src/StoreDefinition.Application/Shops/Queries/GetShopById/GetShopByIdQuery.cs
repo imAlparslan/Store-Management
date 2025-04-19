@@ -1,8 +1,6 @@
-﻿using StoreDefinition.Application.Common.Interfaces;
-using StoreDefinition.Domain.ShopAggregateRoot;
-using StoreDefinition.SharedKernel;
+﻿using StoreDefinition.Domain.ShopAggregateRoot;
 
 namespace StoreDefinition.Application.Shops.Queries.GetShopById;
 
-public sealed record GetShopByIdQuery(Guid ShopId): IQuery<Result<Shop>>;
+public sealed record GetShopByIdQuery(Guid ShopId) : IQuery<Result<Shop>>;
 

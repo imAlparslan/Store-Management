@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using StoreDefinition.Domain.Common.Exceptions;
-using StoreDefinition.Domain.GroupAggregateRoot.Errors;
+﻿using StoreDefinition.Domain.GroupAggregateRoot.Errors;
 using StoreDefinition.Domain.GroupAggregateRoot.Exceptions;
 using StoreDefinition.Domain.GroupAggregateRoot.ValueObjects;
 

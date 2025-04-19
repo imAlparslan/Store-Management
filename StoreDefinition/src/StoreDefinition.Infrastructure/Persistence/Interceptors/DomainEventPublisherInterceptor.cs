@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore.Diagnostics;
-using StoreDefinition.Domain.Common.Interfaces;
 using StoreDefinition.Infrastructure.Services;
 
 namespace StoreDefinition.Infrastructure.Persistence.Interceptors;

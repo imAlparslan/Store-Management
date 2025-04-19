@@ -38,8 +38,8 @@ public class GetAllGroupsQueryHandlerTests
         var query = new GetAllGroupsQuery();
         groupRepository.GetAllGroupsAsync().Returns([]);
 
-        var result = await handler.Handle(query, default); 
-        
+        var result = await handler.Handle(query, default);
+
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().NotBeNull();
         result.Value.Should().BeEmpty();

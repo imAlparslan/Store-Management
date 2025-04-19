@@ -1,8 +1,6 @@
-﻿using StoreDefinition.Application.Common.Interfaces;
-using StoreDefinition.Application.Common.Repositories;
+﻿using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Domain.ShopAggregateRoot;
 using StoreDefinition.Domain.ShopAggregateRoot.Errors;
-using StoreDefinition.SharedKernel;
 
 namespace StoreDefinition.Application.Shops.Commands.AddGroupToShop;
 internal sealed class AddGroupToShopCommandHandler(IShopRepository shopRepository) : ICommandHandler<AddGroupToShopCommand, Result<Shop>>
