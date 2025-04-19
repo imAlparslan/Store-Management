@@ -1,8 +1,6 @@
-﻿using CatalogManagement.Application.Common.Interfaces;
-using CatalogManagement.Application.Common.Repositories;
+﻿using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Domain.ProductGroupAggregate;
 using CatalogManagement.Domain.ProductGroupAggregate.ValueObjects;
-using CatalogManagement.SharedKernel;
 
 namespace CatalogManagement.Application.ProductGroups;
 internal sealed class CreateProductGroupCommandHandler(IProductGroupRepository productGroupRepository)
@@ -15,7 +13,7 @@ internal sealed class CreateProductGroupCommandHandler(IProductGroupRepository p
         ProductGroupName name = new(request.Name);
         ProductGroupDescription description = new(request.Description);
         ProductGroup productGroup = new(name, description);
-        
+
         await productGroupRepository.InsertAsync(productGroup, cancellationToken);
 
         return Result<ProductGroup>.Success(productGroup);

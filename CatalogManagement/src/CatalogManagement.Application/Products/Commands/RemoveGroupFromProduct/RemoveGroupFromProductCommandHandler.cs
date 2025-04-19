@@ -1,9 +1,6 @@
-﻿using CatalogManagement.Application.Common.Interfaces;
-using CatalogManagement.Application.Common.Repositories;
+﻿using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Domain.ProductAggregate;
 using CatalogManagement.Domain.ProductAggregate.Errors;
-using CatalogManagement.Domain.ProductAggregate.Events;
-using CatalogManagement.SharedKernel;
 
 namespace CatalogManagement.Application.Products.Commands.RemoveGroupFromProduct;
 internal sealed class RemoveGroupFromProductCommandHandler(IProductRepository productRepository)
@@ -21,7 +18,7 @@ internal sealed class RemoveGroupFromProductCommandHandler(IProductRepository pr
 
         var result = product.RemoveGroup(request.GroupId);
 
-        if(result)
+        if (result)
         {
             return await productRepository.UpdateAsync(product, cancellationToken);
         }

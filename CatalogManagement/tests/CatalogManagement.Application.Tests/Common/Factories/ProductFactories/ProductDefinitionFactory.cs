@@ -1,5 +1,4 @@
 ﻿using Bogus;
-using CatalogManagement.Domain.ProductAggregate.ValueObjects;
 
 namespace CatalogManagement.Application.Tests.Common.Factories.ProductFactories;
 internal class ProductDefinitionFactory

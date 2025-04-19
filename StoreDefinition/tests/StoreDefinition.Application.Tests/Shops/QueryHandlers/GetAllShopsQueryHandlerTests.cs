@@ -3,7 +3,6 @@ using NSubstitute;
 using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Application.Shops.Queries.GetAllShops;
 using StoreDefinition.Application.Tests.Common.Factories.ShopFactories;
-using StoreDefinition.Domain.ShopAggregateRoot;
 
 namespace StoreDefinition.Application.Tests.Shops.QueryHandlers;
 public class GetAllShopsQueryHandlerTests

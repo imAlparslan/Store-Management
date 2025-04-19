@@ -1,9 +1,5 @@
-﻿using FluentAssertions;
-using FluentAssertions.Execution;
-using StoreDefinition.Api.Tests.Fixtures;
+﻿using FluentAssertions.Execution;
 using StoreDefinition.Contracts.Shops;
-using System.Net;
-using System.Net.Http.Json;
 
 namespace StoreDefinition.Api.Tests.ShopsController;
 

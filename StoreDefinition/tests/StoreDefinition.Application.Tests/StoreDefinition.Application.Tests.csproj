@@ -23,7 +23,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\StoreDefinition.Application\StoreDefinition.Application.csproj" />
     <ProjectReference Include="..\..\src\StoreDefinition.Domain\StoreDefinition.Domain.csproj" />
-    <ProjectReference Include="..\..\src\StoreDefinition.SharedKernel\StoreDefinition.SharedKernel.csproj" />
   </ItemGroup>
 
 </Project>

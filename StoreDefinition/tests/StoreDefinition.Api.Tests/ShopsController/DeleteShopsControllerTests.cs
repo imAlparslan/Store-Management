@@ -1,9 +1,6 @@
-﻿using FluentAssertions;
-using StoreDefinition.Api.Tests.Fixtures;
-using System.Net;
-using System.Net.Http.Json;
 
 namespace StoreDefinition.Api.Tests.ShopsController;
+
 
 [Collection(nameof(ShopsControllerCollectionFixture))]
 public class DeleteShopsControllerTests(StoreDefinitionApiFactory apiFactory)
@@ -42,9 +39,9 @@ public class DeleteShopsControllerTests(StoreDefinitionApiFactory apiFactory)
         var shop = await InsertShop();
         var group = await InsertGroup();
         await AddShopToGroup(shop.Id, group.Id);
-       
+
         var response = await _client.DeleteAsync($"{ShopsBaseAddress}/{shop.Id}");
-        
+
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         var groupResponse = await _client.GetFromJsonAsync<GroupResponse>($"{GroupsBaseAddress}/{group.Id}");
         groupResponse!.ShopsIds.Should().NotContain(shop.Id);

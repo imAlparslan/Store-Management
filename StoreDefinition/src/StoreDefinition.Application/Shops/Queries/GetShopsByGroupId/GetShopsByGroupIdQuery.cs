@@ -1,7 +1,5 @@
-﻿using StoreDefinition.Application.Common.Interfaces;
-using StoreDefinition.Domain.ShopAggregateRoot;
-using StoreDefinition.SharedKernel;
+﻿using StoreDefinition.Domain.ShopAggregateRoot;
 
 namespace StoreDefinition.Application.Shops.Queries.GetShopsByGroupId;
-public sealed record GetShopsByGroupIdQuery(Guid GroupId): IQuery<Result<IEnumerable<Shop>>>;
+public sealed record GetShopsByGroupIdQuery(Guid GroupId) : IQuery<Result<IEnumerable<Shop>>>;
 

@@ -1,6 +1,4 @@
-﻿using CatalogManagement.Domain.Common.Interfaces;
-
-namespace CatalogManagement.Infrastructure.Services;
+﻿namespace CatalogManagement.Infrastructure.Services;
 
 public interface IDomainEventPublisherService
 {

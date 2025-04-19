@@ -1,5 +1,4 @@
-﻿using CatalogManagement.Domain.Common.Models;
-using CatalogManagement.Domain.ProductGroupAggregate.ValueObjects;
+﻿using CatalogManagement.Domain.ProductGroupAggregate.ValueObjects;
 
 namespace CatalogManagement.Domain.ProductGroupAggregate;
 public sealed class ProductGroup : AggregateRoot<ProductGroupId>

@@ -1,6 +1,4 @@
-﻿using CatalogManagement.Application.ProductGroups;
-using CatalogManagement.Domain.ProductGroupAggregate;
-using CatalogManagement.Domain.ProductGroupAggregate.ValueObjects;
+﻿using CatalogManagement.Domain.ProductGroupAggregate;
 
 namespace CatalogManagement.Application.Tests.Common.Factories.ProductGroupFactories;
 internal class ProductGroupFactory

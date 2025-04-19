@@ -1,6 +1,4 @@
-﻿using CatalogManagement.Domain.Common.Exceptions;
-using CatalogManagement.SharedKernel;
-
+﻿
 namespace CatalogManagement.Domain.ProductAggregate.Exceptions;
 public class ProductException : DomainException
 {

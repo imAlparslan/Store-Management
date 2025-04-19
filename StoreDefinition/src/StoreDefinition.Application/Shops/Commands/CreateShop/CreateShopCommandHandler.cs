@@ -1,9 +1,7 @@
-﻿using StoreDefinition.Application.Common.Interfaces;
-using StoreDefinition.Application.Common.Repositories;
+﻿using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Domain.ShopAggregateRoot;
 using StoreDefinition.Domain.ShopAggregateRoot.Entities;
 using StoreDefinition.Domain.ShopAggregateRoot.ValueObjects;
-using StoreDefinition.SharedKernel;
 
 namespace StoreDefinition.Application.Shops.Commands.CreateShop;
 internal sealed class CreateShopCommandHandler(IShopRepository shopRepository)

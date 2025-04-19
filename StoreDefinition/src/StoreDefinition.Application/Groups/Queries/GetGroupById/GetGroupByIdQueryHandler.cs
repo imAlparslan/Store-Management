@@ -1,8 +1,6 @@
-﻿using StoreDefinition.Application.Common.Interfaces;
-using StoreDefinition.Application.Common.Repositories;
+﻿using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Domain.GroupAggregateRoot;
 using StoreDefinition.Domain.GroupAggregateRoot.Errors;
-using StoreDefinition.SharedKernel;
 
 namespace StoreDefinition.Application.Groups.Queries.GetGroupById;
 internal sealed class GetGroupByIdQueryHandler(IGroupRepository groupRepository) : IQueryHandler<GetGroupByIdQuery, Result<Group>>

@@ -1,5 +1,4 @@
-﻿using CatalogManagement.Domain.Common.Interfaces;
-using MediatR;
+﻿using MediatR;
 
 namespace CatalogManagement.Infrastructure.Services;
 internal class DomainEventPublisherService(IMediator mediator) : IDomainEventPublisherService

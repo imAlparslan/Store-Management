@@ -1,6 +1,4 @@
-﻿using StoreDefinition.Contracts.Groups;
-
-namespace StoreDefinition.Api.Tests.Factories;
+﻿namespace StoreDefinition.Api.Tests.Factories;
 public static class GroupRequestFactory
 {
     public static CreateGroupRequest CreateGroupCreateRequest(string groupName = "Group Name", string groupDescription = "Group Description")

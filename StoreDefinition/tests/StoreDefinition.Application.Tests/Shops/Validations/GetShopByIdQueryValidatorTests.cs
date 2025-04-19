@@ -1,10 +1,5 @@
 ﻿using FluentAssertions;
 using StoreDefinition.Application.Shops.Queries.GetShopById;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StoreDefinition.Application.Tests.Shops.Validations;
 public class GetShopByIdQueryValidatorTests

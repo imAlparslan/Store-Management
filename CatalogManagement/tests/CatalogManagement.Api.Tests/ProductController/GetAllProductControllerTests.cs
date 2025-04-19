@@ -7,7 +7,7 @@ namespace CatalogManagement.Api.Tests.ProductController;
 [Collection(nameof(ProductControllerCollectionFixture))]
 public class GetAllProductControllerTests : ControllerTestBase
 {
-    public GetAllProductControllerTests(CatalogApiFactory catalogApiFactory):base(catalogApiFactory)
+    public GetAllProductControllerTests(CatalogApiFactory catalogApiFactory) : base(catalogApiFactory)
     {
     }
 

@@ -1,8 +1,6 @@
-﻿using CatalogManagement.Application.Common.Interfaces;
-using CatalogManagement.Application.Common.Repositories;
+﻿using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Domain.ProductAggregate;
 using CatalogManagement.Domain.ProductAggregate.Errors;
-using CatalogManagement.SharedKernel;
 
 namespace CatalogManagement.Application.Products;
 internal sealed class GetProductByIdQueryHandler(IProductRepository productRepository)

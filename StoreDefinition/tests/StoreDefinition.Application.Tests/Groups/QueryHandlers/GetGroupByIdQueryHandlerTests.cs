@@ -6,7 +6,6 @@ using StoreDefinition.Application.Groups.Queries.GetGroupById;
 using StoreDefinition.Application.Tests.Common.Factories.GroupFactories;
 using StoreDefinition.Domain.GroupAggregateRoot.Errors;
 using StoreDefinition.Domain.GroupAggregateRoot.ValueObjects;
-using System.Text.RegularExpressions;
 
 namespace StoreDefinition.Application.Tests.Groups.QueryHandlers;
 public class GetGroupByIdQueryHandlerTests
@@ -38,7 +37,7 @@ public class GetGroupByIdQueryHandlerTests
     {
         groupRepository.GetGroupByIdAsync(Arg.Any<GroupId>()).ReturnsNullForAnyArgs();
         var query = new GetGroupByIdQuery(Guid.NewGuid());
-        
+
         var result = await handler.Handle(query, default);
 
         result.IsSuccess.Should().BeFalse();

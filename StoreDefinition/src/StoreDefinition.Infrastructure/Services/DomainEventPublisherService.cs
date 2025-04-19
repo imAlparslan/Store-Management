@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using StoreDefinition.Domain.Common.Interfaces;
 
 namespace StoreDefinition.Infrastructure.Services;
 internal class DomainEventPublisherService(IMediator mediator) : IDomainEventPublisherService

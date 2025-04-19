@@ -1,6 +1,5 @@
 ﻿using ArchUnitNET.Fluent;
 using ArchUnitNET.xUnit;
-using StoreDefinition.Application.Common.Interfaces;
 using StoreDefinition.Architecture.Tests.Common;
 
 namespace StoreDefinition.Architecture.Tests.ApplicationLayerRules;

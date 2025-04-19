@@ -1,6 +1,5 @@
 ﻿using ArchUnitNET.Fluent;
 using ArchUnitNET.xUnit;
-using CatalogManagement.Application.Common.Interfaces;
 using CatalogManagement.Architecture.Tests.Commons;
 using CatalogManagement.Architecture.Tests.Constants;
 

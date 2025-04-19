@@ -1,9 +1,7 @@
-﻿using StoreDefinition.Application.Common.Interfaces;
-using StoreDefinition.Application.Common.Repositories;
+﻿using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Domain.GroupAggregateRoot;
 using StoreDefinition.Domain.GroupAggregateRoot.Errors;
 using StoreDefinition.Domain.GroupAggregateRoot.ValueObjects;
-using StoreDefinition.SharedKernel;
 
 namespace StoreDefinition.Application.Groups.Commands.UpdateGroup;
 internal sealed class UpdateGroupCommandHandler(IGroupRepository groupRepository) : ICommandHandler<UpdateGroupCommand, Result<Group>>

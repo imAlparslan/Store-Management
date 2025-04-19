@@ -1,8 +1,6 @@
-﻿using CatalogManagement.Application.Common.Interfaces;
-using CatalogManagement.Application.Common.Repositories;
+﻿using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Domain.ProductGroupAggregate;
 using CatalogManagement.Domain.ProductGroupAggregate.Errors;
-using CatalogManagement.SharedKernel;
 
 namespace CatalogManagement.Application.ProductGroups;
 internal sealed class UpdateProductGroupCommandHandler(IProductGroupRepository productGroupRepository)

@@ -1,5 +1,4 @@
-﻿using CatalogManagement.Domain.Common.Exceptions;
-using CatalogManagement.Domain.ProductGroupAggregate.Errors;
+﻿using CatalogManagement.Domain.ProductGroupAggregate.Errors;
 using CatalogManagement.Domain.ProductGroupAggregate.Exceptions;
 using CatalogManagement.Domain.ProductGroupAggregate.ValueObjects;
 using CatalogManagement.Domain.Tests.ProductGroupAggregate.Factories;

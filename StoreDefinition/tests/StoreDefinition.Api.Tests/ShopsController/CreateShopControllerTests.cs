@@ -1,11 +1,6 @@
-﻿using FluentAssertions;
-using FluentAssertions.Execution;
-using Microsoft.AspNetCore.Mvc;
-using StoreDefinition.Api.Tests.Factories;
-using StoreDefinition.Api.Tests.Fixtures;
+﻿using FluentAssertions.Execution;
+using StoreDefinition.Api.Tests.Common;
 using StoreDefinition.Contracts.Shops;
-using System.Net;
-using System.Net.Http.Json;
 
 namespace StoreDefinition.Api.Tests.ShopsController;
 

@@ -5,11 +5,11 @@ using FluentValidation.Results;
 using MediatR;
 using NSubstitute;
 using NSubstitute.Extensions;
+using SharedKernel.Common.Results;
 using StoreDefinition.Application.Common.Behaviors;
 using StoreDefinition.Application.Shops.Commands.CreateShop;
 using StoreDefinition.Application.Tests.Common.Factories.ShopFactories;
 using StoreDefinition.Domain.ShopAggregateRoot;
-using StoreDefinition.SharedKernel;
 
 namespace StoreDefinition.Application.Tests.Behaviors;
 public class CommandValidationBehaviorTests

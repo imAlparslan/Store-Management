@@ -1,5 +1,4 @@
 ﻿using Ardalis.GuardClauses;
-using StoreDefinition.Domain.Common.Models;
 using StoreDefinition.Domain.GroupAggregateRoot.Errors;
 using StoreDefinition.Domain.GroupAggregateRoot.Exceptions;
 

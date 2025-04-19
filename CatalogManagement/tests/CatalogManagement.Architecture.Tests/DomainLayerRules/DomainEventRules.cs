@@ -2,7 +2,6 @@
 using ArchUnitNET.xUnit;
 using CatalogManagement.Architecture.Tests.Commons;
 using CatalogManagement.Architecture.Tests.Constants;
-using CatalogManagement.Domain.Common.Interfaces;
 
 namespace CatalogManagement.Architecture.Tests.Events;
 public class DomainEventRules : ArchUnitBase

@@ -1,6 +1,4 @@
-﻿using CatalogManagement.Domain.Common.Models;
-
-namespace CatalogManagement.Domain.ProductGroupAggregate.ValueObjects;
+﻿namespace CatalogManagement.Domain.ProductGroupAggregate.ValueObjects;
 public sealed class ProductGroupId : ValueObject
 {
     public Guid Value { get; }

@@ -6,7 +6,7 @@ internal class UpdateShopCommandFactory
 {
     private UpdateShopCommandFactory()
     {
-        
+
     }
     internal static UpdateShopCommand CreateValid(Guid? shopId = null)
         => new UpdateShopCommand(shopId ?? Guid.NewGuid(), "valid description", "valid city", "valid street");

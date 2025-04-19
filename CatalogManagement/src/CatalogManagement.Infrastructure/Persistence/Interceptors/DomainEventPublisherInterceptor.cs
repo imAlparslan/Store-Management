@@ -1,5 +1,4 @@
-﻿using CatalogManagement.Domain.Common.Interfaces;
-using CatalogManagement.Infrastructure.Services;
+﻿using CatalogManagement.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace CatalogManagement.Infrastructure.Persistence.Interceptors;

@@ -5,9 +5,9 @@ using CatalogManagement.Contracts.ProductGroups;
 namespace CatalogManagement.Api.Tests.ProductGroupController;
 
 [Collection(nameof(ProductGroupControllerCollectionFixture))]
-public class GetAllProductGroupControllerTests: ControllerTestBase
+public class GetAllProductGroupControllerTests : ControllerTestBase
 {
-    public GetAllProductGroupControllerTests(CatalogApiFactory catalogApiFactory):base(catalogApiFactory)
+    public GetAllProductGroupControllerTests(CatalogApiFactory catalogApiFactory) : base(catalogApiFactory)
     {
     }
 

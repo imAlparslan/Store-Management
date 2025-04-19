@@ -1,6 +1,6 @@
-﻿using CatalogManagement.SharedKernel;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using SharedKernel.Common.Erros;
 
 namespace CatalogManagement.Api.Controllers;
 

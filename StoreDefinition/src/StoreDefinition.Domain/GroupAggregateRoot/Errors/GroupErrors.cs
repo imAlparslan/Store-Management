@@ -1,11 +1,9 @@
-﻿using StoreDefinition.SharedKernel;
-
-namespace StoreDefinition.Domain.GroupAggregateRoot.Errors;
+﻿namespace StoreDefinition.Domain.GroupAggregateRoot.Errors;
 public class GroupErrors
 {
     private GroupErrors()
     {
-        
+
     }
     public static readonly Error InvalidName = new Error(
        "Invalid.Group.GroupName",

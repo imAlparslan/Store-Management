@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using StoreDefinition.SharedKernel;
+using SharedKernel.Common.Erros;
 
 namespace StoreDefinition.Api.Controllers;
 

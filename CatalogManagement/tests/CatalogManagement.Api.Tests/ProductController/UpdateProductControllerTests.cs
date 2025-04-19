@@ -5,9 +5,9 @@ using CatalogManagement.Contracts.Products;
 namespace CatalogManagement.Api.Tests.ProductController;
 
 [Collection(nameof(ProductControllerCollectionFixture))]
-public class UpdateProductControllerTests: ControllerTestBase
+public class UpdateProductControllerTests : ControllerTestBase
 {
-    public UpdateProductControllerTests(CatalogApiFactory catalogApiFactory):base(catalogApiFactory)
+    public UpdateProductControllerTests(CatalogApiFactory catalogApiFactory) : base(catalogApiFactory)
     {
     }
 

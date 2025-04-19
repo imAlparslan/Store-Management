@@ -1,5 +1,4 @@
-﻿using StoreDefinition.Domain.Common.Models;
-using StoreDefinition.Domain.GroupAggregateRoot.ValueObjects;
+﻿using StoreDefinition.Domain.GroupAggregateRoot.ValueObjects;
 
 namespace StoreDefinition.Domain.GroupAggregateRoot;
 public class Group : AggregateRoot<GroupId>

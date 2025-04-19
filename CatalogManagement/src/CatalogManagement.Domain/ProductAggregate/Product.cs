@@ -1,5 +1,4 @@
-﻿using CatalogManagement.Domain.Common.Models;
-using CatalogManagement.Domain.ProductAggregate.Events;
+﻿using CatalogManagement.Domain.ProductAggregate.Events;
 using CatalogManagement.Domain.ProductAggregate.ValueObjects;
 namespace CatalogManagement.Domain.ProductAggregate;
 public sealed class Product : AggregateRoot<ProductId>
