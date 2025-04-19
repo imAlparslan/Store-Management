@@ -1,4 +1,3 @@
-﻿using StoreDefinition.Api.Tests.Common;
 using StoreDefinition.Contracts.Shops;
 
 namespace StoreDefinition.Api.Tests.ShopsController;

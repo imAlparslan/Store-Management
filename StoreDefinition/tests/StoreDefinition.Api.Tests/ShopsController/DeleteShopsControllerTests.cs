@@ -1,6 +1,6 @@
-﻿using StoreDefinition.Api.Tests.Common;
 
 namespace StoreDefinition.Api.Tests.ShopsController;
+
 
 [Collection(nameof(ShopsControllerCollectionFixture))]
 public class DeleteShopsControllerTests(StoreDefinitionApiFactory apiFactory)
