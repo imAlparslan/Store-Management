@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography;
-
-namespace SharedKernel.Domain.Common.Models;
+﻿namespace SharedKernel.Domain.Common.Models;
 public abstract class Entity<TId> : IEquatable<Entity<TId>> where TId : notnull
 {
     public TId Id { get; init; } = default!;

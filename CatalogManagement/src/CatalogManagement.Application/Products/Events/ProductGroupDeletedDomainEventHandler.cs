@@ -1,7 +1,5 @@
-﻿using CatalogManagement.Application.Common.Interfaces;
-using CatalogManagement.Application.Common.Repositories;
+﻿using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Domain.ProductGroupAggregate.Events;
-using MediatR;
 
 namespace CatalogManagement.Application.Products.Events;
 internal class ProductGroupDeletedDomainEventHandler(IProductRepository productRepository) : IDomainEventHandler<ProductGroupDeletedDomainEvent>

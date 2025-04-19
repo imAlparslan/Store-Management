@@ -1,5 +1,4 @@
 ﻿using Ardalis.GuardClauses;
-using CatalogManagement.Domain.Common.Models;
 using CatalogManagement.Domain.ProductAggregate.Errors;
 using CatalogManagement.Domain.ProductAggregate.Exceptions;
 

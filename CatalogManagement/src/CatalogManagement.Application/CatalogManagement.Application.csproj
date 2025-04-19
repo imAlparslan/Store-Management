@@ -9,11 +9,11 @@
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.11.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
-    <PackageReference Include="MediatR" Version="12.4.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\SharedKernel\SharedKernel.Application.Common\SharedKernel.Application.Common.csproj" />
     <ProjectReference Include="..\CatalogManagement.Contracts\CatalogManagement.Contracts.csproj" />
     <ProjectReference Include="..\CatalogManagement.Domain\CatalogManagement.Domain.csproj" />
   </ItemGroup>

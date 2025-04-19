@@ -1,7 +1,4 @@
-﻿using CatalogManagement.Domain.Common.Exceptions;
-using CatalogManagement.SharedKernel;
-
-namespace CatalogManagement.Domain.ProductGroupAggregate.Exceptions;
+﻿namespace CatalogManagement.Domain.ProductGroupAggregate.Exceptions;
 public class ProductGroupException : DomainException
 {
     private ProductGroupException(string code, string? message) : base(code, message)

@@ -1,6 +1,4 @@
-﻿using CatalogManagement.Application.Common.Interfaces;
-using CatalogManagement.Domain.ProductAggregate;
-using CatalogManagement.SharedKernel;
+﻿using CatalogManagement.Domain.ProductAggregate;
 
 namespace CatalogManagement.Application.Products;
 public sealed record GetProductByIdQuery(Guid Id)

@@ -8,7 +8,7 @@ namespace CatalogManagement.Api.Tests.ProductGroupController;
 [Collection(nameof(ProductGroupControllerCollectionFixture))]
 public class DeleteProductGroupControllerTests : ControllerTestBase
 {
-    public DeleteProductGroupControllerTests(CatalogApiFactory catalogApiFactory):base(catalogApiFactory)
+    public DeleteProductGroupControllerTests(CatalogApiFactory catalogApiFactory) : base(catalogApiFactory)
     {
     }
 

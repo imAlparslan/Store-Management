@@ -1,5 +1,4 @@
 ﻿using Bogus;
-using CatalogManagement.Application.Products;
 
 namespace CatalogManagement.Application.Tests.Common.Factories.CommandFactories;
 public static class UpdateProductCommandFactory

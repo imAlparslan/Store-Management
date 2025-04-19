@@ -1,6 +1,5 @@
 ﻿using CatalogManagement.Application.Common.Behaviors;
 using CatalogManagement.Domain.ProductAggregate;
-using CatalogManagement.SharedKernel;
 using FluentValidation;
 using FluentValidation.Results;
 using MediatR;

@@ -1,5 +1,4 @@
 ﻿using Bogus;
-using CatalogManagement.Application.ProductGroups;
 
 namespace CatalogManagement.Application.Tests.Common.Factories.CommandFactories;
 internal class CreateProductGroupCommandFactory

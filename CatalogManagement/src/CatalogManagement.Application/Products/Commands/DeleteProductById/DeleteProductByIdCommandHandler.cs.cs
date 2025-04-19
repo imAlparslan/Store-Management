@@ -1,8 +1,6 @@
-﻿using CatalogManagement.Application.Common.Interfaces;
-using CatalogManagement.Application.Common.Repositories;
+﻿using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Domain.ProductAggregate.Errors;
 using CatalogManagement.Domain.ProductAggregate.Events;
-using CatalogManagement.SharedKernel;
 
 namespace CatalogManagement.Application.Products;
 internal sealed class DeleteProductByIdCommandHandler(IProductRepository productRepository)

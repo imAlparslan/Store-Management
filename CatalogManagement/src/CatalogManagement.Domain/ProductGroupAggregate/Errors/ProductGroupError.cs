@@ -1,6 +1,4 @@
-﻿using CatalogManagement.SharedKernel;
-
-namespace CatalogManagement.Domain.ProductGroupAggregate.Errors;
+﻿namespace CatalogManagement.Domain.ProductGroupAggregate.Errors;
 public static class ProductGroupError
 {
     static ProductGroupError()

@@ -1,7 +1,5 @@
-﻿using CatalogManagement.Application.Common.Interfaces;
-using CatalogManagement.Application.Common.Repositories;
+﻿using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Domain.ProductGroupAggregate;
-using CatalogManagement.SharedKernel;
 
 namespace CatalogManagement.Application.ProductGroups;
 internal sealed class GetAllProductGroupsQueryHandler(IProductGroupRepository productGroupRepository)

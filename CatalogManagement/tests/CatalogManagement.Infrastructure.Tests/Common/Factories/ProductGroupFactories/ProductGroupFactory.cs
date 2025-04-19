@@ -1,5 +1,4 @@
 ﻿using CatalogManagement.Domain.ProductGroupAggregate;
-using CatalogManagement.Domain.ProductGroupAggregate.ValueObjects;
 
 namespace CatalogManagement.Infrastructure.Tests.Common.Factories.ProductGroupFactories;
 internal static class ProductGroupFactory

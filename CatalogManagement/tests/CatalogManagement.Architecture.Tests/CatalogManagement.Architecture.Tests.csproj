@@ -24,6 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\SharedKernel\SharedKernel.Application.Common\SharedKernel.Application.Common.csproj" />
+    <ProjectReference Include="..\..\..\SharedKernel\SharedKernel.Common\SharedKernel.Common.csproj" />
+    <ProjectReference Include="..\..\..\SharedKernel\SharedKernel.Domain.Common\SharedKernel.Domain.Common.csproj" />
     <ProjectReference Include="..\..\src\CatalogManagement.Api\CatalogManagement.Api.csproj" />
     <ProjectReference Include="..\..\src\CatalogManagement.Application\CatalogManagement.Application.csproj" />
     <ProjectReference Include="..\..\src\CatalogManagement.Domain\CatalogManagement.Domain.csproj" />

@@ -15,3 +15,4 @@ global using FluentAssertions;
 global using FluentAssertions.Execution;
 global using NSubstitute;
 global using NSubstitute.ReturnsExtensions;
+global using SharedKernel.Common.Results;

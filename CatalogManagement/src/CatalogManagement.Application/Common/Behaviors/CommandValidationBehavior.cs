@@ -1,5 +1,4 @@
-﻿using CatalogManagement.SharedKernel;
-using FluentValidation;
+﻿using FluentValidation;
 using MediatR;
 
 namespace CatalogManagement.Application.Common.Behaviors;

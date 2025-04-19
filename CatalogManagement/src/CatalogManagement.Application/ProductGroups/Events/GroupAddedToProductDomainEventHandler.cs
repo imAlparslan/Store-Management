@@ -1,5 +1,4 @@
-﻿using CatalogManagement.Application.Common.Interfaces;
-using CatalogManagement.Application.Common.Repositories;
+﻿using CatalogManagement.Application.Common.Repositories;
 using CatalogManagement.Domain.ProductAggregate.Events;
 
 namespace CatalogManagement.Application.ProductGroups.Events;

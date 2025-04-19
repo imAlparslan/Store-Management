@@ -1,11 +1,4 @@
 ﻿using Bogus;
-using CatalogManagement.Application.ProductGroups;
-using CatalogManagement.Application.Products;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CatalogManagement.Application.Tests.Common.Factories.CommandFactories;
 internal class UpdateProductGroupCommandFactory
@@ -43,7 +36,7 @@ internal class UpdateProductGroupCommandFactory
             .CustomInstantiator(x => new(Guid.NewGuid(), productName, x.Commerce.ProductDescription()))
             .Generate();
     }
-  
+
     public static UpdateProductGroupCommand CreateWithDefinition(string productGroupDescription)
     {
         return new Faker<UpdateProductGroupCommand>()

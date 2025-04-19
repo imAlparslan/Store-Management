@@ -28,7 +28,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\CatalogManagement.Application\CatalogManagement.Application.csproj" />
     <ProjectReference Include="..\..\src\CatalogManagement.Domain\CatalogManagement.Domain.csproj" />
-    <ProjectReference Include="..\..\src\CatalogManagement.SharedKernel\CatalogManagement.SharedKernel.csproj" />
   </ItemGroup>
 
   <ItemGroup>
