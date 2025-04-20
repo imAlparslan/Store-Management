@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MassTransit;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StoreDefinition.Application.Common.Repositories;
+using StoreDefinition.Application.Services;
 using StoreDefinition.Infrastructure.Persistence;
 using StoreDefinition.Infrastructure.Persistence.Interceptors;
 using StoreDefinition.Infrastructure.Repositories;
@@ -14,6 +16,8 @@ public static class ServiceExtensions
     {
         services.AddScoped<IDomainEventPublisherService, DomainEventPublisherService>();
         services.AddScoped<DomainEventPublisherInterceptor>();
+
+        services.AddMessaging(configuration);
 
         services.AddDbContext<StoreDefinitionDbContext>(
             (sp, opt) =>
@@ -30,6 +34,24 @@ public static class ServiceExtensions
         services.AddScoped<IShopRepository, ShopRepository>();
         services.AddScoped<IGroupRepository, GroupRepository>();
 
+        return services;
+    }
+
+    private static IServiceCollection AddMessaging(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddMassTransit(x =>
+        {
+            x.UsingRabbitMq((context, cfg) =>
+            {
+                cfg.Host("localhost", "/", h =>
+                {
+                    h.Username("guest");
+                    h.Password("guest");
+                });
+            });
+        });
+
+        services.AddScoped<IEventPublisher, EventPublisher>();
         return services;
     }
 }

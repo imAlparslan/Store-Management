@@ -1,4 +1,5 @@
-﻿using StoreDefinition.Application.Common.Repositories;
+﻿using SharedKernel.IntegrationEvents.StoreDefinition;
+using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Domain.ShopAggregateRoot.Events;
 
 namespace StoreDefinition.Application.Groups.Events;

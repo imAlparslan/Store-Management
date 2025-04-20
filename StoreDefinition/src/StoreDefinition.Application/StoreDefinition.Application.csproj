@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\SharedKernel\SharedKernel.Application.Common\SharedKernel.Application.Common.csproj" />
     <ProjectReference Include="..\..\..\SharedKernel\SharedKernel.Common\SharedKernel.Common.csproj" />
+    <ProjectReference Include="..\..\..\SharedKernel\SharedKernel.IntegrationEvents\SharedKernel.IntegrationEvents.csproj" />
     <ProjectReference Include="..\StoreDefinition.Domain\StoreDefinition.Domain.csproj" />
   </ItemGroup>
 
