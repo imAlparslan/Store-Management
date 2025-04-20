@@ -2,7 +2,8 @@
 using StoreDefinition.Domain.GroupAggregateRoot.Events;
 
 namespace StoreDefinition.Application.Shops.Events;
-internal class GroupDeletedDomainEventHandler(IShopRepository shopRepository) : IDomainEventHandler<GroupDeletedDomainEvent>
+internal class GroupDeletedDomainEventHandler(IShopRepository shopRepository)
+    : IDomainEventHandler<GroupDeletedDomainEvent>
 {
     private readonly IShopRepository shopRepository = shopRepository;
     public async Task Handle(GroupDeletedDomainEvent notification, CancellationToken cancellationToken)
