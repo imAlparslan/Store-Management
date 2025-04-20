@@ -1,5 +1,6 @@
 ﻿using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StoreDefinition.Application.Common.Repositories;
@@ -15,24 +16,10 @@ public static class ServiceExtensions
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IDomainEventPublisherService, DomainEventPublisherService>();
-        services.AddScoped<DomainEventPublisherInterceptor>();
+
+        services.AddDatabase(configuration);
 
         services.AddMessaging(configuration);
-
-        services.AddDbContext<StoreDefinitionDbContext>(
-            (sp, opt) =>
-                opt.UseSqlServer(
-                    connectionString: configuration.GetConnectionString("StoreDefinition"),
-                    sqlOption => sqlOption.EnableRetryOnFailure())
-                        .ConfigureWarnings
-                        (
-                            warnings => warnings.Log(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning)
-                        )
-        .AddInterceptors(sp.GetRequiredService<DomainEventPublisherInterceptor>()));
-
-        services.AddScoped<IUnitOfWorkManager, UnitOfWorkManager>();
-        services.AddScoped<IShopRepository, ShopRepository>();
-        services.AddScoped<IGroupRepository, GroupRepository>();
 
         return services;
     }
@@ -41,17 +28,33 @@ public static class ServiceExtensions
     {
         services.AddMassTransit(x =>
         {
+            x.SetKebabCaseEndpointNameFormatter();
+
             x.UsingRabbitMq((context, cfg) =>
             {
-                cfg.Host("localhost", "/", h =>
-                {
-                    h.Username("guest");
-                    h.Password("guest");
-                });
+                cfg.Host(configuration.GetConnectionString("RabbitMq"));
+                cfg.ConfigureEndpoints(context);
             });
         });
 
         services.AddScoped<IEventPublisher, EventPublisher>();
+        return services;
+    }
+
+    private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddScoped<DomainEventPublisherInterceptor>();
+
+        services.AddDbContext<StoreDefinitionDbContext>(
+            (sp, opt) => opt.UseSqlServer(
+                connectionString: configuration.GetConnectionString("StoreDefinition"),
+                sqlOption => sqlOption.EnableRetryOnFailure())
+                .ConfigureWarnings(warnings => warnings.Log(RelationalEventId.PendingModelChangesWarning))
+                .AddInterceptors(sp.GetRequiredService<DomainEventPublisherInterceptor>()));
+
+        services.AddScoped<IUnitOfWorkManager, UnitOfWorkManager>();
+        services.AddScoped<IShopRepository, ShopRepository>();
+        services.AddScoped<IGroupRepository, GroupRepository>();
         return services;
     }
 }

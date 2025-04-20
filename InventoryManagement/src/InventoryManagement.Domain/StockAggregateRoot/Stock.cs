@@ -12,4 +12,8 @@ public sealed class Stock : AggregateRoot<StockId>
         StoreId = storeId;
         _groupIds = GroupIds;
     }
+
+    private Stock()
+    {
+    }
 }

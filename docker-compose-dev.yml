@@ -36,6 +36,23 @@ services:
       timeout: 5s
       retries: 3
 
+  inventory-management-db:
+    container_name: inventory-management-db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - 14339:1433
+    environment:
+        ACCEPT_EULA: Y
+        MSSQL_SA_PASSWORD: Passw0r!d
+        MSSQL_PID: Developer
+    volumes:
+      - inventory-management-db-volume:/var/opt/mssql/
+    healthcheck:
+      test: ["CMD-SHELL", "echo 'SELECT 1' | /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Passw0r!d -Q 'SELECT 1'"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
   rabbit:
     container_name: rabbit
     image: rabbitmq:4.0.4-management-alpine
@@ -51,3 +68,4 @@ services:
 volumes:
   catalog-db-volume:
   store-definition-db-volume:
+  inventory-management-db-volume:
