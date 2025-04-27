@@ -7,6 +7,7 @@ public interface IShopRepository
 {
     Task<Shop> InsertShopAsync(Shop shop, CancellationToken cancellation = default);
     Task<Shop?> GetShopByIdAsync(ShopId shopId, CancellationToken cancellation = default);
+    Task<List<Guid>> GetShopGroupIdsByShopIdAsync(ShopId shopId, CancellationToken cancellation = default);
     Task<IEnumerable<Shop>> GetAllShopsAsync(CancellationToken cancellation = default);
     Task<Shop> UpdateShopAsync(Shop shop, CancellationToken cancellation = default);
     Task<IEnumerable<Shop>> GetShopsByGroupIdAsync(GroupId groupId, CancellationToken cancellation = default);

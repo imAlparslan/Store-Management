@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StoreDefinitionProtos;
 using System.Reflection;
 
 namespace InventoryManagement.Infrastructure.Extensions;
@@ -16,7 +17,16 @@ public static class DependenctInjection
 
         services.AddDatabase(configuration);
         services.AddMessaging(configuration);
+        services.AddGrpcClients(configuration);
 
+        return services;
+    }
+    private static IServiceCollection AddGrpcClients(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddGrpcClient<StoreDefinitionGrpc.StoreDefinitionGrpcClient>(opt =>
+        {
+            opt.Address = new Uri("https://localhost:7261");
+        });
 
         return services;
     }

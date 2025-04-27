@@ -69,4 +69,14 @@ public sealed class ShopRepository(StoreDefinitionDbContext dbContext, IUnitOfWo
         }
         return shop;
     }
+
+    public async Task<List<Guid>> GetShopGroupIdsByShopIdAsync(ShopId shopId, CancellationToken cancellation = default)
+    {
+        var result =  await _dbContext.Stores.AsNoTracking()
+            .Where(x => x.Id == shopId)
+            .Select(x => x.GroupIds.ToList())
+            .FirstOrDefaultAsync(cancellation);
+
+        return result ?? new();
+    }
 }
