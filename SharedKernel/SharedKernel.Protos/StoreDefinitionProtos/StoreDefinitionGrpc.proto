@@ -1,0 +1,22 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "StoreDefinitionProtos";
+
+package storeDefinition.shop;
+
+service StoreDefinitionGrpc {
+  rpc GetStoreGroupsByStoreId (GetStoreGroupsByStoreIdRequest) returns (GetStoreGroupsByStoreIdReply);
+}
+
+message GetStoreGroupsByStoreIdRequest {
+  Id shopId = 1;
+}
+
+message GetStoreGroupsByStoreIdReply {
+  repeated Id ids = 2;
+  
+}
+
+message Id{
+	string value = 1;
+}

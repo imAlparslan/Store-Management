@@ -11,6 +11,11 @@ public sealed class ShopId : ValueObject
     {
         return new ShopId(Guid.NewGuid());
     }
+    public static ShopId CreateFromString(string guidString)
+    {
+        return new ShopId(Guid.Parse(guidString));
+    }
+    
     public override IEnumerable<object> GetEqualityComponents()
     {
         yield return Value;

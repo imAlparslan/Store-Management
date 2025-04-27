@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedKernel.Application.Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedKernel.IntegrationEvents", "..\SharedKernel\SharedKernel.IntegrationEvents\SharedKernel.IntegrationEvents.csproj", "{F083D839-55AE-B905-E447-0DD368B9207D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedKernel.Protos", "..\SharedKernel\SharedKernel.Protos\SharedKernel.Protos.csproj", "{BF4F9A93-5878-0B4F-AE2F-60A717925CB3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +67,10 @@ Global
 		{F083D839-55AE-B905-E447-0DD368B9207D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F083D839-55AE-B905-E447-0DD368B9207D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F083D839-55AE-B905-E447-0DD368B9207D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF4F9A93-5878-0B4F-AE2F-60A717925CB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF4F9A93-5878-0B4F-AE2F-60A717925CB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF4F9A93-5878-0B4F-AE2F-60A717925CB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF4F9A93-5878-0B4F-AE2F-60A717925CB3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
