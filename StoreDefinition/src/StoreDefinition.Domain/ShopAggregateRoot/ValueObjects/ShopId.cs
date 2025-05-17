@@ -1,26 +1,18 @@
 ﻿namespace StoreDefinition.Domain.ShopAggregateRoot.ValueObjects;
-public sealed class ShopId : ValueObject
+public sealed class ShopId : BaseId
 {
-    public Guid Value { get; }
-    private ShopId(Guid value)
+    private ShopId(Guid value) : base(value)
     {
-        Value = value;
     }
-
+    private ShopId()
+    {
+        
+    }
     public static ShopId CreateUnique()
     {
-        return new ShopId(Guid.NewGuid());
+        return new ShopId();
     }
-    public static ShopId CreateFromString(string guidString)
-    {
-        return new ShopId(Guid.Parse(guidString));
-    }
-    
-    public override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return Value;
-    }
-
+    public static ShopId CreateFromString(string value) => new ShopId(Guid.Parse(value));
 
     public static implicit operator Guid(ShopId shopId) => shopId.Value;
 

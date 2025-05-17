@@ -23,4 +23,8 @@
 	<InternalsVisibleTo Include="CatalogManagement.Application.Tests" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="EventBroadcasters\" />
+  </ItemGroup>
+
 </Project>

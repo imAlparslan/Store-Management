@@ -1,4 +1,5 @@
-﻿using InventoryManagement.Domain.StockAggregateRoot;
+﻿using InventoryManagement.Domain.ItemAggregateRoot;
+using InventoryManagement.Domain.StockAggregateRoot;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -7,6 +8,7 @@ public sealed class InventoryDbContext(DbContextOptions<InventoryDbContext> opti
     : DbContext(options)
 {
     public DbSet<Stock> Stocks => Set<Stock>();
+    public DbSet<Item> Items => Set<Item>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

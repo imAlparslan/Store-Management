@@ -5,7 +5,6 @@ using StoreDefinition.Domain.ShopAggregateRoot.Exceptions;
 namespace StoreDefinition.Domain.ShopAggregateRoot.Entities;
 public sealed class ShopAddress : Entity<ShopAddressId>
 {
-    //TODO: continue here
     public string City { get; private set; }
     public string Street { get; private set; }
 

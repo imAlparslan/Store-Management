@@ -60,8 +60,10 @@ public static class DependenctInjection
                     sqlOption => sqlOption.EnableRetryOnFailure())
                     .ConfigureWarnings(configuration => configuration.Log(RelationalEventId.PendingModelChangesWarning));
             });
-        
+
+        services.AddScoped<IUnitOfWorkManager, UnitOfWorkManager>();
         services.AddScoped<IStockRepository, StockRepository>();
+        services.AddScoped<IItemRepository, ItemRepository>();
 
         return services;
     }

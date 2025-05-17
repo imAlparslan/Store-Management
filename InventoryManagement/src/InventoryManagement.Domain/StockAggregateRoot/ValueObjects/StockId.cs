@@ -1,21 +1,13 @@
 namespace InventoryManagement.Domain.StockAggregateRoot.ValueObjects;
-public sealed class StockId : ValueObject
+public sealed class StockId : BaseId
 {
-    public Guid Value { get; }
-
-    private StockId(Guid Id)
+    private StockId(Guid Id) : base(Id)
     {
-        Value = Id;
     }
-
-    public static StockId CreateUnique()
+    private StockId()
     {
-        return new StockId(Guid.NewGuid());
     }
-    public override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return Value;
-    }
+    public static StockId CreateUnique() => new StockId();
     public static implicit operator Guid(StockId Id) => Id.Value;
     public static implicit operator StockId(Guid Id) => new StockId(Id);
 

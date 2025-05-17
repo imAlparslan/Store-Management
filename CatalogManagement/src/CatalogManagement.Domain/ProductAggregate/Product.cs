@@ -6,7 +6,6 @@ public sealed class Product : AggregateRoot<ProductId>
     public ProductName Name { get; private set; } = null!;
     public ProductCode Code { get; private set; } = null!;
     public ProductDefinition Definition { get; private set; } = null!;
-
     private readonly List<Guid> _groupIds = new();
     public IReadOnlyList<Guid> GroupIds => _groupIds;
 
@@ -38,8 +37,8 @@ public sealed class Product : AggregateRoot<ProductId>
     {
         if (!HasGroup(groupId))
         {
-            AddDomainEvent(new NewGroupAddedToProductDomainEvent(groupId, Id));
             _groupIds.Add(groupId);
+            AddDomainEvent(new NewGroupAddedToProductDomainEvent(groupId, Id));
             return true;
         }
         return false;

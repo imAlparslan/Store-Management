@@ -17,7 +17,15 @@ public class StockConfiguration : IEntityTypeConfiguration<Stock>
             .HasConversion<ShopIdConverter>()
             .ValueGeneratedNever();
 
+        builder.Property(x => x.StoreId)
+            .HasColumnOrder(1)
+            .HasColumnName("StoreId")
+            .HasConversion<StoreIdConverter>()
+            .ValueGeneratedNever();
+
         builder.PrimitiveCollection(x => x.GroupIds)
             .HasColumnName("GroupIds");
+
+        builder.HasMany(x => x.StockItems);
     }
 }

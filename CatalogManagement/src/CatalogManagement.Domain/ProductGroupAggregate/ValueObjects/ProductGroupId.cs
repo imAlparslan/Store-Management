@@ -1,21 +1,14 @@
 ﻿namespace CatalogManagement.Domain.ProductGroupAggregate.ValueObjects;
-public sealed class ProductGroupId : ValueObject
+public sealed class ProductGroupId : BaseId
 {
-    public Guid Value { get; }
-
-    private ProductGroupId(Guid Id)
+    private ProductGroupId(Guid id) : base(id)
     {
-        Value = Id;
     }
-    public static ProductGroupId CreateUnique()
+    private ProductGroupId()
     {
-        return new ProductGroupId(Guid.NewGuid());
+        
     }
-    public override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return Value;
-    }
-
+    public static ProductGroupId CreateUnique() => new ProductGroupId(Guid.NewGuid());
 
     public static implicit operator Guid(ProductGroupId productGroupId) => productGroupId.Value;
     public static implicit operator ProductGroupId(Guid productGroupId) => new ProductGroupId(productGroupId);

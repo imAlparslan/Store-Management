@@ -1,5 +1,4 @@
 ﻿using StoreDefinition.Domain.ShopAggregateRoot.ValueObjects;
 
 namespace StoreDefinition.Domain.ShopAggregateRoot.Events;
-public sealed record ShopDeletedDomainEvent
-    (ShopId ShopId) : IDomainEvent;
+public sealed record ShopDeletedDomainEvent(ShopId ShopId) : IDomainEvent;
