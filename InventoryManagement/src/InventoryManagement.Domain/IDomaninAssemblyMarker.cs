@@ -1,0 +1,2 @@
+﻿namespace InventoryManagement.Domain;
+public interface IDomaninAssemblyMarker;

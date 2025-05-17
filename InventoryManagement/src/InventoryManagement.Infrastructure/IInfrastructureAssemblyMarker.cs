@@ -1,0 +1,3 @@
+﻿namespace InventoryManagement.Infrastructure;
+
+public interface IInfrastructureAssemblyMarker;

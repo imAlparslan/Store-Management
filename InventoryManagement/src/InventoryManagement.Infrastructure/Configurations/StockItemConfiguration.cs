@@ -25,7 +25,7 @@ public class StockItemConfiguration : IEntityTypeConfiguration<StockItem>
             .HasConversion<ItemIdConverter>()
             .ValueGeneratedNever();
 
-        builder.Property(x => x.Quantatiy)
+        builder.Property(x => x.Quantity)
             .HasColumnName("Quantatiy")
             .HasColumnOrder(2);
 
