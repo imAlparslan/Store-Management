@@ -1,0 +1,22 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Dockerfile" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/CatalogManagement.Api/CatalogManagement.Api.csproj" />
+    <Project Path="src/CatalogManagement.Application/CatalogManagement.Application.csproj" />
+    <Project Path="src/CatalogManagement.Contracts/CatalogManagement.Contracts.csproj" />
+    <Project Path="src/CatalogManagement.Domain/CatalogManagement.Domain.csproj" />
+    <Project Path="src/CatalogManagement.Infrastructure/CatalogManagement.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/CatalogManagement.Api.Tests/CatalogManagement.Api.Tests.csproj" />
+    <Project Path="tests/CatalogManagement.Application.Tests/CatalogManagement.Application.Tests.csproj" />
+    <Project Path="tests/CatalogManagement.Architecture.Tests/CatalogManagement.Architecture.Tests.csproj" />
+    <Project Path="tests/CatalogManagement.Domain.Tests/CatalogManagement.Domain.Tests.csproj" />
+    <Project Path="tests/CatalogManagement.Infrastructure.Tests/CatalogManagement.Infrastructure.Tests.csproj" />
+  </Folder>
+  <Project Path="../SharedKernel/SharedKernel.Application.Common/SharedKernel.Application.Common.csproj" />
+  <Project Path="../SharedKernel/SharedKernel.Common/SharedKernel.Common.csproj" />
+  <Project Path="../SharedKernel/SharedKernel.Domain.Common/SharedKernel.Domain.Common.csproj" />
+</Solution>

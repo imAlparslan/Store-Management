@@ -23,7 +23,7 @@ public class StockItem : Entity<StockItemId>
 
         Capacity = Guard.Against.Negative(
             capacity,
-            exceptionCreator: () => StockException.Create(StockErrors.InvalidQuantityError));
+            exceptionCreator: () => StockException.Create(StockErrors.InvalidCapacityError));
     }
 }
 

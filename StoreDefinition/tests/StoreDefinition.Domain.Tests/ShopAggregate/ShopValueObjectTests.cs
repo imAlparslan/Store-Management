@@ -8,7 +8,7 @@ public class ShopValueObjectTests
 {
     [Theory]
     [MemberData(nameof(invalidStrings))]
-    public void CreateingShopDescription_ThrowsShopException_WhenInvalidDescription(string description)
+    public void CreatingShopDescription_ThrowsShopException_WhenInvalidDescription(string description)
     {
         var action = () => new ShopDescription(description);
 
@@ -19,7 +19,7 @@ public class ShopValueObjectTests
 
     [Theory]
     [MemberData(nameof(invalidStrings))]
-    public void CreateingShopAddress_ThrowsShopException_WhenInvalidCity(string city)
+    public void CreatingShopAddress_ThrowsShopException_WhenInvalidCity(string city)
     {
         string validStreet = "valid street";
         var action = () => new ShopAddress(city, validStreet);
@@ -31,7 +31,7 @@ public class ShopValueObjectTests
 
     [Theory]
     [MemberData(nameof(invalidStrings))]
-    public void CreateingShopAddress_ThrowsShopException_WhenInvalidStreet(string street)
+    public void CreatingShopAddress_ThrowsShopException_WhenInvalidStreet(string street)
     {
         string validCity = "valid city";
         var action = () => new ShopAddress(validCity, street);

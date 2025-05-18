@@ -1,4 +1,4 @@
-﻿namespace SharedKernel.Common.Erros
+﻿namespace SharedKernel.Common.Errors
 {
     public class Error
     {

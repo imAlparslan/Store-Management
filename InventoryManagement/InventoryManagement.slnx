@@ -1,0 +1,21 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/InventoryManagement.Api/InventoryManagement.Api.csproj" />
+    <Project Path="src/InventoryManagement.Application/InventoryManagement.Application.csproj" />
+    <Project Path="src/InventoryManagement.Contracts/InventoryManagement.Contracts.csproj" />
+    <Project Path="src/InventoryManagement.Domain/InventoryManagement.Domain.csproj" />
+    <Project Path="src/InventoryManagement.Infrastructure/InventoryManagement.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/InventoryManagement.Api.Tests/InventoryManagement.Api.Tests.csproj" />
+    <Project Path="tests/InventoryManagement.Application.Tests/InventoryManagement.Application.Tests.csproj" />
+    <Project Path="tests/InventoryManagement.Architecture.Tests/InventoryManagement.Architecture.Tests.csproj" Id="2107dbd8-f8fb-bca5-e583-3e02b8e8f649" />
+    <Project Path="tests/InventoryManagement.Domain.Tests/InventoryManagement.Domain.Tests.csproj" />
+    <Project Path="tests/InventoryManagement.Infrastructure.Tests/InventoryManagement.Infrastructure.Tests.csproj" />
+  </Folder>
+  <Project Path="../SharedKernel/SharedKernel.Application.Common/SharedKernel.Application.Common.csproj" />
+  <Project Path="../SharedKernel/SharedKernel.Common/SharedKernel.Common.csproj" />
+  <Project Path="../SharedKernel/SharedKernel.Domain.Common/SharedKernel.Domain.Common.csproj" />
+  <Project Path="../SharedKernel/SharedKernel.IntegrationEvents/SharedKernel.IntegrationEvents.csproj" />
+  <Project Path="../SharedKernel/SharedKernel.Protos/SharedKernel.Protos.csproj" />
+</Solution>

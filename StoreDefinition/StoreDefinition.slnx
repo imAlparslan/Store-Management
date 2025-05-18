@@ -1,0 +1,26 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="docker-compose.yml" />
+    <File Path="Dockerfile" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/StoreDefinition.Api/StoreDefinition.Api.csproj" />
+    <Project Path="src/StoreDefinition.Application/StoreDefinition.Application.csproj" />
+    <Project Path="src/StoreDefinition.Contracts/StoreDefinition.Contracts.csproj" />
+    <Project Path="src/StoreDefinition.Domain/StoreDefinition.Domain.csproj" />
+    <Project Path="src/StoreDefinition.Infrastructure/StoreDefinition.Infrastructure.csproj" />
+    <Project Path="src/StoreDefinition.InternalApi/StoreDefinition.InternalApi.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/StoreDefinition.Api.Tests/StoreDefinition.Api.Tests.csproj" />
+    <Project Path="tests/StoreDefinition.Application.Tests/StoreDefinition.Application.Tests.csproj" />
+    <Project Path="tests/StoreDefinition.Architecture.Tests/StoreDefinition.Architecture.Tests.csproj" />
+    <Project Path="tests/StoreDefinition.Domain.Tests/StoreDefinition.Domain.Tests.csproj" />
+    <Project Path="tests/StoreDefinition.Infrastructure.Tests/StoreDefinition.Infrastructure.Tests.csproj" />
+  </Folder>
+  <Project Path="../SharedKernel/SharedKernel.Application.Common/SharedKernel.Application.Common.csproj" />
+  <Project Path="../SharedKernel/SharedKernel.Common/SharedKernel.Common.csproj" />
+  <Project Path="../SharedKernel/SharedKernel.Domain.Common/SharedKernel.Domain.Common.csproj" />
+  <Project Path="../SharedKernel/SharedKernel.IntegrationEvents/SharedKernel.IntegrationEvents.csproj" />
+  <Project Path="../SharedKernel/SharedKernel.Protos/SharedKernel.Protos.csproj" />
+</Solution>

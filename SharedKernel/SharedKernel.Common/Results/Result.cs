@@ -1,4 +1,4 @@
-﻿using SharedKernel.Common.Erros;
+﻿using SharedKernel.Common.Errors;
 
 namespace SharedKernel.Common.Results;
 public class Result<TValue> : IResult

@@ -1,0 +1,12 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="SharedKernel.Application.Common/SharedKernel.Application.Common.csproj" />
+  <Project Path="SharedKernel.Common/SharedKernel.Common.csproj" />
+  <Project Path="SharedKernel.Domain.Common/SharedKernel.Domain.Common.csproj" />
+  <Project Path="SharedKernel.IntegrationEvents/SharedKernel.IntegrationEvents.csproj" />
+  <Project Path="SharedKernel.Protos/SharedKernel.Protos.csproj" />
+</Solution>
