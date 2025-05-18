@@ -1,17 +1,10 @@
-﻿using CatalogManagement.Api.Tests.Common;
-using CatalogManagement.Api.Tests.Fixtures;
-using CatalogManagement.Contracts.ProductGroups;
-using CatalogManagement.Contracts.Products;
+﻿using CatalogManagement.Contracts.ProductGroups;
 
 namespace CatalogManagement.Api.Tests.ProductGroupController;
 
 [Collection(nameof(ProductGroupControllerCollectionFixture))]
-public class DeleteProductGroupControllerTests : ControllerTestBase
+public class DeleteProductGroupControllerTests(CatalogApiFactory catalogApiFactory) : ControllerTestBase(catalogApiFactory)
 {
-    public DeleteProductGroupControllerTests(CatalogApiFactory catalogApiFactory) : base(catalogApiFactory)
-    {
-    }
-
     [Fact]
     public async Task Delete_ReturnsOk_WhenProductGroupExists()
     {
@@ -21,7 +14,7 @@ public class DeleteProductGroupControllerTests : ControllerTestBase
 
         var deleteResponse = await _client.DeleteAsync($"{ProductGroupBaseAddress}/{createdProductGroup!.Id}");
 
-        deleteResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        deleteResponse.StatusCode.ShouldBe(HttpStatusCode.OK);
 
     }
 
@@ -41,8 +34,8 @@ public class DeleteProductGroupControllerTests : ControllerTestBase
 
         var productResponse = await _client.GetAsync($"{ProductBaseAddress}/{createdProduct.Id}");
         var product = await productResponse.Content.ReadFromJsonAsync<ProductResponse>();
-        product!.GroupIds.Should().BeEmpty();
-
+        product.ShouldNotBeNull();
+        product.GroupIds.ShouldBeEmpty();
 
     }
     [Fact]
@@ -52,22 +45,19 @@ public class DeleteProductGroupControllerTests : ControllerTestBase
 
         var deleteResponse = await _client.DeleteAsync($"{ProductGroupBaseAddress}/{id}");
 
-        deleteResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        deleteResponse.StatusCode.ShouldBe(HttpStatusCode.NotFound);
 
     }
     [Theory]
-    [InlineData("00000000-0000-0000-0000-000000000000")]
+    [ClassData(typeof(InvalidGuids))]
     public async Task Delete_ReturnsValidationError_WhenIdInvalid(Guid id)
     {
         var deleteResponse = await _client.DeleteAsync($"{ProductGroupBaseAddress}/{id}");
 
-        using (AssertionScope scope = new())
-        {
-            deleteResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            var error = await deleteResponse.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-            error.Should().NotBeNull();
-            error!.Title.Should().Be("One or more validation errors occurred.");
-            error.Errors.Count.Should().Be(1);
-        }
+        deleteResponse.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        var error = await deleteResponse.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+        error.ShouldNotBeNull();
+        error.Title.ShouldBe("One or more validation errors occurred.");
+        error.Errors.Count.ShouldBe(1);
     }
 }

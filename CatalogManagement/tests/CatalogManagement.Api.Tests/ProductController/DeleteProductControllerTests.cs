@@ -1,17 +1,10 @@
-﻿using CatalogManagement.Api.Tests.Common;
-using CatalogManagement.Api.Tests.Fixtures;
-using CatalogManagement.Contracts.ProductGroups;
-using CatalogManagement.Contracts.Products;
+﻿using CatalogManagement.Contracts.ProductGroups;
 
 namespace CatalogManagement.Api.Tests.ProductController;
 
 [Collection(nameof(ProductControllerCollectionFixture))]
-public class DeleteProductControllerTests : ControllerTestBase
+public class DeleteProductControllerTests(CatalogApiFactory catalogApiFactory) : ControllerTestBase(catalogApiFactory)
 {
-    public DeleteProductControllerTests(CatalogApiFactory catalogApiFactory) : base(catalogApiFactory)
-    {
-    }
-
     [Fact]
     public async Task Delete_ReturnsOk_WhenProductExists()
     {
@@ -21,7 +14,7 @@ public class DeleteProductControllerTests : ControllerTestBase
 
         var deleteResponse = await _client.DeleteAsync($"{ProductBaseAddress}/{createdProduct!.Id}");
 
-        deleteResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        deleteResponse.StatusCode.ShouldBe(HttpStatusCode.OK);
 
     }
 
@@ -37,7 +30,8 @@ public class DeleteProductControllerTests : ControllerTestBase
 
         var productGroupResponse = await _client.GetAsync($"{ProductGroupBaseAddress}/{insertedProductGroup.Id}");
         var productGroup = await productGroupResponse.Content.ReadFromJsonAsync<ProductGroupResponse>();
-        productGroup!.ProductIds.Should().NotContain(createdProduct.Id);
+        productGroup.ShouldNotBeNull();
+        productGroup.ProductIds.ShouldNotContain(createdProduct.Id);
 
     }
 
@@ -48,7 +42,7 @@ public class DeleteProductControllerTests : ControllerTestBase
 
         var deleteResponse = await _client.DeleteAsync($"{ProductBaseAddress}/{id}");
 
-        deleteResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        deleteResponse.StatusCode.ShouldBe(HttpStatusCode.NotFound);
 
     }
 
@@ -57,14 +51,12 @@ public class DeleteProductControllerTests : ControllerTestBase
     public async Task Delete_ReturnsValidationError_WhenIdInvalid(Guid id)
     {
         var deleteResponse = await _client.DeleteAsync($"{ProductBaseAddress}/{id}");
-        using (AssertionScope scope = new())
-        {
-            deleteResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            var error = await deleteResponse.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-            error.Should().NotBeNull();
-            error!.Title.Should().Be("One or more validation errors occurred.");
-            error.Errors.Count.Should().Be(1);
-        }
+
+        deleteResponse.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        var error = await deleteResponse.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+        error.ShouldNotBeNull();
+        error.Title.ShouldBe("One or more validation errors occurred.");
+        error.Errors.Count.ShouldBe(1);
     }
     private async Task<ProductResponse?> InsertProduct()
     {

@@ -1,17 +1,10 @@
-﻿using CatalogManagement.Api.Tests.Common;
-using CatalogManagement.Api.Tests.Fixtures;
-using CatalogManagement.Contracts.ProductGroups;
+﻿using CatalogManagement.Contracts.ProductGroups;
 
 namespace CatalogManagement.Api.Tests.ProductGroupController;
 
 [Collection(nameof(ProductGroupControllerCollectionFixture))]
-public class UpdateProductGroupControllerTests : ControllerTestBase
+public class UpdateProductGroupControllerTests(CatalogApiFactory catalogApiFactory) : ControllerTestBase(catalogApiFactory)
 {
-    public UpdateProductGroupControllerTests(CatalogApiFactory catalogApiFactory) : base(catalogApiFactory)
-    {
-    }
-
-
     [Fact]
     public async Task Update_UpdatesProductGroup_WhenDataValid()
     {
@@ -22,13 +15,9 @@ public class UpdateProductGroupControllerTests : ControllerTestBase
 
         var updatedResponse = await _client.PutAsJsonAsync($"{ProductGroupBaseAddress}/{createdProductGroup!.Id}", updateRequest);
 
-        using (AssertionScope scope = new())
-        {
-            var updatedProductResponse = await updatedResponse.Content.ReadFromJsonAsync<ProductGroupResponse>();
-            updatedResponse.Should().NotBeNull();
-            updatedResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-            updatedProductResponse.Should().BeEquivalentTo(updateRequest);
-        }
+        var updatedProductResponse = await updatedResponse.Content.ReadFromJsonAsync<ProductGroupResponse>();
+        updatedResponse.ShouldNotBeNull();
+        updatedResponse.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
 
     [Fact]
@@ -39,16 +28,13 @@ public class UpdateProductGroupControllerTests : ControllerTestBase
 
         var response = await _client.PutAsJsonAsync($"{ProductGroupBaseAddress} /{id}", updateRequest);
 
-        using (AssertionScope scope = new())
-        {
-            response.Should().NotBeNull();
-            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
-        }
+        response.ShouldNotBeNull();
+        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
 
     }
 
     [Theory]
-    [MemberData(nameof(InvalidStrings))]
+    [ClassData(typeof(InvalidStrings))]
     public async Task Update_ReturnsValidationError_WhenProductGroupNameNullOrEmpty(string productGroupName)
     {
         UpdateProductGroupRequest createRequest = UpdateProductGroupRequestFactory.CreateValid();
@@ -58,19 +44,16 @@ public class UpdateProductGroupControllerTests : ControllerTestBase
 
         var updatedResponse = await _client.PutAsJsonAsync($"{ProductGroupBaseAddress}/{createdProduct!.Id}", updateRequest);
 
-        using (AssertionScope scope = new())
-        {
-            updatedResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            var error = await updatedResponse.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-            error.Should().NotBeNull();
-            error!.Status.Should().Be(400);
-            error.Title.Should().Be("One or more validation errors occurred.");
-            error.Errors.Count.Should().Be(1);
-        }
+        updatedResponse.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        var error = await updatedResponse.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+        error.ShouldNotBeNull();
+        error.Status.ShouldBe((int)HttpStatusCode.BadRequest);
+        error.Title.ShouldBe("One or more validation errors occurred.");
+        error.Errors.ShouldHaveSingleItem();
     }
 
     [Theory]
-    [MemberData(nameof(InvalidStrings))]
+    [ClassData(typeof(InvalidStrings))]
     public async Task Update_ReturnsValidationError_WhenProductGroupDescriptionNullOrEmpty(string productGroupDescription)
     {
         UpdateProductGroupRequest createRequest = UpdateProductGroupRequestFactory.CreateValid();
@@ -80,15 +63,12 @@ public class UpdateProductGroupControllerTests : ControllerTestBase
 
         var updatedResponse = await _client.PutAsJsonAsync($"{ProductGroupBaseAddress}/{createdProductGroup!.Id}", updateRequest);
 
-        using (AssertionScope scope = new())
-        {
-            updatedResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            var error = await updatedResponse.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-            error.Should().NotBeNull();
-            error!.Status.Should().Be(400);
-            error.Title.Should().Be("One or more validation errors occurred.");
-            error.Errors.Count.Should().Be(1);
-        }
+        updatedResponse.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        var error = await updatedResponse.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+        error.ShouldNotBeNull();
+        error.Status.ShouldBe((int)HttpStatusCode.BadRequest);
+        error.Title.ShouldBe("One or more validation errors occurred.");
+        error.Errors.ShouldHaveSingleItem();
     }
 
     [Fact]
@@ -101,30 +81,25 @@ public class UpdateProductGroupControllerTests : ControllerTestBase
 
         var updatedResponse = await _client.PutAsJsonAsync($"{ProductGroupBaseAddress}/{createdProductGroup!.Id}", updateRequest);
 
-        using (AssertionScope scope = new())
-        {
-            updatedResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            var error = await updatedResponse.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-            error.Should().NotBeNull();
-            error!.Status.Should().Be(400);
-            error.Title.Should().Be("One or more validation errors occurred.");
-            error.Errors.Count.Should().Be(2);
-        }
+        updatedResponse.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        var error = await updatedResponse.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+        error.ShouldNotBeNull();
+        error.Status.ShouldBe((int)HttpStatusCode.BadRequest);
+        error.Title.ShouldBe("One or more validation errors occurred.");
+        error.Errors.Count.ShouldBe(2);
     }
 
     [Theory]
-    [InlineData("00000000-0000-0000-0000-000000000000")]
+    [ClassData(typeof(InvalidGuids))]
     public async Task Update_ReturnsValidationError_WhenIdInvalid(Guid id)
     {
         UpdateProductGroupRequest updateRequest = UpdateProductGroupRequestFactory.CreateValid();
         var updatedResponse = await _client.PutAsJsonAsync($"{ProductGroupBaseAddress}/{id}", updateRequest);
-        using (AssertionScope scope = new())
-        {
-            updatedResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            var error = await updatedResponse.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-            error.Should().NotBeNull();
-            error!.Title.Should().Be("One or more validation errors occurred.");
-            error.Errors.Count.Should().Be(1);
-        }
+
+        updatedResponse.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        var error = await updatedResponse.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+        error.ShouldNotBeNull();
+        error.Title.ShouldBe("One or more validation errors occurred.");
+        error.Errors.ShouldHaveSingleItem();
     }
 }

@@ -1,8 +1,11 @@
 ﻿global using CatalogManagement.Api.Tests.RequestFactories;
 global using CatalogManagement.Infrastructure.Persistence;
-global using FluentAssertions;
-global using FluentAssertions.Execution;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.Extensions.DependencyInjection;
 global using System.Net;
 global using System.Net.Http.Json;
+global using Shouldly;
+global using CatalogManagement.Api.Tests.Common;
+global using CatalogManagement.Api.Tests.Fixtures;
+global using CatalogManagement.Contracts.Products;
+global using static CatalogManagement.Api.Tests.Common.InvalidData;
