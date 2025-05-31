@@ -22,9 +22,12 @@ public class AddGroupToProductCommandHandlerTests
 
         var result = await handler.Handle(command, default);
 
-        result.Value!.GroupIds.Should().Contain(group.Id);
-        result.Value.GetDomainEvents().Should().HaveCount(1);
-        result.Value.GetDomainEvents().Should().ContainItemsAssignableTo<NewGroupAddedToProductDomainEvent>();
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.ShouldNotBeNull();
+        result.Value.GroupIds.ShouldContain(group.Id);
+        result.Value.GetDomainEvents().ShouldHaveSingleItem();
+        result.Value.GetDomainEvents()
+            .ShouldContain(x => x.GetType() == typeof(NewGroupAddedToProductDomainEvent));
     }
 
     [Fact]
@@ -35,9 +38,8 @@ public class AddGroupToProductCommandHandlerTests
 
         var result = await handler.Handle(command, default);
 
-        result.Errors.Should().HaveCount(1);
-        result.Errors.Should().Contain(ProductError.NotFoundById);
-
+        result.Errors.ShouldHaveSingleItem();
+        result.Errors.ShouldContain(ProductError.NotFoundById);
     }
 
     [Fact]
@@ -51,7 +53,7 @@ public class AddGroupToProductCommandHandlerTests
 
         var result = await handler.Handle(command, default);
 
-        result.Errors.Should().HaveCount(1);
-        result.Errors.Should().Contain(ProductError.ProductGroupNotAddedToProduct);
+        result.Errors.ShouldHaveSingleItem();
+        result.Errors.ShouldContain(ProductError.ProductGroupNotAddedToProduct);
     }
 }

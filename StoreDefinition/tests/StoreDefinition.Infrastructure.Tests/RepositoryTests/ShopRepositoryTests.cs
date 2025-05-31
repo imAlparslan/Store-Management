@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using StoreDefinition.Application.Common.Repositories;
+﻿using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Domain.ShopAggregateRoot;
 using StoreDefinition.Domain.ShopAggregateRoot.Entities;
 using StoreDefinition.Domain.ShopAggregateRoot.ValueObjects;
@@ -7,6 +6,7 @@ using StoreDefinition.Infrastructure.Tests.Factories;
 using StoreDefinition.Infrastructure.Tests.Fixtures;
 
 namespace StoreDefinition.Infrastructure.Tests.RepositoryTests;
+
 public class ShopRepositoryTests : IClassFixture<RepositoryFixture>
 {
     private readonly IShopRepository shopRepository;
@@ -23,7 +23,7 @@ public class ShopRepositoryTests : IClassFixture<RepositoryFixture>
 
         var insertedShop = await shopRepository.InsertShopAsync(shop);
 
-        insertedShop.Should().BeEquivalentTo(shop);
+        insertedShop.ShouldBeEquivalentTo(shop);
 
     }
     [Fact]
@@ -34,7 +34,7 @@ public class ShopRepositoryTests : IClassFixture<RepositoryFixture>
 
         var shopFromDb = await shopRepository.GetShopByIdAsync(shop.Id);
 
-        shopFromDb.Should().BeEquivalentTo(insertedShop);
+        shopFromDb.ShouldBeEquivalentTo(insertedShop);
     }
 
     [Fact]
@@ -42,7 +42,7 @@ public class ShopRepositoryTests : IClassFixture<RepositoryFixture>
     {
         var shopFromDb = await shopRepository.GetShopByIdAsync(Guid.NewGuid());
 
-        shopFromDb.Should().BeNull();
+        shopFromDb.ShouldBeNull();
     }
 
     [Fact]
@@ -57,9 +57,9 @@ public class ShopRepositoryTests : IClassFixture<RepositoryFixture>
 
         var updatedShop = await shopRepository.UpdateShopAsync(shop);
 
-        updatedShop.Should().NotBeNull();
-        updatedShop!.Description.Should().BeEquivalentTo(newDescription);
-        updatedShop!.Address.Should().BeEquivalentTo(newAddress);
+        updatedShop.ShouldNotBeNull();
+        updatedShop.Description.ShouldBeEquivalentTo(newDescription);
+        updatedShop.Address.ShouldBeEquivalentTo(newAddress);
     }
 
     [Fact]
@@ -80,9 +80,10 @@ public class ShopRepositoryTests : IClassFixture<RepositoryFixture>
 
         var shopsFromDb = await shopRepository.GetShopsByGroupIdAsync(groupId);
 
-        shopsFromDb.Should().HaveCount(2);
-        shopsFromDb.Should().Contain([shopHasGroup1, shopHasGroup2]);
-        shopsFromDb.Should().NotContain([shopHasAnotherGroup3, shopWithNoGroup]);
+        shopsFromDb.Count().ShouldBe(2);
+        shopsFromDb.ShouldBeSubsetOf([shopHasGroup1, shopHasGroup2]);
+        shopsFromDb.ShouldNotContain(shopHasAnotherGroup3);
+        shopsFromDb.ShouldNotContain(shopWithNoGroup);
 
     }
 
@@ -97,8 +98,7 @@ public class ShopRepositoryTests : IClassFixture<RepositoryFixture>
 
         var result = await shopRepository.GetShopsByGroupIdAsync(Guid.NewGuid());
 
-        result.Should().BeEmpty();
-        result.Should().NotContain([shop, shop2]);
+        result.ShouldBeEmpty();
     }
 
     [Fact]
@@ -113,8 +113,10 @@ public class ShopRepositoryTests : IClassFixture<RepositoryFixture>
 
         var shopsFromDb = await shopRepository.GetAllShopsAsync();
 
-        shopsFromDb.Should().HaveCount(3);
-        shopsFromDb.Should().Contain([insertedShop1, insertedShop2, insertedShop3]);
+        shopsFromDb.Count().ShouldBe(3);
+        shopsFromDb.ShouldContain(insertedShop1);
+        shopsFromDb.ShouldContain(insertedShop2);
+        shopsFromDb.ShouldContain(insertedShop3);
     }
 
     [Fact]
@@ -122,8 +124,7 @@ public class ShopRepositoryTests : IClassFixture<RepositoryFixture>
     {
         var shopsFromDb = await shopRepository.GetAllShopsAsync();
 
-        shopsFromDb.Should().HaveCount(0);
-        shopsFromDb.Should().BeEquivalentTo(Enumerable.Empty<Shop>());
+        shopsFromDb.ShouldBeEmpty();
     }
 
     [Fact]
@@ -134,9 +135,9 @@ public class ShopRepositoryTests : IClassFixture<RepositoryFixture>
 
         var isDeleted = await shopRepository.DeleteShopByIdAsync(shop.Id);
 
-        isDeleted.Should().BeTrue();
+        isDeleted.ShouldBeTrue();
         var deletedShop = await shopRepository.GetShopByIdAsync(shop.Id);
-        deletedShop.Should().BeNull();
+        deletedShop.ShouldBeNull();
 
     }
 
@@ -144,8 +145,7 @@ public class ShopRepositoryTests : IClassFixture<RepositoryFixture>
     public async Task DeleteShopById_ReturnsFalse_WhenShopNotExists()
     {
         var isDeleted = await shopRepository.DeleteShopByIdAsync(Guid.NewGuid());
-        isDeleted.Should().BeFalse();
+
+        isDeleted.ShouldBeFalse();
     }
 }
-
-

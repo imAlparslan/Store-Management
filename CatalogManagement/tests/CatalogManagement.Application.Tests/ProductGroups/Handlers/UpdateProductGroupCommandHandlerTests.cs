@@ -1,4 +1,7 @@
-﻿namespace CatalogManagement.Application.Tests.ProductGroups.Handlers;
+﻿using System.Threading.Tasks;
+
+namespace CatalogManagement.Application.Tests.ProductGroups.Handlers;
+
 public class UpdateProductGroupCommandHandlerTests
 {
     private readonly IProductGroupRepository productGroupRepository;
@@ -18,14 +21,11 @@ public class UpdateProductGroupCommandHandlerTests
 
         var result = await handler.Handle(command, default);
 
-        using (AssertionScope scope = new())
-        {
-            result.IsSuccess.Should().BeTrue();
-            result.Errors.Should().BeNullOrEmpty();
-            result.Value.Should().NotBeNull();
-            result.Value!.Name.Value.Should().Be(command.Name);
-            result.Value!.Description.Value.Should().Be(command.Description);
-        }
+        result.IsSuccess.ShouldBeTrue();
+        result.Errors.ShouldBeNull();
+        result.Value.ShouldNotBeNull();
+        result.Value.Name.Value.ShouldBe(command.Name);
+        result.Value.Description.Value.ShouldBe(command.Description);
     }
 
     [Fact]
@@ -36,44 +36,41 @@ public class UpdateProductGroupCommandHandlerTests
 
         var result = await handler.Handle(command, default);
 
-        using (AssertionScope scope = new())
-        {
-            result.IsSuccess!.Should().BeFalse();
-            result.Errors.Should().NotBeNullOrEmpty();
-            result.Errors.Should().Contain(ProductGroupError.NotFoundById);
-        }
-
-
+        result.IsSuccess!.ShouldBeFalse();
+        result.Errors.ShouldNotBeEmpty();
+        result.Errors.ShouldContain(ProductGroupError.NotFoundById);
     }
 
     [Theory]
     [ClassData(typeof(InvalidStringData))]
-    public void Handler_ThrowsException_WhenProductGroupNameInvalid(string productGroupName)
+    public async Task Handler_ThrowsException_WhenProductGroupNameInvalid(string productGroupName)
     {
         productGroupRepository.GetByIdAsync(Arg.Any<ProductGroupId>()).Returns(ProductGroupFactory.CreateDefault());
         var command = UpdateProductGroupCommandFactory.CreateWithName(productGroupName);
 
-        var result = () => handler.Handle(command, default);
+        var action = () => handler.Handle(command, default);
 
-        using (AssertionScope scope = new())
-        {
-            result.Should().ThrowExactlyAsync<ProductGroupException>();
-        }
+        var exception = await Should.ThrowAsync<ProductGroupException>(action);
+        exception.ShouldSatisfyAllConditions(
+            x => x.Code.ShouldBe(ProductGroupError.InvalidName.Code),
+            x => x.Message.ShouldBe(ProductGroupError.InvalidName.Description)
+        );
     }
 
 
     [Theory]
     [ClassData(typeof(InvalidStringData))]
-    public void Handler_ThrowsException_WhenProductGroupDescriptionInvalid(string productGroupDescription)
+    public async Task Handler_ThrowsException_WhenProductGroupDescriptionInvalid(string productGroupDescription)
     {
         productGroupRepository.GetByIdAsync(Arg.Any<ProductGroupId>()).Returns(ProductGroupFactory.CreateDefault());
         var command = UpdateProductGroupCommandFactory.CreateWithDefinition(productGroupDescription);
 
-        var result = () => handler.Handle(command, default);
+        var action = () => handler.Handle(command, default);
 
-        using (AssertionScope scope = new())
-        {
-            result.Should().ThrowExactlyAsync<ProductGroupException>();
-        }
+        var exception = await Should.ThrowAsync<ProductGroupException>(action);
+        exception.ShouldSatisfyAllConditions(
+            x => x.Code.ShouldBe(ProductGroupError.InvalidDescription.Code),
+            x => x.Message.ShouldBe(ProductGroupError.InvalidDescription.Description)
+        );
     }
 }

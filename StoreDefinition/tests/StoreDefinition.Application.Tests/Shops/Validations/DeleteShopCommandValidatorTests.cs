@@ -1,7 +1,7 @@
-﻿using FluentAssertions;
-using StoreDefinition.Application.Shops.Commands.DeleteShop;
+﻿using StoreDefinition.Application.Shops.Commands.DeleteShop;
 
 namespace StoreDefinition.Application.Tests.Shops.Validations;
+
 public class DeleteShopCommandValidatorTests
 {
 
@@ -13,7 +13,7 @@ public class DeleteShopCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeTrue();
+        result.IsValid.ShouldBeTrue();
     }
 
     [Fact]
@@ -24,8 +24,8 @@ public class DeleteShopCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeFalse();
+        result.IsValid.ShouldBeFalse();
         result.Errors.Select(x => x.PropertyName)
-            .Should().Contain(nameof(command.ShopId));
+            .ShouldContain(nameof(command.ShopId));
     }
 }

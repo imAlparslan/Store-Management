@@ -1,6 +1,7 @@
 ﻿using CatalogManagement.Application.ProductGroups.Commands.DeleteProductGroup;
 
 namespace CatalogManagement.Application.Tests.ProductGroups.Validators;
+
 public class DeleteProductGroupCommandValidatorTests
 {
     private readonly DeleteProductGroupByIdCommandValidator validator;
@@ -16,11 +17,10 @@ public class DeleteProductGroupCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        using (AssertionScope scope = new())
-        {
-            result.IsValid.Should().BeTrue();
-            result.Errors.Should().BeEmpty();
-        }
+        result.ShouldSatisfyAllConditions(
+            x => result.IsValid.ShouldBeTrue(),
+            x => result.Errors.ShouldBeEmpty()
+        );
     }
 
     [Theory]
@@ -31,13 +31,10 @@ public class DeleteProductGroupCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        using (AssertionScope scope = new())
-        {
-            result.IsValid.Should().BeFalse();
-            result.Errors.Count.Should().Be(1);
-            result.Errors.Select(x => x.PropertyName)
-                .Should()
-                .ContainSingle(nameof(command.Id));
-        }
+        result.ShouldSatisfyAllConditions(
+            x => result.IsValid.ShouldBeFalse(),
+            x => result.Errors.Select(x => x.PropertyName)
+                .ShouldHaveSingleItem(nameof(command.Id))
+        );
     }
 }

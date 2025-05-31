@@ -1,8 +1,7 @@
 ﻿using Bogus;
-using CatalogManagement.Contracts.Products;
 
 namespace CatalogManagement.Api.Tests.RequestFactories;
-public static class UpdateProductRequestFactory
+internal static class UpdateProductRequestFactory
 {
     public static UpdateProductRequest CreateCustom(string productName, string productCode, string productDefinition)
     {

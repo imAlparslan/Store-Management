@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using NSubstitute;
-using StoreDefinition.Application.Common.Repositories;
+﻿using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Application.Shops.Events;
 using StoreDefinition.Application.Tests.Common.Factories.ShopFactories;
 using StoreDefinition.Domain.GroupAggregateRoot.Events;
@@ -31,7 +29,7 @@ public class GroupDeletedDomainEventHandlerTests
 
         await handler.Handle(@event, default);
 
-        shop1.HasGroup(groupId).Should().BeFalse();
+        shop1.HasGroup(groupId).ShouldBeFalse();
         await shopRepository.ReceivedWithAnyArgs(2).UpdateShopAsync(Arg.Any<Shop>());
 
     }

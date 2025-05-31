@@ -1,4 +1,5 @@
 ﻿namespace CatalogManagement.Application.Tests.ProductGroups.Handlers;
+
 public class DeleteProductGroupByIdCommandHandlerTests
 {
     private readonly IProductGroupRepository productGroupRepository;
@@ -16,14 +17,11 @@ public class DeleteProductGroupByIdCommandHandlerTests
         productGroupRepository.DeleteByIdAsync(default!).ReturnsForAnyArgs(true);
         var command = new DeleteProductGroupByIdCommand(productGroup.Id);
 
-        var result = await handler.Handle(command, default);
+        var action = await handler.Handle(command, default);
 
-        using (AssertionScope scope = new())
-        {
-            result.Value.Should().BeTrue();
-            result.IsSuccess.Should().BeTrue();
-            result.Errors.Should().BeNullOrEmpty();
-        }
+        action.Value.ShouldBeTrue();
+        action.IsSuccess.ShouldBeTrue();
+        action.Errors.ShouldBeNull();
     }
 
     [Fact]
@@ -34,12 +32,9 @@ public class DeleteProductGroupByIdCommandHandlerTests
 
         var result = await handler.Handle(command, default);
 
-        using (AssertionScope scope = new())
-        {
-            result.Value.Should().BeFalse();
-            result.IsSuccess.Should().BeFalse();
-            result.Errors.Should().NotBeNullOrEmpty();
-            result.Errors![0].Should().Be(ProductGroupError.NotFoundById);
-        }
+        result.Value.ShouldBeFalse();
+        result.IsSuccess.ShouldBeFalse();
+        result.Errors.ShouldNotBeEmpty();
+        result.Errors.ShouldContain(ProductGroupError.NotFoundById);
     }
 }

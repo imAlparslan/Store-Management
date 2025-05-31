@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using NSubstitute;
-using NSubstitute.ReturnsExtensions;
+﻿using NSubstitute.ReturnsExtensions;
 using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Application.Groups.Queries.GetGroupById;
 using StoreDefinition.Application.Tests.Common.Factories.GroupFactories;
@@ -27,9 +25,9 @@ public class GetGroupByIdQueryHandlerTests
 
         var result = await handler.Handle(query, default);
 
-        result.IsSuccess.Should().BeTrue();
-        result.Value.Should().NotBeNull();
-        result.Value.Should().BeEquivalentTo(group);
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.ShouldNotBeNull();
+        result.Value.ShouldBeEquivalentTo(group);
     }
 
     [Fact]
@@ -40,7 +38,8 @@ public class GetGroupByIdQueryHandlerTests
 
         var result = await handler.Handle(query, default);
 
-        result.IsSuccess.Should().BeFalse();
-        result.Errors.Should().Contain(GroupErrors.NotFoundById);
+        result.IsSuccess.ShouldBeFalse();
+        result.Errors.ShouldNotBeNull();
+        result.Errors.ShouldContain(GroupErrors.NotFoundById);
     }
 }

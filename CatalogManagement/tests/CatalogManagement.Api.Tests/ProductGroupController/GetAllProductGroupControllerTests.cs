@@ -1,16 +1,10 @@
-﻿using CatalogManagement.Api.Tests.Common;
-using CatalogManagement.Api.Tests.Fixtures;
-using CatalogManagement.Contracts.ProductGroups;
+﻿using CatalogManagement.Contracts.ProductGroups;
 
 namespace CatalogManagement.Api.Tests.ProductGroupController;
 
 [Collection(nameof(ProductGroupControllerCollectionFixture))]
-public class GetAllProductGroupControllerTests : ControllerTestBase
+public class GetAllProductGroupControllerTests(CatalogApiFactory catalogApiFactory) : ControllerTestBase(catalogApiFactory)
 {
-    public GetAllProductGroupControllerTests(CatalogApiFactory catalogApiFactory) : base(catalogApiFactory)
-    {
-    }
-
     [Fact]
     public async Task GetAll_ReturnsProductGroups_WhenProductGroupsExist()
     {
@@ -20,15 +14,12 @@ public class GetAllProductGroupControllerTests : ControllerTestBase
 
         var productGroups = await _client.GetAsync($"{ProductGroupBaseAddress}");
 
-        using (AssertionScope scope = new())
-        {
-            productGroups.StatusCode.Should().Be(HttpStatusCode.OK);
-            var productsResponse = await productGroups.Content.ReadFromJsonAsync<IEnumerable<ProductGroupResponse>>();
-            productsResponse.Should().NotBeNullOrEmpty();
-            productsResponse!.Count().Should().Be(1);
-            productsResponse!.First().Should().BeEquivalentTo(createdProductGroup);
+        productGroups.StatusCode.ShouldBe(HttpStatusCode.OK);
+        var productsResponse = await productGroups.Content.ReadFromJsonAsync<IEnumerable<ProductGroupResponse>>();
+        productsResponse.ShouldNotBeNull();
+        productsResponse.ShouldHaveSingleItem();
+        productsResponse!.First().ShouldBeEquivalentTo(createdProductGroup);
 
-        }
     }
 
     [Fact]
@@ -36,11 +27,9 @@ public class GetAllProductGroupControllerTests : ControllerTestBase
     {
         var productGroups = await _client.GetAsync($"{ProductGroupBaseAddress}");
 
-        using (AssertionScope scope = new())
-        {
-            productGroups.StatusCode.Should().Be(HttpStatusCode.OK);
-            var productsResponse = await productGroups.Content.ReadFromJsonAsync<IEnumerable<ProductGroupResponse>>();
-            productsResponse.Should().BeEmpty();
-        }
+        productGroups.StatusCode.ShouldBe(HttpStatusCode.OK);
+        var productsResponse = await productGroups.Content.ReadFromJsonAsync<IEnumerable<ProductGroupResponse>>();
+        productsResponse.ShouldNotBeNull();
+        productsResponse.ShouldBeEmpty();
     }
 }

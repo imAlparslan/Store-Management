@@ -6,8 +6,6 @@ public abstract class ControllerTestBase : IAsyncLifetime
     protected const string ProductBaseAddress = "http://localhost/api/products";
     protected const string ProductGroupBaseAddress = "http://localhost/api/product-groups";
 
-    public static readonly TheoryData<string> InvalidStrings = ["", " ", null];
-
     protected ControllerTestBase(CatalogApiFactory apiFactory)
     {
         _client = apiFactory.Client;

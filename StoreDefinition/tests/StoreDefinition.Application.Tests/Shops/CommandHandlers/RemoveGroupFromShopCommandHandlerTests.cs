@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using NSubstitute;
-using NSubstitute.ReturnsExtensions;
+﻿using NSubstitute.ReturnsExtensions;
 using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Application.Shops.Commands.RemoveGroupFromShop;
 using StoreDefinition.Application.Tests.Common.Factories.ShopFactories;
@@ -32,11 +30,10 @@ public class RemoveGroupFromShopCommandHandlerTests
 
         var result = await _handler.Handle(command, default);
 
-        result.IsSuccess.Should().BeTrue();
-        result.Value!.HasGroup(groupId).Should().BeFalse();
-        result.Value!.GetDomainEvents().Should()
-            .ContainEquivalentOf(new GroupRemovedFromShopDomainEvent(shop.Id, groupId));
-        result.Errors.Should().BeNullOrEmpty();
+        result.IsSuccess.ShouldBeTrue();
+        result.Value!.HasGroup(groupId).ShouldBeFalse();
+        result.Value!.GetDomainEvents().Contains(new GroupRemovedFromShopDomainEvent(shop.Id, groupId));
+        result.Errors.ShouldBeNull();
     }
     [Fact]
     public async Task Handler_ReturnsNotFoundById_WhenShopNotExists()
@@ -46,9 +43,9 @@ public class RemoveGroupFromShopCommandHandlerTests
 
         var result = await _handler.Handle(command, default);
 
-        result.IsSuccess.Should().BeFalse();
-        result.Errors.Should().NotBeNullOrEmpty();
-        result.Errors.Should().Contain(ShopErrors.NotFoundById);
+        result.IsSuccess.ShouldBeFalse();
+        result.Errors.ShouldNotBeNull();
+        result.Errors.ShouldContain(ShopErrors.NotFoundById);
     }
     [Fact]
     public async Task Handler_ReturnsGroupNotRemovedFromShop_WhenGroupNotRemoved()
@@ -59,8 +56,8 @@ public class RemoveGroupFromShopCommandHandlerTests
 
         var result = await _handler.Handle(command, default);
 
-        result.IsSuccess.Should().BeFalse();
-        result.Errors.Should().NotBeNullOrEmpty();
-        result.Errors.Should().Contain(ShopErrors.GroupNotRemovedFromShop);
+        result.IsSuccess.ShouldBeFalse();
+        result.Errors.ShouldNotBeNull();
+        result.Errors.ShouldContain(ShopErrors.GroupNotRemovedFromShop);
     }
 }

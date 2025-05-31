@@ -2,8 +2,9 @@
 using CatalogManagement.Contracts.ProductGroups;
 
 namespace CatalogManagement.Api.Tests.RequestFactories;
-internal class UpdateProductGroupRequestFactory
+internal static class UpdateProductGroupRequestFactory
 {
+
     public static UpdateProductGroupRequest CreateCustom(string productGroupName, string productGroupDescription)
     {
         return new Faker<UpdateProductGroupRequest>()

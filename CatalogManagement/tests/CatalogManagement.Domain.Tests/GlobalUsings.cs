@@ -1,3 +1,2 @@
-﻿global using FluentAssertions;
-global using FluentAssertions.Execution;
+﻿global using Shouldly;
 global using SharedKernel.Domain.Common.Exceptions;

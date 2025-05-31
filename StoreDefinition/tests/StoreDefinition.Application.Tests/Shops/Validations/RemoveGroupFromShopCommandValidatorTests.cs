@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using StoreDefinition.Application.Shops.Commands.RemoveGroupFromShop;
+﻿using StoreDefinition.Application.Shops.Commands.RemoveGroupFromShop;
 
 namespace StoreDefinition.Application.Tests.Shops.Validations;
 public class RemoveGroupFromShopCommandValidatorTests
@@ -12,7 +11,7 @@ public class RemoveGroupFromShopCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeTrue();
+        result.IsValid.ShouldBeTrue();
     }
 
     [Fact]
@@ -23,11 +22,11 @@ public class RemoveGroupFromShopCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeFalse();
-        result.Errors.Should().NotBeNullOrEmpty();
-        result.Errors.Should().HaveCount(1);
+        result.IsValid.ShouldBeFalse();
+        result.Errors.ShouldNotBeNull();
+        result.Errors.ShouldHaveSingleItem();
         result.Errors.Select(x => x.PropertyName)
-            .Should().Contain(nameof(command.ShopId));
+            .ShouldContain(nameof(command.ShopId));
     }
     [Fact]
     public void Validator_ReturnsFalse_WhenGroupIdInvalid()
@@ -37,11 +36,11 @@ public class RemoveGroupFromShopCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeFalse();
-        result.Errors.Should().NotBeNullOrEmpty();
-        result.Errors.Should().HaveCount(1);
+        result.IsValid.ShouldBeFalse();
+        result.Errors.ShouldNotBeNull();
+        result.Errors.ShouldHaveSingleItem();
         result.Errors.Select(x => x.PropertyName)
-            .Should().Contain(nameof(command.GroupId));
+            .ShouldContain(nameof(command.GroupId));
     }
 
     [Fact]
@@ -52,11 +51,11 @@ public class RemoveGroupFromShopCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        result.IsValid!.Should().BeFalse();
-        result.Errors.Should().NotBeNullOrEmpty();
-        result.Errors.Should().HaveCount(2);
+        result.IsValid!.ShouldBeFalse();
+        result.Errors.ShouldNotBeNull();
+        result.Errors.Count.ShouldBe(2);
         result.Errors.Select(x => x.PropertyName)
-            .Should().Contain([nameof(command.ShopId), nameof(command.GroupId)]);
+            .ShouldBeSubsetOf([nameof(command.ShopId), nameof(command.GroupId)]);
     }
 
 }

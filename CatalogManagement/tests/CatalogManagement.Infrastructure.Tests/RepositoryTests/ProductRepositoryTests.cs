@@ -22,11 +22,8 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>, I
         var inserted = await _productRepository.InsertAsync(product);
         var result = await _productRepository.GetByIdAsync(product.Id);
 
-        using (new AssertionScope())
-        {
-            result.Should().BeEquivalentTo(product);
-            result.Should().BeEquivalentTo(inserted);
-        }
+        result.ShouldBeEquivalentTo(product);
+        result.ShouldBeEquivalentTo(inserted);
     }
 
     [Fact]
@@ -38,11 +35,8 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>, I
         var result = await _productRepository.DeleteByIdAsync(product.Id);
         var isExists = await _productRepository.IsExistsAsync(product.Id);
 
-        using (new AssertionScope())
-        {
-            result.Should().BeTrue();
-            isExists.Should().BeFalse();
-        }
+        result.ShouldBeTrue();
+        isExists.ShouldBeFalse();
     }
 
     [Fact]
@@ -53,11 +47,8 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>, I
         var inserted = await _productRepository.InsertAsync(product);
         var isExists = await _productRepository.IsExistsAsync(product.Id);
 
-        using (new AssertionScope())
-        {
-            isExists.Should().BeTrue();
-            inserted.Id.Should().Be(product.Id);
-        }
+        isExists.ShouldBeTrue();
+        inserted.Id.ShouldBe(product.Id);
     }
 
     [Fact]
@@ -71,13 +62,10 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>, I
         inserted.ChangeName(newName);
         Product result = await _productRepository.UpdateAsync(inserted);
 
-        using (new AssertionScope())
-        {
-            result.Name.Should().NotBe(oldName);
-            result.Name.Should().Be(newName);
-            inserted.Name.Should().Be(result.Name);
+        result.Name.ShouldNotBe(oldName);
+        result.Name.ShouldBe(newName);
+        inserted.Name.ShouldBe(result.Name);
 
-        }
     }
 
     [Fact]
@@ -91,13 +79,10 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>, I
         inserted.ChangeCode(newCode);
         Product result = await _productRepository.UpdateAsync(inserted);
 
-        using (new AssertionScope())
-        {
-            result.Code.Should().NotBe(oldCode);
-            result.Code.Should().Be(newCode);
-            inserted.Code.Should().Be(result.Code);
+        result.Code.ShouldNotBe(oldCode);
+        result.Code.ShouldBe(newCode);
+        inserted.Code.ShouldBe(result.Code);
 
-        }
     }
 
     [Fact]
@@ -111,13 +96,10 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>, I
         inserted.ChangeDefinition(newDefinition);
         Product result = await _productRepository.UpdateAsync(inserted);
 
-        using (new AssertionScope())
-        {
-            result.Definition.Should().NotBe(oldDefinition);
-            result.Definition.Should().Be(newDefinition);
-            inserted.Definition.Should().Be(result.Definition);
+        result.Definition.ShouldNotBe(oldDefinition);
+        result.Definition.ShouldBe(newDefinition);
+        inserted.Definition.ShouldBe(result.Definition);
 
-        }
     }
 
     [Fact]
@@ -125,7 +107,7 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>, I
     {
         var result = await _productRepository.GetAllAsync();
 
-        result.Should().BeEmpty();
+        result.ShouldBeEmpty();
     }
 
     [Fact]
@@ -135,8 +117,10 @@ public class ProductRepositoryTests : IClassFixture<ProductRepositoryFixture>, I
         var product = ProductFactory.Create();
         product.AddGroup(groupId);
         _ = await _productRepository.InsertAsync(product);
+
         var result = await _productRepository.GetByGroupAsync(groupId);
-        result.Should().HaveCount(1);
+
+        result.ShouldHaveSingleItem();
     }
 
     public async Task InitializeAsync() => await _dbReset();

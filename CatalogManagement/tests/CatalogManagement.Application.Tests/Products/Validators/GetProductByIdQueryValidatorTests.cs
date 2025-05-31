@@ -1,6 +1,7 @@
 ﻿using CatalogManagement.Application.Products.Queries.GetProductById;
 
 namespace CatalogManagement.Application.Tests.Products.Validators;
+
 public class GetProductByIdQueryValidatorTests
 {
     private readonly GetProductByIdQueryValidator validator;
@@ -16,11 +17,8 @@ public class GetProductByIdQueryValidatorTests
 
         var result = validator.Validate(query);
 
-        using (AssertionScope scope = new())
-        {
-            result.IsValid.Should().BeTrue();
-            result.Errors.Should().BeNullOrEmpty();
-        }
+        result.IsValid.ShouldBeTrue();
+        result.Errors.ShouldBeEmpty();
     }
 
     [Theory]
@@ -31,12 +29,9 @@ public class GetProductByIdQueryValidatorTests
 
         var result = validator.Validate(query);
 
-        using (AssertionScope scope = new())
-        {
-            result.IsValid.Should().BeFalse();
-            result.Errors.Count.Should().Be(1);
-            result.Errors.Select(x => x.PropertyName).Should()
-                .Contain([nameof(query.Id)]);
-        }
+        result.IsValid.ShouldBeFalse();
+        result.Errors.ShouldHaveSingleItem();
+        result.Errors.Select(x => x.PropertyName)
+            .ShouldContain(nameof(query.Id));
     }
 }

@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using FluentAssertions.Execution;
-using FluentValidation;
+﻿using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
 using NSubstitute;
@@ -12,6 +10,7 @@ using StoreDefinition.Application.Tests.Common.Factories.ShopFactories;
 using StoreDefinition.Domain.ShopAggregateRoot;
 
 namespace StoreDefinition.Application.Tests.Behaviors;
+
 public class CommandValidationBehaviorTests
 
 {
@@ -44,11 +43,8 @@ public class CommandValidationBehaviorTests
         var result = await commandValidationBehavior.Handle(command, nextBehavior, default);
 
         //Assert
-        using (AssertionScope scope = new())
-        {
-            result.IsSuccess.Should().BeTrue();
-            result.Errors.Should().BeNullOrEmpty();
-        }
+        result.IsSuccess.ShouldBeTrue();
+        result.Errors.ShouldBeNull();
 
     }
 
@@ -70,10 +66,7 @@ public class CommandValidationBehaviorTests
         var result = await commandValidationBehavior.Handle(command, nextBehavior, default);
 
         //Assert
-        using (AssertionScope scope = new())
-        {
-            result.IsSuccess.Should().BeFalse();
-            result.Errors.Should().NotBeNullOrEmpty();
-        }
+        result.IsSuccess.ShouldBeFalse();
+        result.Errors.ShouldNotBeEmpty();
     }
 }

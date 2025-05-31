@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
+using StoreDefinition.Api.Tests.Doubles;
+using StoreDefinition.Application.Services;
 using StoreDefinition.Infrastructure.Persistence;
 using StoreDefinition.Infrastructure.Persistence.Interceptors;
 using StoreDefinition.Infrastructure.Services;
@@ -38,6 +40,7 @@ public class StoreDefinitionApiFactory : WebApplicationFactory<IApiAssemblyMarke
                 services.RemoveAll<DbContextOptions<StoreDefinitionDbContext>>();
                 services.RemoveAll<StoreDefinitionDbContext>();
                 services.RemoveAll<IDomainEventPublisherService>();
+                services.RemoveAll<IEventPublisher>();
 
                 var connectionStringBuilder = new SqlConnectionStringBuilder()
                 {
@@ -46,6 +49,8 @@ public class StoreDefinitionApiFactory : WebApplicationFactory<IApiAssemblyMarke
                 };
 
                 services.AddScoped<IDomainEventPublisherService, DomainEventPublisherService>();
+
+                services.AddScoped<IEventPublisher, StubEventPublisher>();
 
                 services.AddDbContext<StoreDefinitionDbContext>(
                     (sp, opt) => opt

@@ -19,6 +19,6 @@ public class ProductCreatedDomainEventHandlerTests
 
         await handler.Handle(@event, default);
 
-        productGroup.ProductIds.Should().Contain(product.Id);
+        productGroup.ProductIds.ShouldContain(product.Id);
     }
 }

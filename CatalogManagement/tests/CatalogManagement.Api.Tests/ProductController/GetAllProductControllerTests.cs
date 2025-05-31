@@ -1,16 +1,8 @@
-﻿using CatalogManagement.Api.Tests.Common;
-using CatalogManagement.Api.Tests.Fixtures;
-using CatalogManagement.Contracts.Products;
-
-namespace CatalogManagement.Api.Tests.ProductController;
+﻿namespace CatalogManagement.Api.Tests.ProductController;
 
 [Collection(nameof(ProductControllerCollectionFixture))]
-public class GetAllProductControllerTests : ControllerTestBase
+public class GetAllProductControllerTests(CatalogApiFactory catalogApiFactory) : ControllerTestBase(catalogApiFactory)
 {
-    public GetAllProductControllerTests(CatalogApiFactory catalogApiFactory) : base(catalogApiFactory)
-    {
-    }
-
     [Fact]
     public async Task GetAll_ReturnsProducts_WhenProductsExist()
     {
@@ -20,15 +12,12 @@ public class GetAllProductControllerTests : ControllerTestBase
 
         var products = await _client.GetAsync($"{ProductBaseAddress}");
 
-        using (AssertionScope scope = new())
-        {
-            products.StatusCode.Should().Be(HttpStatusCode.OK);
-            var productsResponse = await products.Content.ReadFromJsonAsync<IEnumerable<ProductResponse>>();
-            productsResponse.Should().NotBeNullOrEmpty();
-            productsResponse!.Count().Should().Be(1);
-            productsResponse!.First().Should().BeEquivalentTo(createdProduct);
+        products.StatusCode.ShouldBe(HttpStatusCode.OK);
+        var productsResponse = await products.Content.ReadFromJsonAsync<IEnumerable<ProductResponse>>();
+        productsResponse.ShouldNotBeNull();
+        productsResponse.Count().ShouldBe(1);
+        productsResponse.First().ShouldBeEquivalentTo(createdProduct);
 
-        }
     }
 
     [Fact]
@@ -36,11 +25,8 @@ public class GetAllProductControllerTests : ControllerTestBase
     {
         var products = await _client.GetAsync($"{ProductBaseAddress}");
 
-        using (AssertionScope scope = new())
-        {
-            products.StatusCode.Should().Be(HttpStatusCode.OK);
-            var productsResponse = await products.Content.ReadFromJsonAsync<IEnumerable<ProductResponse>>();
-            productsResponse.Should().BeEmpty();
-        }
+        products.StatusCode.ShouldBe(HttpStatusCode.OK);
+        var productsResponse = await products.Content.ReadFromJsonAsync<IEnumerable<ProductResponse>>();
+        productsResponse.ShouldBeEmpty();
     }
 }

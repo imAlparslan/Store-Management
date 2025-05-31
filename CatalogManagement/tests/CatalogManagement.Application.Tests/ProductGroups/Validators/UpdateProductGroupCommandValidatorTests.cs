@@ -1,6 +1,7 @@
 ﻿using CatalogManagement.Application.ProductGroups.Commands.UpdateProductGroup;
 
 namespace CatalogManagement.Application.Tests.ProductGroups.Validators;
+
 public class UpdateProductGroupCommandValidatorTests
 {
     private readonly UpdateProductGroupCommandValidator validator;
@@ -16,12 +17,10 @@ public class UpdateProductGroupCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        using (AssertionScope scope = new())
-        {
-
-            result.IsValid.Should().BeTrue();
-            result.Errors.Should().BeEmpty();
-        }
+        result.ShouldSatisfyAllConditions(
+            x => result.IsValid.ShouldBeTrue(),
+            x => result.Errors.ShouldBeEmpty()
+        );
     }
 
     [Theory]
@@ -34,13 +33,12 @@ public class UpdateProductGroupCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        using (AssertionScope scope = new())
-        {
-            result.IsValid.Should().BeFalse();
-            result.Errors.Count.Should().Be(3);
-            result.Errors.Select(x => x.PropertyName).Should()
-                .Contain([nameof(command.Id), nameof(command.Name), nameof(command.Description)]);
-        }
+        result.ShouldSatisfyAllConditions(
+            x => result.IsValid.ShouldBeFalse(),
+            x => result.Errors.Count.ShouldBe(3),
+            x => result.Errors.Select(x => x.PropertyName)
+                .ShouldBeSubsetOf([nameof(command.Id), nameof(command.Name), nameof(command.Description)])
+        );
     }
 
     [Theory]
@@ -51,13 +49,12 @@ public class UpdateProductGroupCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        using (AssertionScope scope = new())
-        {
-            result.IsValid.Should().BeFalse();
-            result.Errors.Count.Should().Be(1);
-            result.Errors.Select(x => x.PropertyName).Should()
-                .Contain([nameof(command.Name)]);
-        }
+        result.ShouldSatisfyAllConditions(
+            x => result.IsValid.ShouldBeFalse(),
+            x => result.Errors.Count.ShouldBe(1),
+            x => result.Errors.Select(x => x.PropertyName)
+                .ShouldContain(nameof(command.Name))
+        );
     }
 
     [Theory]
@@ -68,13 +65,12 @@ public class UpdateProductGroupCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        using (AssertionScope scope = new())
-        {
-            result.IsValid.Should().BeFalse();
-            result.Errors.Count.Should().Be(1);
-            result.Errors.Select(x => x.PropertyName).Should()
-                .Contain([nameof(command.Id)]);
-        }
+        result.ShouldSatisfyAllConditions(
+            x => result.IsValid.ShouldBeFalse(),
+            x => result.Errors.Count.ShouldBe(1),
+            x => result.Errors.Select(x => x.PropertyName)
+                .ShouldContain(nameof(command.Id))
+        );
     }
 
     [Theory]
@@ -85,12 +81,11 @@ public class UpdateProductGroupCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        using (AssertionScope scope = new())
-        {
-            result.IsValid.Should().BeFalse();
-            result.Errors.Count.Should().Be(1);
-            result.Errors.Select(x => x.PropertyName).Should()
-                .Contain([nameof(command.Description)]);
-        }
+        result.ShouldSatisfyAllConditions(
+            x => result.IsValid.ShouldBeFalse(),
+            x => result.Errors.Count.ShouldBe(1),
+            x => result.Errors.Select(x => x.PropertyName)
+                .ShouldContain(nameof(command.Description))
+        );
     }
 }

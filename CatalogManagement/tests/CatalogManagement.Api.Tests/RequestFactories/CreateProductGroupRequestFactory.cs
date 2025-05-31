@@ -2,7 +2,7 @@
 using CatalogManagement.Contracts.ProductGroups;
 
 namespace CatalogManagement.Api.Tests.RequestFactories;
-internal class CreateProductGroupRequestFactory
+internal static class CreateProductGroupRequestFactory
 {
     public static CreateProductGroupRequest CreateCustom(string productGroupName, string productGroupDescription)
     {

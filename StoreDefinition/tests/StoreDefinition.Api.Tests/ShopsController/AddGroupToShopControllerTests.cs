@@ -15,9 +15,9 @@ public class AddGroupToShopControllerTests(StoreDefinitionApiFactory apiFactory)
 
         var response = await _client.PostAsJsonAsync($"{ShopsBaseAddress}/{shop.Id}/add-group", request);
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
         var shopResponse = await response.Content.ReadFromJsonAsync<ShopResponse>();
-        shopResponse!.Groups.Should().Contain(groupId);
+        shopResponse!.Groups.ShouldContain(groupId);
     }
 
     [Fact]
@@ -27,7 +27,7 @@ public class AddGroupToShopControllerTests(StoreDefinitionApiFactory apiFactory)
 
         var response = await _client.PostAsJsonAsync($"{ShopsBaseAddress}/{Guid.NewGuid()}/add-group", request);
 
-        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
     }
     [Fact]
     public async Task AddGroupToShop_ReturnBadRequest_WhenGroupIdInvalid()
@@ -37,7 +37,7 @@ public class AddGroupToShopControllerTests(StoreDefinitionApiFactory apiFactory)
 
         var response = await _client.PostAsJsonAsync($"{ShopsBaseAddress}/{shop.Id}/add-group", request);
 
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
     }
 
     [Fact]
@@ -49,8 +49,9 @@ public class AddGroupToShopControllerTests(StoreDefinitionApiFactory apiFactory)
 
         var response = await _client.PostAsJsonAsync($"{ShopsBaseAddress}/{shop.Id}/add-group", request);
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
         var groupResponse = await _client.GetFromJsonAsync<GroupResponse>($"{GroupsBaseAddress}/{group.Id}");
-        groupResponse!.ShopsIds.Should().Contain(shop.Id);
+        groupResponse.ShouldNotBeNull();
+        groupResponse.ShopsIds.ShouldContain(shop.Id);
     }
 }

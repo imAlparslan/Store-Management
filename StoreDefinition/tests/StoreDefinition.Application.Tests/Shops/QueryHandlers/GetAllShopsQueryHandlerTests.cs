@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using NSubstitute;
-using StoreDefinition.Application.Common.Repositories;
+﻿using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Application.Shops.Queries.GetAllShops;
 using StoreDefinition.Application.Tests.Common.Factories.ShopFactories;
 
@@ -25,9 +23,9 @@ public class GetAllShopsQueryHandlerTests
 
         var result = await _handler.Handle(_query, default);
 
-        result.IsSuccess.Should().BeTrue();
-        result.Value.Should().NotBeNullOrEmpty();
-        result.Value.Should().HaveCount(2);
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.ShouldNotBeNull();
+        result.Value.Count().ShouldBe(2);
     }
 
     [Fact]
@@ -37,8 +35,8 @@ public class GetAllShopsQueryHandlerTests
 
         var result = await _handler.Handle(_query, default);
 
-        result.IsSuccess.Should().BeTrue();
-        result.Value.Should().NotBeNull();
-        result.Value.Should().BeEmpty();
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.ShouldNotBeNull();
+        result.Value.ShouldBeEmpty();
     }
 }

@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using NSubstitute;
-using NSubstitute.ReturnsExtensions;
+﻿using NSubstitute.ReturnsExtensions;
 using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Application.Shops.Commands.AddGroupToShop;
 using StoreDefinition.Application.Tests.Common.Factories.ShopFactories;
@@ -30,10 +28,11 @@ public class AddGroupToShopCommandHandlerTests
 
         var result = await _handler.Handle(command, default);
 
-        result.IsSuccess.Should().BeTrue();
-        result.Errors.Should().BeNullOrEmpty();
-        result.Value!.HasGroup(groupId).Should().BeTrue();
-        shop.GetDomainEvents().Should().HaveCount(1);
+        result.IsSuccess.ShouldBeTrue();
+        result.Errors.ShouldBeNull();
+        result.Value.ShouldNotBeNull();
+        result.Value.HasGroup(groupId).ShouldBeTrue();
+        shop.GetDomainEvents().ShouldHaveSingleItem();
     }
 
     [Fact]
@@ -45,10 +44,10 @@ public class AddGroupToShopCommandHandlerTests
 
         var result = await _handler.Handle(command, default);
 
-        result.IsSuccess.Should().BeFalse();
-        result.Errors.Should().NotBeNullOrEmpty();
-        result.Errors.Should().Contain([ShopErrors.NotFoundById]);
-        result.Value.Should().BeNull();
+        result.IsSuccess.ShouldBeFalse();
+        result.Errors.ShouldNotBeNull();
+        result.Errors.ShouldContain(ShopErrors.NotFoundById);
+        result.Value.ShouldBeNull();
     }
 
     [Fact]
@@ -62,9 +61,9 @@ public class AddGroupToShopCommandHandlerTests
 
         var result = await _handler.Handle(command, default);
 
-        result.IsSuccess.Should().BeFalse();
-        result.Errors.Should().NotBeNullOrEmpty();
-        result.Errors.Should().Contain(ShopErrors.GroupNotAddedToShop);
-        result.Value.Should().BeNull();
+        result.IsSuccess.ShouldBeFalse();
+        result.Errors.ShouldNotBeNull();
+        result.Errors.ShouldContain(ShopErrors.GroupNotAddedToShop);
+        result.Value.ShouldBeNull();
     }
 }

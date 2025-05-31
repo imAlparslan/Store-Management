@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using NSubstitute;
-using NSubstitute.ReturnsExtensions;
+﻿using NSubstitute.ReturnsExtensions;
 using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Application.Shops.Queries.GetShopById;
 using StoreDefinition.Application.Tests.Common.Factories.ShopFactories;
@@ -28,9 +26,9 @@ public class GetShopByIdQueryHandlerTests
 
         var result = await _handler.Handle(query, default);
 
-        result.IsSuccess.Should().BeTrue();
-        result.Value.Should().BeEquivalentTo(shop);
-        result.Errors.Should().BeNullOrEmpty();
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.ShouldBeEquivalentTo(shop);
+        result.Errors.ShouldBeNull();
     }
 
     [Fact]
@@ -41,8 +39,9 @@ public class GetShopByIdQueryHandlerTests
 
         var result = await _handler.Handle(query, default);
 
-        result.IsSuccess.Should().BeFalse();
-        result.Value.Should().BeNull();
-        result.Errors.Should().Contain(ShopErrors.NotFoundById);
+        result.IsSuccess.ShouldBeFalse();
+        result.Value.ShouldBeNull();
+        result.Errors.ShouldNotBeNull();
+        result.Errors.ShouldContain(ShopErrors.NotFoundById);
     }
 }

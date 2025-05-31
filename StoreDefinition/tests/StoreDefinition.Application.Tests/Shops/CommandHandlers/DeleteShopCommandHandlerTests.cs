@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using NSubstitute;
-using NSubstitute.ReturnsExtensions;
+﻿using NSubstitute.ReturnsExtensions;
 using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Application.Shops.Commands.DeleteShop;
 using StoreDefinition.Application.Tests.Common.Factories.ShopFactories;
@@ -28,10 +26,10 @@ public class DeleteShopCommandHandlerTests
         shopRepository.DeleteShopByIdAsync(Arg.Any<ShopId>()).Returns(true);
         var result = await _handler.Handle(command, default);
 
-        result.IsSuccess.Should().BeTrue();
-        result.Value.Should().BeTrue();
-        result.Errors.Should().BeNullOrEmpty();
-        shop.GetDomainEvents().Should().HaveCount(1);
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.ShouldBeTrue();
+        result.Errors.ShouldBeNull();
+        shop.GetDomainEvents().ShouldHaveSingleItem();
     }
 
     [Fact]
@@ -41,7 +39,8 @@ public class DeleteShopCommandHandlerTests
         shopRepository.GetShopByIdAsync(Arg.Any<ShopId>()).ReturnsNullForAnyArgs();
         var result = await _handler.Handle(command, default);
 
-        result.IsSuccess.Should().BeFalse();
-        result.Errors.Should().Contain(ShopErrors.NotFoundById);
+        result.IsSuccess.ShouldBeFalse();
+        result.Errors.ShouldNotBeNull();
+        result.Errors.ShouldContain(ShopErrors.NotFoundById);
     }
 }

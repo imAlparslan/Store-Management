@@ -6,6 +6,7 @@ using MediatR;
 using NSubstitute.Extensions;
 
 namespace CatalogManagement.Application.Tests.Behaviors;
+
 public class CommandValidationBehaviorTests
 {
     private readonly RequestHandlerDelegate<Result<Product>> nextBehavior;
@@ -21,14 +22,14 @@ public class CommandValidationBehaviorTests
 
 
     [Fact]
-    public async Task InvolkeBehavior_ShouldInvolkeNextBehavior_WhenValidatorResultValid()
+    public async Task InvokedBehavior_ShouldInvokesNextBehavior_WhenValidatorResultValid()
     {
         //Arrange
         var command = CreateProductCommandFactory.CreateValid();
         var product = ProductFactory.CreateDefault();
 
         nextBehavior.Invoke().Returns(product);
-        mockValidator.ReturnsForAll<Task<ValidationResult>>(Task.FromResult(new ValidationResult()));
+        mockValidator.ReturnsForAll(Task.FromResult(new ValidationResult()));
         mockValidators.Add(mockValidator);
 
         CommandValidationBehavior<CreateProductCommand, Result<Product>> commandValidationBehavior = new(mockValidators);
@@ -37,11 +38,8 @@ public class CommandValidationBehaviorTests
         var result = await commandValidationBehavior.Handle(command, nextBehavior, default);
 
         //Assert
-        using (AssertionScope scope = new())
-        {
-            result.IsSuccess.Should().BeTrue();
-            result.Errors.Should().BeNullOrEmpty();
-        }
+        result.IsSuccess.ShouldBeTrue();
+        result.Errors.ShouldBeNull();
 
     }
 
@@ -54,7 +52,7 @@ public class CommandValidationBehaviorTests
         List<ValidationFailure> fails = [new("propname", "msg")];
 
         nextBehavior.Invoke().Returns(product);
-        mockValidator.ReturnsForAll<Task<ValidationResult>>(Task.FromResult(new ValidationResult(fails)));
+        mockValidator.ReturnsForAll(Task.FromResult(new ValidationResult(fails)));
         mockValidators.Add(mockValidator);
 
         CommandValidationBehavior<CreateProductCommand, Result<Product>> commandValidationBehavior = new(mockValidators);
@@ -63,10 +61,7 @@ public class CommandValidationBehaviorTests
         var result = await commandValidationBehavior.Handle(command, nextBehavior, default);
 
         //Assert
-        using (AssertionScope scope = new())
-        {
-            result.IsSuccess.Should().BeFalse();
-            result.Errors.Should().NotBeNullOrEmpty();
-        }
+        result.IsSuccess.ShouldBeFalse();
+        result.Errors.ShouldNotBeEmpty();
     }
 }

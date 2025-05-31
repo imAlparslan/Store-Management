@@ -1,13 +1,11 @@
-﻿using FluentAssertions;
-using FluentAssertions.Execution;
-using NSubstitute;
-using StoreDefinition.Application.Common.Repositories;
+﻿using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Application.Shops.Commands.CreateShop;
 using StoreDefinition.Application.Tests.Common.Factories.ShopFactories;
 using StoreDefinition.Domain.ShopAggregateRoot;
 using StoreDefinition.Domain.ShopAggregateRoot.Exceptions;
 
 namespace StoreDefinition.Application.Tests.Shops.CommandHandlers;
+
 public class CreateShopCommandHandlerTests
 {
     private readonly CreateShopCommandHandler _handler;
@@ -27,54 +25,41 @@ public class CreateShopCommandHandlerTests
 
         var result = await _handler.Handle(command, default);
 
-        result.IsSuccess.Should().BeTrue();
-        result.Value.Should().NotBeNull();
-        result.Errors.Should().BeNullOrEmpty();
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.ShouldNotBeNull();
+        result.Errors.ShouldBeNull();
     }
 
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [ClassData(typeof(InvalidStrings))]
     public void Handler_ThrowsShopException_WhenDescriptionInvalid(string invalid)
     {
         var command = CreateShopCommandFactory.CreateCustom(description: invalid);
         _mockShopRepository.InsertShopAsync(Arg.Any<Shop>()).ReturnsForAnyArgs(ShopFactory.CreateValid());
         var result = () => _handler.Handle(command, default);
 
-        using (AssertionScope scope = new())
-        {
-            result.Should().ThrowExactlyAsync<ShopException>();
-        }
+        result.ShouldThrowAsync<ShopException>();
     }
 
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [ClassData(typeof(InvalidStrings))]
     public void Handler_ThrowsShopException_WhenCityInvalid(string invalid)
     {
         var command = CreateShopCommandFactory.CreateCustom(city: invalid);
 
         var result = () => _handler.Handle(command, default);
 
-        using (AssertionScope scope = new())
-        {
-            result.Should().ThrowExactlyAsync<ShopException>();
-        }
+        result.ShouldThrowAsync<ShopException>();
     }
 
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [ClassData(typeof(InvalidStrings))]
     public void Handler_ThrowsShopException_WhenStreetInvalid(string invalid)
     {
         var command = CreateShopCommandFactory.CreateCustom(street: invalid);
 
         var result = () => _handler.Handle(command, default);
 
-        using (AssertionScope scope = new())
-        {
-            result.Should().ThrowExactlyAsync<ShopException>();
-        }
+        result.ShouldThrowAsync<ShopException>();
     }
-
-
-    public static readonly TheoryData<string> invalidStrings = ["", " ", null];
-
 }

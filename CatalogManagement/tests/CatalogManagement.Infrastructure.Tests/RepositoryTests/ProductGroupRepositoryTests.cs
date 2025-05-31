@@ -4,6 +4,7 @@ using CatalogManagement.Infrastructure.Tests.Common.Factories.ProductGroupFactor
 using CatalogManagement.Infrastructure.Tests.Fixtures;
 
 namespace CatalogManagement.Infrastructure.Tests.RepositoryTests;
+
 public class ProductGroupRepositoryTests : IClassFixture<ProductGroupRepositoryFixture>, IAsyncLifetime
 {
     private readonly IProductGroupRepository _productGroupRepository;
@@ -23,11 +24,8 @@ public class ProductGroupRepositoryTests : IClassFixture<ProductGroupRepositoryF
         var inserted = await _productGroupRepository.InsertAsync(productGroup);
         var result = await _productGroupRepository.GetByIdAsync(productGroup.Id);
 
-        using (new AssertionScope())
-        {
-            result.Should().BeEquivalentTo(productGroup);
-            result.Should().BeEquivalentTo(inserted);
-        }
+        result.ShouldBeEquivalentTo(productGroup);
+        result.ShouldBeEquivalentTo(inserted);
     }
 
     [Fact]
@@ -38,11 +36,8 @@ public class ProductGroupRepositoryTests : IClassFixture<ProductGroupRepositoryF
         var result = await _productGroupRepository.DeleteByIdAsync(productGroup.Id);
         var isExists = await _productGroupRepository.IsExistsAsync(productGroup.Id);
 
-        using (new AssertionScope())
-        {
-            result.Should().BeTrue();
-            isExists.Should().BeFalse();
-        }
+        result.ShouldBeTrue();
+        isExists.ShouldBeFalse();
     }
 
     [Fact]
@@ -53,11 +48,8 @@ public class ProductGroupRepositoryTests : IClassFixture<ProductGroupRepositoryF
         var inserted = await _productGroupRepository.InsertAsync(productGroup);
         var isExists = await _productGroupRepository.IsExistsAsync(productGroup.Id);
 
-        using (new AssertionScope())
-        {
-            isExists.Should().BeTrue();
-            inserted.Id.Should().Be(productGroup.Id);
-        }
+        isExists.ShouldBeTrue();
+        inserted.Id.ShouldBe(productGroup.Id);
     }
 
     [Fact]
@@ -71,13 +63,10 @@ public class ProductGroupRepositoryTests : IClassFixture<ProductGroupRepositoryF
         inserted.ChangeName(newName);
         ProductGroup result = await _productGroupRepository.UpdateAsync(inserted);
 
-        using (new AssertionScope())
-        {
-            result.Name.Should().NotBe(oldName);
-            result.Name.Should().Be(newName);
-            inserted.Name.Should().Be(result.Name);
+        result.Name.ShouldNotBe(oldName);
+        result.Name.ShouldBe(newName);
+        inserted.Name.ShouldBe(result.Name);
 
-        }
     }
 
     [Fact]
@@ -85,19 +74,16 @@ public class ProductGroupRepositoryTests : IClassFixture<ProductGroupRepositoryF
     {
         var productGroup = ProductGroupFactory.Create();
         var oldDescription = productGroup.Description;
-        var newDefinition = ProductGroupDescriptionFactory.Create("updated dewfinition");
+        var newDefinition = ProductGroupDescriptionFactory.Create("updated definition");
 
         var inserted = await _productGroupRepository.InsertAsync(productGroup);
         inserted.ChangeDescription(newDefinition);
         ProductGroup result = await _productGroupRepository.UpdateAsync(inserted);
 
-        using (new AssertionScope())
-        {
-            result.Description.Should().NotBe(oldDescription);
-            result.Description.Should().Be(newDefinition);
-            inserted.Description.Should().Be(result.Description);
+        result.Description.ShouldNotBe(oldDescription);
+        result.Description.ShouldBe(newDefinition);
+        inserted.Description.ShouldBe(result.Description);
 
-        }
     }
 
     [Fact]
@@ -105,7 +91,7 @@ public class ProductGroupRepositoryTests : IClassFixture<ProductGroupRepositoryF
     {
         var result = await _productGroupRepository.GetAllAsync();
 
-        result.Should().BeEmpty();
+        result.ShouldBeEmpty();
     }
 
     [Fact]
@@ -118,7 +104,7 @@ public class ProductGroupRepositoryTests : IClassFixture<ProductGroupRepositoryF
 
         var result = await _productGroupRepository.GetProductGroupsByProductIdAsync(productId);
 
-        result.Should().HaveCount(1);
+        result.ShouldHaveSingleItem();
 
     }
 

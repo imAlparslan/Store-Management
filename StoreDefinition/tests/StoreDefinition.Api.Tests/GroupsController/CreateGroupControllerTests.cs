@@ -14,37 +14,38 @@ public class CreateGroupControllerTests(StoreDefinitionApiFactory apiFactory)
 
         var response = await _client.PostAsJsonAsync(GroupsBaseAddress, request);
 
-        response.StatusCode.Should().Be(HttpStatusCode.Created);
+        response.StatusCode.ShouldBe(HttpStatusCode.Created);
         var groupResponse = await response.Content.ReadFromJsonAsync<GroupResponse>();
-        groupResponse.Should().NotBeNull();
-        response.Headers.Location.Should().Be($"{GroupsBaseAddress}/{groupResponse!.Id}");
+        groupResponse.ShouldNotBeNull();
+        response.Headers.Location.ShouldNotBeNull();
+        response.Headers.Location.AbsoluteUri.ShouldBe($"{GroupsBaseAddress}/{groupResponse!.Id}");
     }
 
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [ClassData(typeof(InvalidStrings))]
     public async Task Create_ReturnsBadRequest_WhenGroupDescriptionInvalid(string invalid)
     {
         var request = GroupRequestFactory.CreateGroupCreateRequest(groupDescription: invalid);
 
         var response = await _client.PostAsJsonAsync(GroupsBaseAddress, request);
 
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-        error.Should().NotBeNull();
-        error!.Errors.Should().HaveCount(1);
+        error.ShouldNotBeNull();
+        error.Errors.ShouldHaveSingleItem();
     }
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [ClassData(typeof(InvalidStrings))]
     public async Task Create_ReturnsBadRequest_WhenGroupNameInvalid(string invalid)
     {
         var request = GroupRequestFactory.CreateGroupCreateRequest(groupName: invalid);
 
         var response = await _client.PostAsJsonAsync(GroupsBaseAddress, request);
 
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-        error.Should().NotBeNull();
-        error!.Errors.Should().HaveCount(1);
+        error.ShouldNotBeNull();
+        error.Errors.ShouldHaveSingleItem();
     }
 
     [Fact]
@@ -53,10 +54,10 @@ public class CreateGroupControllerTests(StoreDefinitionApiFactory apiFactory)
         var request = GroupRequestFactory.CreateGroupCreateRequest(groupName: "", groupDescription: "");
         var response = await _client.PostAsJsonAsync(GroupsBaseAddress, request);
 
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
         var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-        error.Should().NotBeNull();
-        error!.Errors.Should().HaveCount(2);
+        error.ShouldNotBeNull();
+        error.Errors.Count().ShouldBe(2);
     }
 }

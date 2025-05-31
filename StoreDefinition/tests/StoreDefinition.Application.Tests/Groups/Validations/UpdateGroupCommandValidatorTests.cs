@@ -1,8 +1,8 @@
-﻿using FluentAssertions;
-using StoreDefinition.Application.Groups.Commands.UpdateGroup;
+﻿using StoreDefinition.Application.Groups.Commands.UpdateGroup;
 using StoreDefinition.Application.Tests.Common.Factories.GroupFactories;
 
 namespace StoreDefinition.Application.Tests.Groups.Validations;
+
 public class UpdateGroupCommandValidatorTests
 {
     private readonly UpdateGroupCommandValidator validator;
@@ -18,34 +18,34 @@ public class UpdateGroupCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeTrue();
+        result.IsValid.ShouldBeTrue();
     }
 
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [ClassData(typeof(InvalidStrings))]
     public void Validator_ReturnsFalse_WhenNameInvalid(string invalid)
     {
         var command = GroupCommandFactory.GroupUpdateCommand(id: Guid.NewGuid(), name: invalid);
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeFalse();
-        result.Errors.Should().HaveCount(1);
+        result.IsValid.ShouldBeFalse();
+        result.Errors.ShouldHaveSingleItem();
         result.Errors.Select(x => x.PropertyName)
-            .Should().Contain(nameof(command.Name));
+            .ShouldContain(nameof(command.Name));
     }
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [ClassData(typeof(InvalidStrings))]
     public void Validator_ReturnsFalse_WhenDescription(string invalid)
     {
         var command = GroupCommandFactory.GroupUpdateCommand(id: Guid.NewGuid(), description: invalid);
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeFalse();
-        result.Errors.Should().HaveCount(1);
+        result.IsValid.ShouldBeFalse();
+        result.Errors.ShouldHaveSingleItem();
         result.Errors.Select(x => x.PropertyName)
-            .Should().Contain(nameof(command.Description));
+            .ShouldContain(nameof(command.Description));
     }
 
     [Fact]
@@ -55,10 +55,10 @@ public class UpdateGroupCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeFalse();
-        result.Errors.Should().HaveCount(1);
+        result.IsValid.ShouldBeFalse();
+        result.Errors.ShouldHaveSingleItem();
         result.Errors.Select(x => x.PropertyName)
-            .Should().Contain(nameof(command.GroupId));
+            .ShouldContain(nameof(command.GroupId));
     }
 
     [Fact]
@@ -68,11 +68,10 @@ public class UpdateGroupCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeFalse();
-        result.Errors.Should().HaveCount(3);
+        result.IsValid.ShouldBeFalse();
+        result.Errors.Count.ShouldBe(3);
         result.Errors.Select(x => x.PropertyName)
-            .Should().Contain([nameof(command.GroupId), nameof(command.Name), nameof(command.Description)]);
+            .ShouldBeSubsetOf([nameof(command.GroupId), nameof(command.Name), nameof(command.Description)]);
     }
-    public static readonly TheoryData<string> invalidStrings = ["", " ", null];
 
 }

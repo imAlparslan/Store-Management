@@ -1,7 +1,4 @@
-﻿using FluentAssertions;
-using FluentAssertions.Execution;
-using NSubstitute;
-using NSubstitute.ReceivedExtensions;
+﻿using NSubstitute.ReceivedExtensions;
 using NSubstitute.ReturnsExtensions;
 using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Application.Groups.Commands.UpdateGroup;
@@ -12,6 +9,7 @@ using StoreDefinition.Domain.GroupAggregateRoot.Exceptions;
 using StoreDefinition.Domain.GroupAggregateRoot.ValueObjects;
 
 namespace StoreDefinition.Application.Tests.Groups.CommandHandlers;
+
 public class UpdateGroupCommandHandlerTests
 {
     private readonly IGroupRepository groupRepository;
@@ -32,9 +30,9 @@ public class UpdateGroupCommandHandlerTests
 
         var result = await handler.Handle(command, default);
 
-        result.IsSuccess.Should().BeTrue();
-        result.Value!.Should().NotBeNull();
-        result.Value!.Should().BeEquivalentTo(group);
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.ShouldNotBeNull();
+        result.Value.ShouldBeEquivalentTo(group);
         await groupRepository.ReceivedWithAnyArgs(1).UpdateGroupAsync(Arg.Any<Group>());
     }
 
@@ -46,14 +44,14 @@ public class UpdateGroupCommandHandlerTests
 
         var result = await handler.Handle(command, default);
 
-        result.IsSuccess!.Should().BeFalse();
-        result.Errors!.Should().NotBeNullOrEmpty();
-        result.Errors.Should().Contain(GroupErrors.NotFoundById);
+        result.IsSuccess.ShouldBeFalse();
+        result.Errors.ShouldNotBeNull();
+        result.Errors.ShouldContain(GroupErrors.NotFoundById);
 
     }
 
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [ClassData(typeof(InvalidStrings))]
     public async Task Handler_ThrowsException_WhenGroupNameInvalid(string invalid)
     {
         var group = GroupFactory.Create();
@@ -63,15 +61,12 @@ public class UpdateGroupCommandHandlerTests
 
         var result = () => handler.Handle(command, default);
 
-        using (AssertionScope scope = new())
-        {
-            await result.Should().ThrowExactlyAsync<GroupException>();
-            await groupRepository.ReceivedWithAnyArgs(0).UpdateGroupAsync(Arg.Any<Group>());
-        }
+        await result.ShouldThrowAsync<GroupException>();
+        await groupRepository.ReceivedWithAnyArgs(0).UpdateGroupAsync(Arg.Any<Group>());
     }
 
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [ClassData(typeof(InvalidStrings))]
     public async Task Handler_ThrowsException_WhenGroupDescriptionInvalid(string invalid)
     {
         var group = GroupFactory.Create();
@@ -81,13 +76,7 @@ public class UpdateGroupCommandHandlerTests
 
         var result = () => handler.Handle(command, default);
 
-        using (AssertionScope scope = new())
-        {
-            await result.Should().ThrowExactlyAsync<GroupException>();
-            await groupRepository.ReceivedWithAnyArgs(0).UpdateGroupAsync(Arg.Any<Group>());
-        }
+        await result.ShouldThrowAsync<GroupException>();
+        await groupRepository.ReceivedWithAnyArgs(0).UpdateGroupAsync(Arg.Any<Group>());
     }
-
-    public static readonly TheoryData<string> invalidStrings = ["", " ", null];
-
 }

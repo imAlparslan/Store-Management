@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using StoreDefinition.Application.Common.Repositories;
+﻿using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Infrastructure.Tests.Factories;
 using StoreDefinition.Infrastructure.Tests.Fixtures;
 
@@ -22,7 +21,7 @@ public class GroupRepositoryTests : IClassFixture<RepositoryFixture>
 
         var result = await groupRepository.InsertGroupAsync(group);
 
-        result.Should().BeEquivalentTo(group);
+        result.ShouldBeEquivalentTo(group);
     }
 
     [Fact]
@@ -35,8 +34,8 @@ public class GroupRepositoryTests : IClassFixture<RepositoryFixture>
 
         var result = await groupRepository.GetGroupByIdAsync(group.Id);
 
-        result.Should().NotBeNull();
-        result.Should().BeEquivalentTo(group);
+        result.ShouldNotBeNull();
+        result.ShouldBeEquivalentTo(group);
 
     }
 
@@ -48,7 +47,7 @@ public class GroupRepositoryTests : IClassFixture<RepositoryFixture>
 
         var result = await groupRepository.GetGroupByIdAsync(Guid.NewGuid());
 
-        result.Should().BeNull();
+        result.ShouldBeNull();
     }
 
     [Fact]
@@ -64,9 +63,9 @@ public class GroupRepositoryTests : IClassFixture<RepositoryFixture>
 
         var updatedGroup = await groupRepository.UpdateGroupAsync(group);
 
-        updatedGroup.Should().NotBeNull();
-        updatedGroup.Should().BeEquivalentTo(group);
-        updatedGroup.Should().BeEquivalentTo(await groupRepository.GetGroupByIdAsync(group.Id));
+        updatedGroup.ShouldNotBeNull();
+        updatedGroup.ShouldBeEquivalentTo(group);
+        updatedGroup.ShouldBeEquivalentTo(await groupRepository.GetGroupByIdAsync(group.Id));
 
     }
 
@@ -78,7 +77,7 @@ public class GroupRepositoryTests : IClassFixture<RepositoryFixture>
 
         var result = await groupRepository.DeleteGroupByIdAsync(group.Id);
 
-        result.Should().BeTrue();
+        result.ShouldBeTrue();
     }
     [Fact]
     public async Task DeleteGroupByIdAsync_ReturnsFalse_WhenGroupNotExists()
@@ -87,7 +86,7 @@ public class GroupRepositoryTests : IClassFixture<RepositoryFixture>
 
         var result = await groupRepository.DeleteGroupByIdAsync(group.Id);
 
-        result.Should().BeFalse();
+        result.ShouldBeFalse();
     }
 
     [Fact]
@@ -102,18 +101,17 @@ public class GroupRepositoryTests : IClassFixture<RepositoryFixture>
 
         var result = await groupRepository.GetAllGroupsAsync();
 
-        result.Should().NotBeEmpty();
-        result.Should().HaveCount(3);
-        result.Should().Contain([inserted, inserted2, inserted3]);
+        result.ShouldNotBeEmpty();
+        result.Count().ShouldBe(3);
+        result.ShouldBeSubsetOf([inserted, inserted2, inserted3]);
     }
 
     [Fact]
     public async Task GetAlLGroupsAsync_ReturnsEmptyCollection_WhenNoGroupExists()
     {
-
         var result = await groupRepository.GetAllGroupsAsync();
 
-        result.Should().BeEmpty();
+        result.ShouldBeEmpty();
     }
 
     [Fact]
@@ -134,9 +132,10 @@ public class GroupRepositoryTests : IClassFixture<RepositoryFixture>
 
         var result = await groupRepository.GetGroupsByShopIdAsync(shopId);
 
-        result.Should().HaveCount(2);
-        result.Should().Contain([groupHaveShopId1, groupHaveShopId2]);
-        result.Should().NotContain([groupHaveAnotherShopId, groupHaveNoShopId]);
+        result.Count().ShouldBe(2);
+        result.ShouldBeSubsetOf([groupHaveShopId1, groupHaveShopId2]);
+        result.ShouldNotContain(groupHaveAnotherShopId);
+        result.ShouldNotContain(groupHaveNoShopId);
     }
 
     [Fact]
@@ -152,7 +151,6 @@ public class GroupRepositoryTests : IClassFixture<RepositoryFixture>
 
         var result = await groupRepository.GetGroupsByShopIdAsync(shopId);
 
-        result.Should().BeEmpty();
-        result.Should().NotContain([groupHaveAnotherShopId, groupHaveNoShopId]);
+        result.ShouldBeEmpty();
     }
 }

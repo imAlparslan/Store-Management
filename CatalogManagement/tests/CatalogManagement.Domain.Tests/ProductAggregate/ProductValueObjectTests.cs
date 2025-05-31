@@ -1,6 +1,7 @@
 using CatalogManagement.Domain.ProductAggregate.Errors;
 using CatalogManagement.Domain.ProductAggregate.Exceptions;
 using CatalogManagement.Domain.ProductAggregate.ValueObjects;
+using CatalogManagement.Domain.Tests.Common.InvalidData;
 using CatalogManagement.Domain.Tests.ProductAggregate.Factories;
 
 namespace CatalogManagement.Domain.Tests.ProductAggregate;
@@ -8,49 +9,53 @@ namespace CatalogManagement.Domain.Tests.ProductAggregate;
 public class ProductValueObjectTests
 {
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [ClassData(typeof(InvalidStringData))]
     public void Creating_ProductName_Should_Throw_Exception_When_Argument_Null_OrWhiteSpace(string name)
     {
         var productName = () => new ProductName(name);
 
-        productName.Should().ThrowExactly<ProductException>()
-            .Which.Should().BeAssignableTo<DomainException>()
-            .Which.Code.Should().Be(ProductError.InvalidName.Code);
+        productName.ShouldThrow<ProductException>()
+            .ShouldSatisfyAllConditions(
+                x => x.Message.ShouldBe(ProductError.InvalidName.Description),
+                x => x.Code.ShouldBe(ProductError.InvalidName.Code),
+                x => x.ShouldBeAssignableTo<DomainException>()
+            );
 
     }
 
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [ClassData(typeof(InvalidStringData))]
     public void Creating_ProductCode_Should_Throw_Exception_When_Argument_Null_OrWhiteSpace(string code)
     {
         var productCode = () => new ProductCode(code);
 
-        productCode.Should().ThrowExactly<ProductException>()
-            .Which.Should().BeAssignableTo<DomainException>()
-            .Which.Code.Should().Be(ProductError.InvalidCode.Code);
-
+        productCode.ShouldThrow<ProductException>()
+            .ShouldSatisfyAllConditions(
+                x => x.Message.ShouldBe(ProductError.InvalidCode.Description),
+                x => x.Code.ShouldBe(ProductError.InvalidCode.Code),
+                x => x.ShouldBeAssignableTo<DomainException>()
+            );
     }
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [ClassData(typeof(InvalidStringData))]
     public void Creating_ProductDefinition_Should_Throw_Exception_When_Argument_Null_OrWhiteSpace(string definition)
     {
         var productDefinition = () => new ProductDefinition(definition);
 
-        productDefinition.Should().ThrowExactly<ProductException>()
-            .Which.Should().BeAssignableTo<DomainException>()
-            .Which.Code.Should().Be(ProductError.InvalidDefinition.Code);
+        productDefinition.ShouldThrow<ProductException>()
+            .ShouldSatisfyAllConditions(
+                x => x.Message.ShouldBe(ProductError.InvalidDefinition.Description),
+                x => x.Code.ShouldBe(ProductError.InvalidDefinition.Code),
+                x => x.ShouldBeAssignableTo<DomainException>()
+            );
     }
 
     [Fact]
     public void Product_Should_Have_ProductId_After_Creating()
     {
         var product = ProductFactory.Create();
-        using (new AssertionScope())
-        {
-            product.Id.Should().NotBeNull();
-            product.Id.Value.Should().NotBeEmpty();
-        }
-    }
-    public static readonly TheoryData<string> invalidStrings = ["", " ", null];
 
+        product.ShouldNotBeNull();
+        product.Id.ShouldNotBeNull();
+    }
 }

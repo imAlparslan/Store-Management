@@ -1,4 +1,7 @@
-﻿namespace CatalogManagement.Application.Tests.Products.Handlers;
+﻿using System.Threading.Tasks;
+
+namespace CatalogManagement.Application.Tests.Products.Handlers;
+
 public class UpdateProductGroupCommandHandlerTests
 {
     private readonly IProductRepository productRepository;
@@ -19,15 +22,12 @@ public class UpdateProductGroupCommandHandlerTests
 
         var result = await handler.Handle(command, default);
 
-        using (AssertionScope scope = new())
-        {
-            result.IsSuccess.Should().BeTrue();
-            result.Errors.Should().BeNullOrEmpty();
-            result.Value.Should().NotBeNull();
-            result.Value!.Name.Value.Should().Be(command.ProductName);
-            result.Value!.Code.Value.Should().Be(command.ProductCode);
-            result.Value!.Definition.Value.Should().Be(command.ProductDefinition);
-        }
+        result.IsSuccess.ShouldBeTrue();
+        result.Errors.ShouldBeNull();
+        result.Value.ShouldNotBeNull();
+        result.Value.Name.Value.ShouldBe(command.ProductName);
+        result.Value.Code.Value.ShouldBe(command.ProductCode);
+        result.Value.Definition.Value.ShouldBe(command.ProductDefinition);
     }
 
     [Fact]
@@ -38,56 +38,56 @@ public class UpdateProductGroupCommandHandlerTests
 
         var result = await handler.Handle(command, default);
 
-        using (AssertionScope scope = new())
-        {
-            result.IsSuccess!.Should().BeFalse();
-            result.Errors.Should().NotBeNullOrEmpty();
-            result.Errors![0].Should().Be(ProductError.NotFoundById);
-        }
+        result.IsSuccess.ShouldBeFalse();
+        result.Errors.ShouldNotBeNull();
+        result.Errors.ShouldContain(ProductError.NotFoundById);
     }
 
     [Theory]
     [ClassData(typeof(InvalidStringData))]
-    public void Handler_ThrowsException_WhenProductNameInvalid(string productName)
+    public async Task Handler_ThrowsException_WhenProductNameInvalid(string productName)
     {
         productRepository.GetByIdAsync(Arg.Any<ProductId>()).Returns(ProductFactory.CreateDefault());
         var command = UpdateProductCommandFactory.CreateWithName(productName);
 
-        var result = () => handler.Handle(command, default);
+        var action = () => handler.Handle(command, default);
 
-        using (AssertionScope scope = new())
-        {
-            result.Should().ThrowExactlyAsync<ProductException>();
-        }
+        var exception = await Should.ThrowAsync<ProductException>(action);
+        exception.ShouldSatisfyAllConditions(
+            x => x.Code.ShouldBe(ProductError.InvalidName.Code),
+            x => x.Message.ShouldBe(ProductError.InvalidName.Description)
+        );
     }
 
     [Theory]
     [ClassData(typeof(InvalidStringData))]
-    public void Handler_ThrowsException_WhenProductCodeInvalid(string productCode)
+    public async Task Handler_ThrowsException_WhenProductCodeInvalid(string productCode)
     {
         productRepository.GetByIdAsync(Arg.Any<ProductId>()).Returns(ProductFactory.CreateDefault());
         var command = UpdateProductCommandFactory.CreateWithCode(productCode);
 
-        var result = () => handler.Handle(command, default);
+        var action = () => handler.Handle(command, default);
 
-        using (AssertionScope scope = new())
-        {
-            result.Should().ThrowExactlyAsync<ProductException>();
-        }
+        var exception = await Should.ThrowAsync<ProductException>(action);
+        exception.ShouldSatisfyAllConditions(
+            x => x.Code.ShouldBe(ProductError.InvalidCode.Code),
+            x => x.Message.ShouldBe(ProductError.InvalidCode.Description)
+        );
     }
 
     [Theory]
     [ClassData(typeof(InvalidStringData))]
-    public void Handler_ThrowsException_WhenProductDefinitionInvalid(string productDefinition)
+    public async Task Handler_ThrowsException_WhenProductDefinitionInvalid(string productDefinition)
     {
         productRepository.GetByIdAsync(Arg.Any<ProductId>()).Returns(ProductFactory.CreateDefault());
         var command = UpdateProductCommandFactory.CreateWithDefinition(productDefinition);
 
-        var result = () => handler.Handle(command, default);
+        var action = () => handler.Handle(command, default);
 
-        using (AssertionScope scope = new())
-        {
-            result.Should().ThrowExactlyAsync<ProductException>();
-        }
+        var exception = await Should.ThrowAsync<ProductException>(action);
+        exception.ShouldSatisfyAllConditions(
+            x => x.Code.ShouldBe(ProductError.InvalidDefinition.Code),
+            x => x.Message.ShouldBe(ProductError.InvalidDefinition.Description)
+        );
     }
 }

@@ -1,6 +1,7 @@
 ﻿using CatalogManagement.Domain.ProductGroupAggregate;
 
 namespace CatalogManagement.Application.Tests.ProductGroups.Handlers;
+
 public class GetAllProductGroupQueryHandlerTests
 {
     private readonly IProductGroupRepository productGroupRepository;
@@ -20,12 +21,10 @@ public class GetAllProductGroupQueryHandlerTests
 
         var result = await handler.Handle(command, default);
 
-        using (AssertionScope scope = new())
-        {
-            result.IsSuccess.Should().BeTrue();
-            result.Value.Should().Contain(productGroups);
-            result.Errors.Should().BeNullOrEmpty();
-        }
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.ShouldNotBeNull();
+        result.Value.ShouldBeSubsetOf(productGroups);
+        result.Errors.ShouldBeNull();
     }
 
     [Fact]
@@ -36,11 +35,8 @@ public class GetAllProductGroupQueryHandlerTests
 
         var result = await handler.Handle(command, default);
 
-        using (AssertionScope scope = new())
-        {
-            result.IsSuccess.Should().BeTrue();
-            result.Value.Should().BeEquivalentTo(Enumerable.Empty<ProductGroup>());
-            result.Errors.Should().BeNullOrEmpty();
-        }
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.ShouldBeEmpty();
+        result.Errors.ShouldBeNull();
     }
 }

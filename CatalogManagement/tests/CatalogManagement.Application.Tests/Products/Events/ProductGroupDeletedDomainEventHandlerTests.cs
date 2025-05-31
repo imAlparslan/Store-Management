@@ -17,6 +17,6 @@ public class ProductGroupDeletedDomainEventHandlerTests
 
         await productGroupDeletedDomainEventHandler.Handle(new ProductGroupDeletedDomainEvent(productGroupId), CancellationToken.None);
 
-        product.GroupIds.Should().NotContain(productGroupId);
+        product.GroupIds.ShouldNotContain(productGroupId);
     }
 }

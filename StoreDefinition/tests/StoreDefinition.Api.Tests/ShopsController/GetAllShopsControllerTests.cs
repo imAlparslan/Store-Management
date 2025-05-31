@@ -1,5 +1,4 @@
-﻿using FluentAssertions.Execution;
-using StoreDefinition.Contracts.Shops;
+﻿using StoreDefinition.Contracts.Shops;
 
 namespace StoreDefinition.Api.Tests.ShopsController;
 
@@ -15,13 +14,11 @@ public class GetAllShopsControllerTests(StoreDefinitionApiFactory apiFactory)
 
         var response = await _client.GetAsync(ShopsBaseAddress);
 
-        using (AssertionScope scope = new())
-        {
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var shops = await response.Content.ReadFromJsonAsync<List<ShopResponse>>();
-            shops.Should().HaveCount(2);
-            shops!.Select(x => x.Id).Should().Contain([shop1.Id, shop2.Id]);
-        }
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        var shops = await response.Content.ReadFromJsonAsync<List<ShopResponse>>();
+        shops.ShouldNotBeNull();
+        shops.Count.ShouldBe(2);
+        shops.Select(x => x.Id).ShouldBeSubsetOf([shop1.Id, shop2.Id]);
     }
 
     [Fact]
@@ -29,11 +26,8 @@ public class GetAllShopsControllerTests(StoreDefinitionApiFactory apiFactory)
     {
         var response = await _client.GetAsync(ShopsBaseAddress);
 
-        using (AssertionScope scope = new())
-        {
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var shops = await response.Content.ReadFromJsonAsync<List<ShopResponse>>();
-            shops.Should().HaveCount(0);
-        }
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        var shops = await response.Content.ReadFromJsonAsync<List<ShopResponse>>();
+        shops.ShouldBeEmpty();
     }
 }

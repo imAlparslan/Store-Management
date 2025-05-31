@@ -1,7 +1,7 @@
-﻿using FluentAssertions.Execution;
-using StoreDefinition.Contracts.Shops;
+﻿using StoreDefinition.Contracts.Shops;
 
 namespace StoreDefinition.Api.Tests.ShopsController;
+
 [Collection(nameof(ShopsControllerCollectionFixture))]
 
 public class UpdateShopControllerTests(StoreDefinitionApiFactory apiFactory)
@@ -14,12 +14,10 @@ public class UpdateShopControllerTests(StoreDefinitionApiFactory apiFactory)
         UpdateShopRequest request = ShopsRequestFactory.UpdateShopCreateRequest();
 
         var response = await _client.PutAsJsonAsync($"{ShopsBaseAddress}/{insertedShop.Id}", request);
-        using (AssertionScope scope = new())
-        {
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var shopResponse = await response.Content.ReadFromJsonAsync<ShopResponse>();
-            shopResponse.Should().NotBeNull();
-        }
+
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        var shopResponse = await response.Content.ReadFromJsonAsync<ShopResponse>();
+        shopResponse.ShouldNotBeNull();
     }
 
     [Fact]
@@ -28,64 +26,56 @@ public class UpdateShopControllerTests(StoreDefinitionApiFactory apiFactory)
         UpdateShopRequest request = ShopsRequestFactory.UpdateShopCreateRequest();
 
         var response = await _client.PutAsJsonAsync($"{ShopsBaseAddress}/{Guid.NewGuid()}", request);
-        using (AssertionScope scope = new())
-        {
-            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
-            var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-            error.Should().NotBeNull();
-        }
+
+        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+        var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+        error.ShouldNotBeNull();
     }
 
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [ClassData(typeof(InvalidStrings))]
     public async Task Update_ReturnsUpdatedShop_WhenDescriptionValid(string invalid)
     {
         var insertedShop = await InsertShop();
         UpdateShopRequest request = ShopsRequestFactory.UpdateShopCreateRequest(shopDescription: invalid);
 
         var response = await _client.PutAsJsonAsync($"{ShopsBaseAddress}/{insertedShop.Id}", request);
-        using (AssertionScope scope = new())
-        {
-            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-            error.Should().NotBeNull();
-            error!.Errors.Should().HaveCount(1);
-        }
+
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+        error.ShouldNotBeNull();
+        error.Errors.ShouldHaveSingleItem();
     }
 
 
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [ClassData(typeof(InvalidStrings))]
     public async Task Update_ReturnsUpdatedShop_WhenCityValid(string invalid)
     {
         var insertedShop = await InsertShop();
         UpdateShopRequest request = ShopsRequestFactory.UpdateShopCreateRequest(city: invalid);
 
         var response = await _client.PutAsJsonAsync($"{ShopsBaseAddress}/{insertedShop.Id}", request);
-        using (AssertionScope scope = new())
-        {
-            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-            error.Should().NotBeNull();
-            error!.Errors.Should().HaveCount(1);
-        }
+
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+        error.ShouldNotBeNull();
+        error.Errors.ShouldHaveSingleItem();
     }
 
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [ClassData(typeof(InvalidStrings))]
     public async Task Update_ReturnsUpdatedShop_WhenStreetValid(string invalid)
     {
         var insertedShop = await InsertShop();
         UpdateShopRequest request = ShopsRequestFactory.UpdateShopCreateRequest(street: invalid);
 
         var response = await _client.PutAsJsonAsync($"{ShopsBaseAddress}/{insertedShop.Id}", request);
-        using (AssertionScope scope = new())
-        {
-            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-            error.Should().NotBeNull();
-            error!.Errors.Should().HaveCount(1);
-        }
+
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+        error.ShouldNotBeNull();
+        error!.Errors.ShouldHaveSingleItem();
     }
 
     [Fact]
@@ -95,12 +85,10 @@ public class UpdateShopControllerTests(StoreDefinitionApiFactory apiFactory)
         UpdateShopRequest request = ShopsRequestFactory.UpdateShopCreateRequest("", "", "");
 
         var response = await _client.PutAsJsonAsync($"{ShopsBaseAddress}/{insertedShop.Id}", request);
-        using (AssertionScope scope = new())
-        {
-            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-            error.Should().NotBeNull();
-            error!.Errors.Should().HaveCount(3);
-        }
+
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+        error.ShouldNotBeNull();
+        error.Errors.Count.ShouldBe(3);
     }
 }

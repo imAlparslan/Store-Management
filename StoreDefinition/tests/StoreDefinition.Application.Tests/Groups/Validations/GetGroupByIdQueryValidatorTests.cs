@@ -1,7 +1,7 @@
-﻿using FluentAssertions;
-using StoreDefinition.Application.Groups.Queries.GetGroupById;
+﻿using StoreDefinition.Application.Groups.Queries.GetGroupById;
 
 namespace StoreDefinition.Application.Tests.Groups.Validations;
+
 public class GetGroupByIdQueryValidatorTests
 {
     private readonly GetGroupByIdQueryValidator validator;
@@ -17,7 +17,7 @@ public class GetGroupByIdQueryValidatorTests
 
         var result = validator.Validate(query);
 
-        result.IsValid.Should().BeTrue();
+        result.IsValid.ShouldBeTrue();
     }
 
     [Fact]
@@ -27,9 +27,9 @@ public class GetGroupByIdQueryValidatorTests
 
         var result = validator.Validate(query);
 
-        result.IsValid.Should().BeFalse();
-        result.Errors.Should().HaveCount(1);
+        result.IsValid.ShouldBeFalse();
+        result.Errors.ShouldHaveSingleItem();
         result.Errors.Select(x => x.PropertyName)
-            .Should().Contain(nameof(query.GroupId));
+            .ShouldContain(nameof(query.GroupId));
     }
 }

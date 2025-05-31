@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using NSubstitute;
-using StoreDefinition.Application.Common.Repositories;
+﻿using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Application.Shops.Queries.GetShopsByGroupId;
 using StoreDefinition.Application.Tests.Common.Factories.ShopFactories;
 using StoreDefinition.Domain.GroupAggregateRoot.ValueObjects;
@@ -29,14 +27,12 @@ public class GetShopsByGroupIdQueryHandlerTests
         shopHasSearchId2.AddGroup(searchShopId);
         shopRepository.GetShopsByGroupIdAsync(Arg.Any<GroupId>()).Returns([shopHasSearchId1, shopHasSearchId2]);
         var query = new GetShopsByGroupIdQuery(searchShopId);
-
         var result = await handler.Handle(query, default);
 
-        result.IsSuccess.Should().BeTrue();
-        result.Value.Should().NotBeNullOrEmpty();
-        result.Value.Should().Contain([shopHasSearchId1, shopHasSearchId2]);
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.ShouldNotBeNull();
+        result.Value.ShouldBeSubsetOf([shopHasSearchId1, shopHasSearchId2]);
     }
-
 
     [Fact]
     public async Task Handler_ReturnsEmptyCollection_WhenNoShopNotExists()
@@ -47,7 +43,7 @@ public class GetShopsByGroupIdQueryHandlerTests
 
         var result = await handler.Handle(query, default);
 
-        result.IsSuccess.Should().BeTrue();
-        result.Value.Should().BeEmpty();
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.ShouldBeEmpty();
     }
 }

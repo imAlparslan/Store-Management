@@ -1,5 +1,4 @@
-﻿using StoreDefinition.Api.Tests.Common;
-using StoreDefinition.Contracts.Shops;
+﻿using StoreDefinition.Contracts.Shops;
 
 namespace StoreDefinition.Api.Tests.GroupsController;
 
@@ -14,7 +13,7 @@ public class DeleteGroupControllerTests(StoreDefinitionApiFactory apiFactory) :
 
         var response = await _client.DeleteAsync($"{GroupsBaseAddress}/{group.Id}");
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
 
     [Fact]
@@ -22,14 +21,14 @@ public class DeleteGroupControllerTests(StoreDefinitionApiFactory apiFactory) :
     {
         var response = await _client.DeleteAsync($"{GroupsBaseAddress}/{Guid.NewGuid()}");
 
-        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
     }
 
     [Fact]
     public async Task Delete_ReturnsBadRequest_WhenGroupIdInvalid()
     {
         var response = await _client.DeleteAsync($"{GroupsBaseAddress}/{Guid.Empty}");
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
     }
     [Fact]
     public async Task Delete_DeletesGroupFromShop_WhenGroupDeleted()
@@ -40,8 +39,9 @@ public class DeleteGroupControllerTests(StoreDefinitionApiFactory apiFactory) :
 
         var response = await _client.DeleteAsync($"{GroupsBaseAddress}/{group.Id}");
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
         var shopResponse = await _client.GetFromJsonAsync<ShopResponse>($"{ShopsBaseAddress}/{shop.Id}");
-        shopResponse!.Groups.Should().NotContain(group.Id);
+        shopResponse.ShouldNotBeNull();
+        shopResponse.Groups.ShouldNotContain(group.Id);
     }
 }

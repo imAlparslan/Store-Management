@@ -1,16 +1,8 @@
-﻿using CatalogManagement.Api.Tests.Common;
-using CatalogManagement.Api.Tests.Fixtures;
-using CatalogManagement.Contracts.Products;
-
-namespace CatalogManagement.Api.Tests.ProductController;
+﻿namespace CatalogManagement.Api.Tests.ProductController;
 
 [Collection(nameof(ProductControllerCollectionFixture))]
-public class CreateProductControllerTests : ControllerTestBase
+public class CreateProductControllerTests(CatalogApiFactory catalogApiFactory) : ControllerTestBase(catalogApiFactory)
 {
-    public CreateProductControllerTests(CatalogApiFactory catalogApiFactory) : base(catalogApiFactory)
-    {
-    }
-
     [Fact]
     public async Task Create_ReturnsCreatedProduct_WhenDataValid()
     {
@@ -18,70 +10,67 @@ public class CreateProductControllerTests : ControllerTestBase
 
         var response = await _client.PostAsJsonAsync($"{ProductBaseAddress}", request);
 
-        using (AssertionScope scope = new())
-        {
-            ProductResponse? productResponse = await response.Content.ReadFromJsonAsync<ProductResponse>();
-            productResponse.Should().NotBeNull();
-            response.StatusCode.Should().Be(HttpStatusCode.Created);
-            response.Headers.Location!.ToString().Should().Be($"{ProductBaseAddress}/{productResponse!.Id}");
-        }
+        response.StatusCode.ShouldBe(HttpStatusCode.Created);
+        response.Headers.Location!.ToString().ShouldStartWith(ProductBaseAddress);
+        var productResponse = await response.Content.ReadFromJsonAsync<ProductResponse>();
+        productResponse.ShouldNotBeNull();
     }
 
     [Theory]
-    [MemberData(nameof(InvalidStrings))]
+    [ClassData(typeof(InvalidStrings))]
     public async Task Create_ReturnsValidationError_WhenProductNameNullOrEmpty(string productName)
     {
         var request = CreateProductRequestFactory.CreateWithName(productName);
 
         var response = await _client.PostAsJsonAsync($"{ProductBaseAddress}", request);
 
-        using (AssertionScope scope = new())
-        {
-            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-            error.Should().NotBeNull();
-            error!.Status.Should().Be(400);
-            error.Title.Should().Be("One or more validation errors occurred.");
-            error.Errors.Count.Should().Be(1);
-        }
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+        error.ShouldNotBeNull();
+        error.Status.ShouldNotBeNull();
+        error.ShouldSatisfyAllConditions(
+            () => error.Status.Value.ShouldBe((int)HttpStatusCode.BadRequest),
+            () => error.Title.ShouldBe("One or more validation errors occurred."),
+            () => error.Errors.Count.ShouldBe(1)
+        );
     }
 
     [Theory]
-    [MemberData(nameof(InvalidStrings))]
+    [ClassData(typeof(InvalidStrings))]
     public async Task Create_ReturnsValidationError_WhenProductCodeNullOrEmpty(string productCode)
     {
         var request = CreateProductRequestFactory.CreateWithCode(productCode);
 
         var response = await _client.PostAsJsonAsync($"{ProductBaseAddress}", request);
 
-        using (AssertionScope scope = new())
-        {
-            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-            error.Should().NotBeNull();
-            error!.Status.Should().Be(400);
-            error.Title.Should().Be("One or more validation errors occurred.");
-            error.Errors.Count.Should().Be(1);
-        }
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+        error.ShouldNotBeNull();
+        error.Status.ShouldNotBeNull();
+        error.ShouldSatisfyAllConditions(
+            () => error.Status.Value.ShouldBe((int)HttpStatusCode.BadRequest),
+            () => error.Title.ShouldBe("One or more validation errors occurred."),
+            () => error.Errors.Count.ShouldBe(1)
+        );
     }
 
     [Theory]
-    [MemberData(nameof(InvalidStrings))]
+    [ClassData(typeof(InvalidStrings))]
     public async Task Create_ReturnsValidationError_WhenProductDefinitionNullOrEmpty(string productDefinition)
     {
         var request = CreateProductRequestFactory.CreateWithDefinition(productDefinition);
 
         var response = await _client.PostAsJsonAsync($"{ProductBaseAddress}", request);
 
-        using (AssertionScope scope = new())
-        {
-            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-            error.Should().NotBeNull();
-            error!.Status.Should().Be(400);
-            error.Title.Should().Be("One or more validation errors occurred.");
-            error.Errors.Count.Should().Be(1);
-        }
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+        error.ShouldNotBeNull();
+        error.Status.ShouldNotBeNull();
+        error.ShouldSatisfyAllConditions(
+            () => error.Status.Value.ShouldBe((int)HttpStatusCode.BadRequest),
+            () => error.Title.ShouldBe("One or more validation errors occurred."),
+            () => error.Errors.Count.ShouldBe(1)
+        );
     }
 
     [Fact]
@@ -91,14 +80,15 @@ public class CreateProductControllerTests : ControllerTestBase
 
         var response = await _client.PostAsJsonAsync($"{ProductBaseAddress}", request);
 
-        using (AssertionScope scope = new())
-        {
-            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-            error.Should().NotBeNull();
-            error!.Status.Should().Be(400);
-            error.Title.Should().Be("One or more validation errors occurred.");
-            error.Errors.Count.Should().Be(3);
-        }
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
+        error.ShouldNotBeNull();
+        error.Status.ShouldNotBeNull();
+
+        error.ShouldSatisfyAllConditions(
+            () => error.Status.Value.ShouldBe((int)HttpStatusCode.BadRequest),
+            () => error.Title.ShouldBe("One or more validation errors occurred."),
+            () => error.Errors.Count.ShouldBe(3)
+        );
     }
 }

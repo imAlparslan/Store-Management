@@ -2,6 +2,7 @@
 using CatalogManagement.Domain.ProductAggregate.Events;
 
 namespace CatalogManagement.Application.Tests.Products.Handlers;
+
 public class RemoveGroupFromProductCommandHandlerTests
 {
     private readonly IProductRepository productRepository;
@@ -24,9 +25,9 @@ public class RemoveGroupFromProductCommandHandlerTests
 
         var result = await handler.Handle(command, default);
 
-        result.Value!.GroupIds.Should().NotContain(group.Id);
-        result.Value.GetDomainEvents().Should()
-            .ContainEquivalentOf(new GroupRemovedFromProductDomainEvent(group.Id, product.Id));
+        result.Value!.GroupIds.ShouldNotContain(group.Id);
+        result.Value.GetDomainEvents()
+            .ShouldContain(new GroupRemovedFromProductDomainEvent(group.Id, product.Id));
     }
 
     [Fact]
@@ -37,7 +38,8 @@ public class RemoveGroupFromProductCommandHandlerTests
 
         var result = await handler.Handle(command, default);
 
-        result.Errors.Should().HaveCount(1);
+        result.Errors.ShouldHaveSingleItem();
+        result.Errors.ShouldContain(ProductError.NotFoundById);
     }
 
     [Fact]
@@ -49,7 +51,9 @@ public class RemoveGroupFromProductCommandHandlerTests
 
         var result = await handler.Handle(command, default);
 
-        result.Errors.Should().HaveCount(1);
-        result.Errors.Should().Contain(ProductError.ProductGroupNotDeletedFromProduct);
+        result.IsSuccess.ShouldBeFalse();
+        result.Value.ShouldBeNull();
+        result.Errors.ShouldHaveSingleItem();
+        result.Errors.ShouldContain(ProductError.ProductGroupNotDeletedFromProduct);
     }
 }
