@@ -18,7 +18,7 @@ public class GroupRemovedFromProductDomainEventHandlerTests
 
         await handler.Handle(notification, CancellationToken.None);
 
-        productGroup.ProductIds.Should().NotContain(productId);
+        productGroup.ProductIds.ShouldNotContain(productId);
 
     }
 }

@@ -18,7 +18,7 @@ public class AddGroupToProductCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeTrue();
+        result.IsValid.ShouldBeTrue();
     }
 
     [Theory]
@@ -29,10 +29,10 @@ public class AddGroupToProductCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeFalse();
-        result.Errors.Count.Should().Be(1);
+        result.IsValid.ShouldBeFalse();
+        result.Errors.ShouldHaveSingleItem();
         result.Errors.Select(x => x.PropertyName)
-            .Should().Contain(nameof(command.GroupId));
+            .ShouldContain(nameof(command.GroupId));
     }
 
     [Theory]
@@ -43,10 +43,10 @@ public class AddGroupToProductCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeFalse();
-        result.Errors.Count.Should().Be(1);
+        result.IsValid.ShouldBeFalse();
+        result.Errors.ShouldHaveSingleItem();
         result.Errors.Select(x => x.PropertyName)
-            .Should().Contain(nameof(command.ProductId));
+            .ShouldContain(nameof(command.ProductId));
     }
 
     [Fact]
@@ -56,10 +56,10 @@ public class AddGroupToProductCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeFalse();
-        result.Errors.Count.Should().Be(2);
+        result.IsValid.ShouldBeFalse();
+        result.Errors.Count.ShouldBe(2);
         result.Errors.Select(x => x.PropertyName)
-            .Should().Contain([nameof(command.ProductId), nameof(command.GroupId)]);
+            .ShouldBeSubsetOf([nameof(command.ProductId), nameof(command.GroupId)]);
     }
 
 }

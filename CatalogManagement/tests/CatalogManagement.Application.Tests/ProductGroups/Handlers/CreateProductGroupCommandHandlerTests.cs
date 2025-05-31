@@ -1,4 +1,8 @@
-﻿namespace CatalogManagement.Application.Tests.ProductGroups.Handlers;
+﻿using CatalogManagement.Domain.ProductAggregate;
+using CatalogManagement.Domain.ProductGroupAggregate.Errors;
+
+namespace CatalogManagement.Application.Tests.ProductGroups.Handlers;
+
 public class CreateProductGroupCommandHandlerTests
 {
     private readonly IProductGroupRepository productGroupRepository;
@@ -18,41 +22,40 @@ public class CreateProductGroupCommandHandlerTests
 
         var result = await handler.Handle(command, default);
 
-        using (AssertionScope scope = new())
-        {
-            result.IsSuccess.Should().BeTrue();
-            result.Errors.Should().BeNullOrEmpty();
-            result.Value.Should().NotBeNull();
-            result.Value!.Name.Should().Be(productGroup.Name);
-            result.Value!.Description.Should().Be(productGroup.Description);
-        }
+        result.IsSuccess.ShouldBeTrue();
+        result.Errors.ShouldBeNull();
+        result.Value.ShouldNotBeNull();
+        result.Value.Name.ShouldBe(productGroup.Name);
+        result.Value.Description.ShouldBe(productGroup.Description);
     }
 
     [Theory]
     [ClassData(typeof(InvalidStringData))]
-    public void Handler_ThrowsException_WhenProductGroupNameInvalid(string productGroupName)
+    public async Task Handler_ThrowsException_WhenProductGroupNameInvalid(string productGroupName)
     {
         var command = CreateProductGroupCommandFactory.CreateWithName(productGroupName);
 
-        var result = () => handler.Handle(command, default);
+        var action = () => handler.Handle(command, default);
 
-        using (AssertionScope scope = new())
-        {
-            result.Should().ThrowExactlyAsync<ProductGroupException>();
-        }
+        var exception = await Should.ThrowAsync<ProductGroupException>(action);
+        exception.ShouldSatisfyAllConditions(
+            x => x.Code.ShouldBe(ProductGroupError.InvalidName.Code),
+            x => x.Message.ShouldBe(ProductGroupError.InvalidName.Description)
+        );
     }
 
     [Theory]
     [ClassData(typeof(InvalidStringData))]
-    public void Handler_ThrowsException_WhenProductGroupDewscriptionInvalid(string productGroupDescription)
+    public async Task Handler_ThrowsException_WhenProductGroupDescriptionInvalid(string productGroupDescription)
     {
         var command = CreateProductGroupCommandFactory.CreateWithDefinition(productGroupDescription);
 
-        var result = () => handler.Handle(command, default);
+        var action = () => handler.Handle(command, default);
 
-        using (AssertionScope scope = new())
-        {
-            result.Should().ThrowExactlyAsync<ProductGroupException>();
-        }
+        var exception = await Should.ThrowAsync<ProductGroupException>(action);
+        exception.ShouldSatisfyAllConditions(
+            x => x.Code.ShouldBe(ProductGroupError.InvalidDescription.Code),
+            x => x.Message.ShouldBe(ProductGroupError.InvalidDescription.Description)
+        );
     }
 }

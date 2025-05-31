@@ -1,6 +1,7 @@
 ﻿using CatalogManagement.Application.Products.Commands.RemoveGroupFromProduct;
 
 namespace CatalogManagement.Application.Tests.Products.Validators;
+
 public class RemoveGroupFromProductCommandValidatorTests
 {
     private readonly RemoveGroupFromProductCommandValidator validator;
@@ -16,7 +17,7 @@ public class RemoveGroupFromProductCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeTrue();
+        result.IsValid.ShouldBeTrue();
     }
     [Fact]
     public void Validator_ReturnsValidationProblem_WhenDataInvalid()
@@ -25,10 +26,10 @@ public class RemoveGroupFromProductCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeFalse();
-        result.Errors.Should().HaveCount(2);
+        result.IsValid.ShouldBeFalse();
+        result.Errors.Count.ShouldBe(2);
         result.Errors.Select(x => x.PropertyName)
-            .Should().Contain([nameof(command.ProductId), nameof(command.GroupId)]);
+            .ShouldBeSubsetOf([nameof(command.ProductId), nameof(command.GroupId)]);
     }
     [Theory]
     [ClassData(typeof(InvalidGuidData))]
@@ -38,10 +39,9 @@ public class RemoveGroupFromProductCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeFalse();
-        result.Errors.Should().HaveCount(1);
+        result.IsValid.ShouldBeFalse();
         result.Errors.Select(x => x.PropertyName)
-            .Should().Contain(nameof(command.GroupId));
+            .ShouldHaveSingleItem(nameof(command.GroupId));
     }
     [Theory]
     [ClassData(typeof(InvalidGuidData))]
@@ -51,9 +51,8 @@ public class RemoveGroupFromProductCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeFalse();
-        result.Errors.Should().HaveCount(1);
+        result.IsValid.ShouldBeFalse();
         result.Errors.Select(x => x.PropertyName)
-            .Should().Contain(nameof(command.ProductId));
+            .ShouldHaveSingleItem(nameof(command.ProductId));
     }
 }

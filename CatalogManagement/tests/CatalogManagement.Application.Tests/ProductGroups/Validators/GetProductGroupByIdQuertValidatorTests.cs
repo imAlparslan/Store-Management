@@ -1,10 +1,11 @@
 ﻿using CatalogManagement.Application.ProductGroups.Queries.GetProductGroupById;
 
 namespace CatalogManagement.Application.Tests.ProductGroups.Validators;
-public class GetProductGroupByIdQuertValidatorTests
+
+public class GetProductGroupByIdQueryValidatorTests
 {
     private readonly GetProductGroupByIdQueryValidator validator;
-    public GetProductGroupByIdQuertValidatorTests()
+    public GetProductGroupByIdQueryValidatorTests()
     {
         validator = new();
     }
@@ -16,11 +17,10 @@ public class GetProductGroupByIdQuertValidatorTests
 
         var result = validator.Validate(query);
 
-        using (AssertionScope scope = new())
-        {
-            result.IsValid.Should().BeTrue();
-            result.Errors.Should().BeNullOrEmpty();
-        }
+        result.ShouldSatisfyAllConditions(
+            x => result.IsValid.ShouldBeTrue(),
+            x => result.Errors.ShouldBeEmpty()
+        );
     }
 
     [Theory]
@@ -31,13 +31,11 @@ public class GetProductGroupByIdQuertValidatorTests
 
         var result = validator.Validate(query);
 
-        using (AssertionScope scope = new())
-        {
-            result.IsValid.Should().BeFalse();
-            result.Errors.Count.Should().Be(1);
-            result.Errors.Select(x => x.PropertyName).Should()
-                .Contain([nameof(query.Id)]);
-        }
+        result.ShouldSatisfyAllConditions(
+            x => result.IsValid.ShouldBeFalse(),
+            x => result.Errors.Select(x => x.PropertyName)
+                .ShouldHaveSingleItem(nameof(query.Id))
+        );
     }
 }
 

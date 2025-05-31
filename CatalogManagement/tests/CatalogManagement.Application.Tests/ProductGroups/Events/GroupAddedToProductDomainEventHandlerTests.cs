@@ -16,6 +16,6 @@ public class GroupAddedToProductDomainEventHandlerTests
 
         await handler.Handle(notification, CancellationToken.None);
 
-        productGroup.ProductIds.Should().Contain(productId);
+        productGroup.ProductIds.ShouldContain(productId);
     }
 }
