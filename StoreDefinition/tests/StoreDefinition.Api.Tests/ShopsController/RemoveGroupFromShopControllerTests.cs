@@ -1,5 +1,4 @@
-﻿using StoreDefinition.Api.Tests.Common;
-using StoreDefinition.Contracts.Shops;
+﻿using StoreDefinition.Contracts.Shops;
 
 namespace StoreDefinition.Api.Tests.ShopsController;
 
@@ -17,9 +16,10 @@ public class RemoveGroupFromShopControllerTests(StoreDefinitionApiFactory apiFac
 
         var response = await _client.PostAsJsonAsync($"{ShopsBaseAddress}/{shop.Id}/remove-group", request);
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
         var shopResponse = await response.Content.ReadFromJsonAsync<ShopResponse>();
-        shopResponse!.Groups.Should().NotContain(group.Id);
+        shopResponse.ShouldNotBeNull();
+        shopResponse.Groups.ShouldNotContain(group.Id);
 
     }
 
@@ -31,7 +31,7 @@ public class RemoveGroupFromShopControllerTests(StoreDefinitionApiFactory apiFac
 
         var response = await _client.PostAsJsonAsync($"{ShopsBaseAddress}/{shop.Id}/remove-group", request);
 
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
     }
 
     [Fact]
@@ -41,7 +41,7 @@ public class RemoveGroupFromShopControllerTests(StoreDefinitionApiFactory apiFac
 
         var response = await _client.PostAsJsonAsync($"{ShopsBaseAddress}/{Guid.NewGuid()}/remove-group", request);
 
-        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
     }
 
     [Fact]
@@ -54,8 +54,9 @@ public class RemoveGroupFromShopControllerTests(StoreDefinitionApiFactory apiFac
 
         var response = await _client.PostAsJsonAsync($"{ShopsBaseAddress}/{shop.Id}/remove-group", request);
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
         var groupResponse = await _client.GetFromJsonAsync<GroupResponse>($"{GroupsBaseAddress}/{group.Id}");
-        groupResponse!.ShopsIds.Should().NotContain(shop.Id);
+        groupResponse.ShouldNotBeNull();
+        groupResponse.ShopsIds.ShouldNotContain(shop.Id);
     }
 }

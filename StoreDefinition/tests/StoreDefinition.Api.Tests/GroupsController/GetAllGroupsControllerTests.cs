@@ -1,6 +1,4 @@
-﻿using StoreDefinition.Api.Tests.Common;
-
-namespace StoreDefinition.Api.Tests.GroupsController;
+﻿namespace StoreDefinition.Api.Tests.GroupsController;
 
 [Collection(nameof(GroupsControllerCollectionFixture))]
 public class GetAllGroupsControllerTests(StoreDefinitionApiFactory apiFactory)
@@ -14,21 +12,21 @@ public class GetAllGroupsControllerTests(StoreDefinitionApiFactory apiFactory)
 
         var response = await _client.GetAsync(GroupsBaseAddress);
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
         var groupsResponse = await response.Content.ReadFromJsonAsync<List<GroupResponse>>();
-        groupsResponse.Should().NotBeNull();
-        groupsResponse!.Should().HaveCount(2);
-        groupsResponse!.Should().ContainSingle(g => g.Id == group1.Id);
-        groupsResponse!.Should().ContainSingle(g => g.Id == group2.Id);
+        groupsResponse.ShouldNotBeNull();
+        groupsResponse.Count.ShouldBe(2);
+        groupsResponse.ShouldContain(g => g.Id == group1.Id);
+        groupsResponse.ShouldContain(g => g.Id == group2.Id);
     }
     [Fact]
     public async Task GetAll_ReturnsEmptyList_WhenNoGroupsExist()
     {
         var response = await _client.GetAsync(GroupsBaseAddress);
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
         var groupsResponse = await response.Content.ReadFromJsonAsync<List<GroupResponse>>();
-        groupsResponse.Should().NotBeNull();
-        groupsResponse!.Should().BeEmpty();
+        groupsResponse.ShouldNotBeNull();
+        groupsResponse!.ShouldBeEmpty();
     }
 }

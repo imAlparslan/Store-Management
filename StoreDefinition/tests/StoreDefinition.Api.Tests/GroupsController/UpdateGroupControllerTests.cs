@@ -1,5 +1,4 @@
-﻿using StoreDefinition.Api.Tests.Common;
-
+﻿
 namespace StoreDefinition.Api.Tests.GroupsController;
 
 [Collection(nameof(GroupsControllerCollectionFixture))]
@@ -15,9 +14,9 @@ public class UpdateGroupControllerTests(StoreDefinitionApiFactory apiFactory)
 
         var response = await _client.PutAsJsonAsync($"{GroupsBaseAddress}/{group!.Id}", request);
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
         var groupResponse = await response.Content.ReadFromJsonAsync<GroupResponse>();
-        groupResponse.Should().NotBeNull();
+        groupResponse.ShouldNotBeNull();
     }
 
     [Fact]
@@ -27,7 +26,7 @@ public class UpdateGroupControllerTests(StoreDefinitionApiFactory apiFactory)
 
         var response = await _client.PutAsJsonAsync($"{GroupsBaseAddress}/{Guid.NewGuid()}", request);
 
-        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
     }
 
     [Fact]
@@ -37,11 +36,11 @@ public class UpdateGroupControllerTests(StoreDefinitionApiFactory apiFactory)
 
         var response = await _client.PutAsJsonAsync($"{GroupsBaseAddress}/{Guid.Empty}", request);
 
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
     }
 
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [ClassData(typeof(InvalidStrings))]
     public async Task Update_ReturnsBadRequest_WhenGroupNameInvalid(string invalid)
     {
         var group = await InsertGroup();
@@ -49,14 +48,14 @@ public class UpdateGroupControllerTests(StoreDefinitionApiFactory apiFactory)
 
         var response = await _client.PutAsJsonAsync($"{GroupsBaseAddress}/{group!.Id}", request);
 
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-        error.Should().NotBeNull();
-        error!.Errors.Should().HaveCount(1);
+        error.ShouldNotBeNull();
+        error.Errors.ShouldHaveSingleItem();
     }
 
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [ClassData(typeof(InvalidStrings))]
     public async Task Update_ReturnsBadRequest_WhenGroupDescriptionInvalid(string invalid)
     {
         var group = await InsertGroup();
@@ -64,10 +63,10 @@ public class UpdateGroupControllerTests(StoreDefinitionApiFactory apiFactory)
 
         var response = await _client.PutAsJsonAsync($"{GroupsBaseAddress}/{group!.Id}", request);
 
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-        error.Should().NotBeNull();
-        error!.Errors.Should().HaveCount(1);
+        error.ShouldNotBeNull();
+        error.Errors.ShouldHaveSingleItem();
     }
 
     [Fact]
@@ -78,9 +77,9 @@ public class UpdateGroupControllerTests(StoreDefinitionApiFactory apiFactory)
 
         var response = await _client.PutAsJsonAsync($"{GroupsBaseAddress}/{group!.Id}", request);
 
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         var error = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-        error.Should().NotBeNull();
-        error!.Errors.Should().HaveCount(2);
+        error.ShouldNotBeNull();
+        error.Errors.Count.ShouldBe(2);
     }
 }
