@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using StoreDefinition.Application.Shops.Commands.AddGroupToShop;
+﻿using StoreDefinition.Application.Shops.Commands.AddGroupToShop;
 
 namespace StoreDefinition.Application.Tests.Shops.Validations;
 public class AddGroupToShopCommandValidatorTests
@@ -13,7 +12,7 @@ public class AddGroupToShopCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeTrue();
+        result.IsValid.ShouldBeTrue();
     }
 
 
@@ -25,10 +24,10 @@ public class AddGroupToShopCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeFalse();
-        result.Errors.Should().HaveCount(1);
+        result.IsValid.ShouldBeFalse();
+        result.Errors.ShouldHaveSingleItem();
         result.Errors.Select(x => x.PropertyName)
-            .Should().Contain(nameof(command.ShopId));
+            .ShouldContain(nameof(command.ShopId));
     }
 
 
@@ -40,10 +39,10 @@ public class AddGroupToShopCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeFalse();
-        result.Errors.Should().HaveCount(1);
+        result.IsValid.ShouldBeFalse();
+        result.Errors.ShouldHaveSingleItem();
         result.Errors.Select(x => x.PropertyName)
-            .Should().Contain(nameof(command.GroupId));
+            .ShouldContain(nameof(command.GroupId));
     }
 
     [Fact]
@@ -54,9 +53,9 @@ public class AddGroupToShopCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeFalse();
-        result.Errors.Should().HaveCount(2);
+        result.IsValid.ShouldBeFalse();
+        result.Errors.Count.ShouldBe(2);
         result.Errors.Select(x => x.PropertyName)
-            .Should().Contain([nameof(command.GroupId), nameof(command.ShopId)]);
+            .ShouldBeSubsetOf([nameof(command.GroupId), nameof(command.ShopId)]);
     }
 }

@@ -1,8 +1,8 @@
-﻿using FluentAssertions;
-using StoreDefinition.Application.Groups.Commands.CreateGroup;
+﻿using StoreDefinition.Application.Groups.Commands.CreateGroup;
 using StoreDefinition.Application.Tests.Common.Factories.GroupFactories;
 
 namespace StoreDefinition.Application.Tests.Groups.Validations;
+
 public class CreateGroupCommandValidatorTests
 {
     private readonly CreateGroupCommandValidator validator;
@@ -18,36 +18,36 @@ public class CreateGroupCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeTrue();
+        result.IsValid.ShouldBeTrue();
     }
 
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [ClassData(typeof(InvalidStrings))]
     public void Validator_ReturnsFalse_WhenNameInvalid(string invalid)
     {
         var command = GroupCommandFactory.GroupCreateCommand(name: invalid);
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeFalse();
-        result.Errors.Should().HaveCount(1);
+        result.IsValid.ShouldBeFalse();
+        result.Errors.ShouldHaveSingleItem();
         result.Errors.Select(x => x.PropertyName)
-            .Should().Contain(nameof(command.Name));
+            .ShouldContain(nameof(command.Name));
     }
 
 
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [ClassData(typeof(InvalidStrings))]
     public void Validator_ReturnsFalse_WhenDescriptionInvalid(string invalid)
     {
         var command = GroupCommandFactory.GroupCreateCommand(description: invalid);
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeFalse();
-        result.Errors.Should().HaveCount(1);
+        result.IsValid.ShouldBeFalse();
+        result.Errors.ShouldHaveSingleItem();
         result.Errors.Select(x => x.PropertyName)
-            .Should().Contain(nameof(command.Description));
+            .ShouldContain(nameof(command.Description));
     }
 
     [Fact]
@@ -57,12 +57,9 @@ public class CreateGroupCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeFalse();
-        result.Errors.Should().HaveCount(2);
+        result.IsValid.ShouldBeFalse();
+        result.Errors.Count.ShouldBe(2);
         result.Errors.Select(x => x.PropertyName)
-            .Should().Contain([nameof(command.Description), nameof(command.Name)]);
+            .ShouldBeSubsetOf([nameof(command.Description), nameof(command.Name)]);
     }
-
-    public static readonly TheoryData<string> invalidStrings = ["", " ", null];
-
 }

@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using NSubstitute;
-using StoreDefinition.Application.Common.Repositories;
+﻿using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Application.Groups.Events;
 using StoreDefinition.Application.Tests.Common.Factories.GroupFactories;
 using StoreDefinition.Domain.ShopAggregateRoot.Events;
@@ -28,6 +26,6 @@ public class GroupRemovedFromShopEventHandlerTests
 
         await handler.Handle(@event, default);
 
-        group.HasShop(shopId).Should().BeFalse();
+        group.HasShop(shopId).ShouldBeFalse();
     }
 }

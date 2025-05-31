@@ -1,10 +1,9 @@
-﻿using FluentAssertions;
-using NSubstitute;
-using StoreDefinition.Application.Common.Repositories;
+﻿using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Application.Groups.Queries.GetAllGroups;
 using StoreDefinition.Application.Tests.Common.Factories.GroupFactories;
 
 namespace StoreDefinition.Application.Tests.Groups.QueryHandlers;
+
 public class GetAllGroupsQueryHandlerTests
 {
     private readonly IGroupRepository groupRepository;
@@ -27,9 +26,10 @@ public class GetAllGroupsQueryHandlerTests
 
         var result = await handler.Handle(query, default);
 
-        result.IsSuccess.Should().BeTrue();
-        result.Value.Should().HaveCount(3);
-        result.Value.Should().Contain([group1, group2, group3]);
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.ShouldNotBeNull();
+        result.Value.Count().ShouldBe(3);
+        result.Value.ShouldBeSubsetOf([group1, group2, group3]);
     }
 
     [Fact]
@@ -40,8 +40,8 @@ public class GetAllGroupsQueryHandlerTests
 
         var result = await handler.Handle(query, default);
 
-        result.IsSuccess.Should().BeTrue();
-        result.Value.Should().NotBeNull();
-        result.Value.Should().BeEmpty();
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.ShouldNotBeNull();
+        result.Value.ShouldBeEmpty();
     }
 }

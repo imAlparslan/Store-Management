@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using NSubstitute;
-using NSubstitute.ReturnsExtensions;
+﻿using NSubstitute.ReturnsExtensions;
 using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Application.Groups.Commands.DeleteGroup;
 using StoreDefinition.Application.Tests.Common.Factories.GroupFactories;
@@ -8,6 +6,7 @@ using StoreDefinition.Domain.GroupAggregateRoot.Errors;
 using StoreDefinition.Domain.GroupAggregateRoot.ValueObjects;
 
 namespace StoreDefinition.Application.Tests.Groups.CommandHandlers;
+
 public class DeleteGroupCommandHandlerTests
 {
     private readonly IGroupRepository groupRepository;
@@ -27,7 +26,7 @@ public class DeleteGroupCommandHandlerTests
 
         var result = await handler.Handle(command, default);
 
-        result.IsSuccess.Should().BeTrue();
+        result.IsSuccess.ShouldBeTrue();
         await groupRepository.ReceivedWithAnyArgs(1).DeleteGroupByIdAsync(Arg.Any<GroupId>());
     }
 
@@ -39,8 +38,9 @@ public class DeleteGroupCommandHandlerTests
 
         var result = await handler.Handle(command, default);
 
-        result.IsSuccess.Should().BeFalse();
-        result.Errors.Should().Contain(GroupErrors.NotFoundById);
+        result.IsSuccess.ShouldBeFalse();
+        result.Errors.ShouldNotBeNull();
+        result.Errors.ShouldContain(GroupErrors.NotFoundById);
         await groupRepository.ReceivedWithAnyArgs(0).DeleteGroupByIdAsync(Arg.Any<GroupId>());
     }
 }

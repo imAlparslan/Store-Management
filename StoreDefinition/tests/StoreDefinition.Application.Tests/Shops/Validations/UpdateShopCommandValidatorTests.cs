@@ -1,9 +1,8 @@
-﻿using FluentAssertions;
-using FluentAssertions.Execution;
-using StoreDefinition.Application.Shops.Commands.UpdateShop;
+﻿using StoreDefinition.Application.Shops.Commands.UpdateShop;
 using StoreDefinition.Application.Tests.Common.Factories.ShopFactories;
 
 namespace StoreDefinition.Application.Tests.Shops.Validations;
+
 public class UpdateShopCommandValidatorTests
 {
     [Fact]
@@ -14,11 +13,11 @@ public class UpdateShopCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeTrue();
+        result.IsValid.ShouldBeTrue();
     }
 
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [ClassData(typeof(InvalidStrings))]
     public void Validator_ReturnsFalse_WhenDescriptionInvalid(string invalid)
     {
         var command = UpdateShopCommandFactory.CreateCustom(description: invalid);
@@ -26,17 +25,14 @@ public class UpdateShopCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        using (AssertionScope scope = new())
-        {
-            result.IsValid.Should().BeFalse();
-            result.Errors.Count.Should().Be(1);
-            result.Errors.Select(x => x.PropertyName).Should()
-                .Contain([nameof(command.Description)]);
-        }
+        result.IsValid.ShouldBeFalse();
+        result.Errors.ShouldHaveSingleItem();
+        result.Errors.Select(x => x.PropertyName)
+            .ShouldContain(nameof(command.Description));
     }
 
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [ClassData(typeof(InvalidStrings))]
     public void Validator_ReturnsFalse_WhenCityInvalid(string invalid)
     {
         var command = UpdateShopCommandFactory.CreateCustom(city: invalid);
@@ -44,17 +40,14 @@ public class UpdateShopCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        using (AssertionScope scope = new())
-        {
-            result.IsValid.Should().BeFalse();
-            result.Errors.Count.Should().Be(1);
-            result.Errors.Select(x => x.PropertyName).Should()
-                .Contain([nameof(command.City)]);
-        }
+        result.IsValid.ShouldBeFalse();
+        result.Errors.ShouldHaveSingleItem();
+        result.Errors.Select(x => x.PropertyName)
+            .ShouldContain(nameof(command.City));
     }
 
     [Theory]
-    [MemberData(nameof(invalidStrings))]
+    [ClassData(typeof(InvalidStrings))]
     public void Validator_ReturnsFalse_WhenStreetInvalid(string invalid)
     {
         var command = UpdateShopCommandFactory.CreateCustom(street: invalid);
@@ -62,13 +55,10 @@ public class UpdateShopCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        using (AssertionScope scope = new())
-        {
-            result.IsValid.Should().BeFalse();
-            result.Errors.Count.Should().Be(1);
-            result.Errors.Select(x => x.PropertyName).Should()
-                .Contain([nameof(command.Street)]);
-        }
+        result.IsValid.ShouldBeFalse();
+        result.Errors.ShouldHaveSingleItem();
+        result.Errors.Select(x => x.PropertyName)
+            .ShouldContain(nameof(command.Street));
     }
 
     [Theory]
@@ -80,18 +70,13 @@ public class UpdateShopCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        using (AssertionScope scope = new())
-        {
-            result.IsValid.Should().BeFalse();
-            result.Errors.Count.Should().Be(4);
-            result.Errors.Select(x => x.PropertyName).Should()
-                .Contain([
-                    nameof(command.ShopId),
+        result.IsValid.ShouldBeFalse();
+        result.Errors.Count.ShouldBe(4);
+        result.Errors.Select(x => x.PropertyName)
+            .ShouldBeSubsetOf([
+                nameof(command.ShopId),
                     nameof(command.Description),
                     nameof(command.City),
                     nameof(command.Street)]);
-        }
     }
-
-    public static readonly TheoryData<string> invalidStrings = ["", " ", null];
 }

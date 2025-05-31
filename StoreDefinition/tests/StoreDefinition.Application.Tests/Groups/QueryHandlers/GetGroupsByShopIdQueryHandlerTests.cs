@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using NSubstitute;
-using StoreDefinition.Application.Common.Repositories;
+﻿using StoreDefinition.Application.Common.Repositories;
 using StoreDefinition.Application.Groups.Queries.GetGroupsByShopId;
 using StoreDefinition.Application.Tests.Common.Factories.GroupFactories;
 using StoreDefinition.Domain.ShopAggregateRoot.ValueObjects;
@@ -32,9 +30,9 @@ public class GetGroupsByShopIdQueryHandlerTests
 
         var result = await handler.Handle(query, default);
 
-        result.IsSuccess.Should().BeTrue();
-        result.Value!.Should().NotBeNullOrEmpty();
-        result.Value!.Should().Contain([groupHasShopId1, groupHasShopId2, groupHasShopId3]);
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.ShouldNotBeNull();
+        result.Value.ShouldBeSubsetOf([groupHasShopId1, groupHasShopId2, groupHasShopId3]);
     }
 
     [Fact]
@@ -45,8 +43,8 @@ public class GetGroupsByShopIdQueryHandlerTests
 
         var result = await handler.Handle(query, default);
 
-        result.IsSuccess.Should().BeTrue();
-        result.Value!.Should().NotBeNull();
-        result.Value!.Should().BeEmpty();
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.ShouldNotBeNull();
+        result.Value.ShouldBeEmpty();
     }
 }

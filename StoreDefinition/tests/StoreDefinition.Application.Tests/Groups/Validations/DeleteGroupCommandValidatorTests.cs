@@ -1,7 +1,7 @@
-﻿using FluentAssertions;
-using StoreDefinition.Application.Groups.Commands.DeleteGroup;
+﻿using StoreDefinition.Application.Groups.Commands.DeleteGroup;
 
 namespace StoreDefinition.Application.Tests.Groups.Validations;
+
 public class DeleteGroupCommandValidatorTests
 {
     private readonly DeleteGroupCommandValidator validator;
@@ -17,7 +17,7 @@ public class DeleteGroupCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeTrue();
+        result.IsValid.ShouldBeTrue();
     }
 
     [Fact]
@@ -27,8 +27,8 @@ public class DeleteGroupCommandValidatorTests
 
         var result = validator.Validate(command);
 
-        result.IsValid.Should().BeFalse();
+        result.IsValid.ShouldBeFalse();
         result.Errors.Select(x => x.PropertyName)
-            .Should().Contain(nameof(command.GroupId));
+            .ShouldContain(nameof(command.GroupId));
     }
 }

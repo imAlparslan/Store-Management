@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using StoreDefinition.Application.Shops.Queries.GetShopsByGroupId;
+﻿using StoreDefinition.Application.Shops.Queries.GetShopsByGroupId;
 
 namespace StoreDefinition.Application.Tests.Shops.Validations;
 public class GetShopsByGroupIdQueryValidatorTests
@@ -17,7 +16,7 @@ public class GetShopsByGroupIdQueryValidatorTests
 
         var result = validator.Validate(query);
 
-        result.IsValid.Should().BeTrue();
+        result.IsValid.ShouldBeTrue();
     }
 
     [Fact]
@@ -27,6 +26,6 @@ public class GetShopsByGroupIdQueryValidatorTests
 
         var result = validator.Validate(query);
 
-        result.IsValid.Should().BeFalse();
+        result.IsValid.ShouldBeFalse();
     }
 }
