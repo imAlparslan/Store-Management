@@ -18,7 +18,7 @@ namespace InventoryManagement.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.4")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -75,23 +75,33 @@ namespace InventoryManagement.Infrastructure.Migrations
                         .HasColumnName("StockItemId")
                         .HasColumnOrder(0);
 
-                    b.Property<int>("Capacity")
-                        .HasColumnType("int")
-                        .HasColumnName("Capacity")
-                        .HasColumnOrder(3);
-
                     b.Property<Guid>("ItemId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("ItemId")
                         .HasColumnOrder(1);
 
-                    b.Property<int>("Quantatiy")
-                        .HasColumnType("int")
-                        .HasColumnName("Quantatiy")
-                        .HasColumnOrder(2);
-
                     b.Property<Guid?>("StockId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.ComplexProperty<Dictionary<string, object>>("Capacity", "InventoryManagement.Domain.StockAggregateRoot.Entities.StockItem.Capacity#Capacity", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<int>("Value")
+                                .HasColumnType("int")
+                                .HasColumnName("Capacity")
+                                .HasColumnOrder(3);
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("Quantity", "InventoryManagement.Domain.StockAggregateRoot.Entities.StockItem.Quantity#Quantity", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<int>("Value")
+                                .HasColumnType("int")
+                                .HasColumnName("Quantity")
+                                .HasColumnOrder(2);
+                        });
 
                     b.HasKey("Id");
 

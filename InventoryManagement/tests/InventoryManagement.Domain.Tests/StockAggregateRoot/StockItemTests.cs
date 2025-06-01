@@ -1,5 +1,4 @@
 ﻿using InventoryManagement.Domain.StockAggregateRoot.Entities;
-using InventoryManagement.Domain.StockAggregateRoot.Errors;
 
 namespace InventoryManagement.Domain.Tests.StockAggregateRoot;
 public class StockItemTests
@@ -9,7 +8,7 @@ public class StockItemTests
     [InlineData(-1)]
     public void Creating_StockItem_ShouldThrowDomainException_WhenQuantityNegative(int quantity)
     {
-        var createStockItemAction = () => new StockItem(ItemId.CreateUnique(), quantity: quantity);
+        var createStockItemAction = () => new StockItem(ItemId.CreateUnique(), quantity: new(quantity), new(1));
 
         Should.Throw<DomainException>(createStockItemAction)
             .ShouldSatisfyAllConditions(
@@ -21,7 +20,7 @@ public class StockItemTests
     [InlineData(-1)]
     public void Creating_StockItem_ShouldThrowDomainException_WhenCapacityNegative(int capacity)
     {
-        var createStockItemAction = () => new StockItem(ItemId.CreateUnique(), capacity: capacity);
+        var createStockItemAction = () => new StockItem(ItemId.CreateUnique(), quantity: new(1), capacity: new(capacity));
 
         Should.Throw<DomainException>(createStockItemAction)
             .ShouldSatisfyAllConditions(

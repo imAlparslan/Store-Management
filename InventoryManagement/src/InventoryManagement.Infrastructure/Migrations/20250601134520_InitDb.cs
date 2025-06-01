@@ -6,20 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace InventoryManagement.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class addStockItems : Migration
+    public partial class InitDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<Guid>(
-                name: "StoreId",
-                table: "Stocks",
-                type: "uniqueidentifier",
-                nullable: false,
-                oldClrType: typeof(Guid),
-                oldType: "uniqueidentifier")
-                .Annotation("Relational:ColumnOrder", 1);
-
             migrationBuilder.CreateTable(
                 name: "Item",
                 columns: table => new
@@ -37,12 +28,25 @@ namespace InventoryManagement.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Stocks",
+                columns: table => new
+                {
+                    StockId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    GroupIds = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Stocks", x => x.StockId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "StockItems",
                 columns: table => new
                 {
                     StockItemId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ItemId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Quantatiy = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
                     Capacity = table.Column<int>(type: "int", nullable: false),
                     StockId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
@@ -71,14 +75,8 @@ namespace InventoryManagement.Infrastructure.Migrations
             migrationBuilder.DropTable(
                 name: "StockItems");
 
-            migrationBuilder.AlterColumn<Guid>(
-                name: "StoreId",
-                table: "Stocks",
-                type: "uniqueidentifier",
-                nullable: false,
-                oldClrType: typeof(Guid),
-                oldType: "uniqueidentifier")
-                .OldAnnotation("Relational:ColumnOrder", 1);
+            migrationBuilder.DropTable(
+                name: "Stocks");
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using InventoryManagement.Domain.ItemAggregateRoot.ValueObjects;
-using InventoryManagement.Domain.StockAggregateRoot.Entities;
+﻿using InventoryManagement.Domain.StockAggregateRoot.Entities;
 using InventoryManagement.Infrastructure.Converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -25,13 +24,18 @@ public class StockItemConfiguration : IEntityTypeConfiguration<StockItem>
             .HasConversion<ItemIdConverter>()
             .ValueGeneratedNever();
 
-        builder.Property(x => x.Quantity)
-            .HasColumnName("Quantatiy")
-            .HasColumnOrder(2);
+        builder.ComplexProperty(x => x.Quantity,
+            c => c.Property(c => c.Value)
+                .ValueGeneratedNever()
+                .HasColumnOrder(2)
+                .HasColumnName("Quantity"));
 
-        builder.Property(x => x.Capacity)
-           .HasColumnName("Capacity")
-           .HasColumnOrder(3);
+        builder.ComplexProperty(x => x.Capacity,
+            c => c.Property(c => c.Value)
+                .ValueGeneratedNever()
+                .HasColumnOrder(3)
+                .HasColumnName("Capacity"));
+
     }
 }
 
