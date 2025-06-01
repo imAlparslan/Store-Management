@@ -1,9 +1,9 @@
 ﻿using InventoryManagement.Domain.ItemAggregateRoot;
-using InventoryManagement.Infrastructure.Converters;
+using InventoryManagement.Infrastructure.Persistence.Converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace InventoryManagement.Infrastructure.Configurations;
+namespace InventoryManagement.Infrastructure.Persistence.Configurations;
 public class ItemConfiguration : IEntityTypeConfiguration<Item>
 {
     public void Configure(EntityTypeBuilder<Item> builder)

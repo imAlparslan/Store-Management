@@ -1,9 +1,9 @@
 ﻿using InventoryManagement.Domain.StockAggregateRoot.Entities;
-using InventoryManagement.Infrastructure.Converters;
+using InventoryManagement.Infrastructure.Persistence.Converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace InventoryManagement.Infrastructure.Configurations;
+namespace InventoryManagement.Infrastructure.Persistence.Configurations;
 public class StockItemConfiguration : IEntityTypeConfiguration<StockItem>
 {
     public void Configure(EntityTypeBuilder<StockItem> builder)
