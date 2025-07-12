@@ -1,5 +1,4 @@
 
-// Valid request
 POST {{BaseAddress}}/shops
 Content-Type: application/json
 
@@ -9,7 +8,7 @@ Content-Type: application/json
     "city":"city",
     "street":"street",
     "groupIds":[
-      "dc54bec6-e5b2-4d6b-90fd-9c5fdfcb6cdc"
+      
     ]
 }
 

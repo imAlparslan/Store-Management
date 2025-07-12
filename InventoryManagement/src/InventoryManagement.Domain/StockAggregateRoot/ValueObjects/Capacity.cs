@@ -48,4 +48,9 @@ public class Capacity : ValueObject
     {
         yield return Value;
     }
+     public static bool operator ==(Capacity left, int right)
+        => left.Value == right;
+    
+    public static bool operator !=(Capacity left, int right)
+        => left.Value != right;
 }

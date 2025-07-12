@@ -1,14 +1,15 @@
 ﻿using InventoryManagement.Domain.Common;
+using InventoryManagement.Domain.ItemAggregateRoot.ValueObjects;
 using InventoryManagement.Domain.StockAggregateRoot.Entities;
+using InventoryManagement.Domain.StockAggregateRoot.Errors;
+using InventoryManagement.Domain.StockAggregateRoot.Exceptions;
 using InventoryManagement.Domain.StockAggregateRoot.ValueObjects;
 namespace InventoryManagement.Domain.StockAggregateRoot;
 public sealed class Stock : AggregateRoot<StockId>
 {
     public StoreId StoreId { get; init; }
-
     private readonly List<StockItem> _stockItems = new();
     public IReadOnlyList<StockItem> StockItems => _stockItems;
-
     private readonly List<Guid> _groupIds = new();
     public IReadOnlyList<Guid> GroupIds => _groupIds;
     public Stock(StoreId storeId, List<Guid> GroupIds, List<StockItem> items, StockId? id = null)
@@ -18,8 +19,31 @@ public sealed class Stock : AggregateRoot<StockId>
         _groupIds = GroupIds;
         _stockItems = items;
     }
-
     private Stock()
     {
+    }
+
+    public bool HasStockItem(StockItemId stockItemId)
+        => _stockItems.Any(x => x.Id == stockItemId);
+    public void IncreaseStockItemCapacity(StockItemId stockItemId, int amount)
+    {
+        var item = _stockItems.FirstOrDefault(x => x.Id == stockItemId);
+
+        if (item is null)
+        {
+            throw StockException.Create(StockErrors.StockItemNotFound);
+        }
+
+        item.IncreaseCapacity(amount);
+    }
+
+    public bool TryAddItem(ItemId itemId, int initialQuantity, int initialCapacity)
+    {
+        if (_stockItems.Any(x => x.ItemId == itemId))
+            return false;
+
+        _stockItems.Add(new StockItem(itemId, new Quantity(initialQuantity), new Capacity(initialCapacity)));
+
+        return true;
     }
 }

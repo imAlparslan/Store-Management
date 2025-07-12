@@ -46,4 +46,11 @@ public class Quantity : ValueObject
     {
         yield return Value;
     }
+    
+    public static bool operator ==(Quantity left, int right)
+        => left.Value == right;
+    
+    public static bool operator !=(Quantity left, int right)
+        => left.Value != right;
+    
 }

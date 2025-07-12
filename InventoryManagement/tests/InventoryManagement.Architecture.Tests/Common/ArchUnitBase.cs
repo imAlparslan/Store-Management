@@ -5,6 +5,7 @@ using InventoryManagement.Application;
 using InventoryManagement.Arhitecture.Tests.Constants;
 using InventoryManagement.Domain;
 using InventoryManagement.Infrastructure;
+
 using Assembly = System.Reflection.Assembly;
 
 namespace InventoryManagement.Arhitecture.Tests.Common;
@@ -15,7 +16,7 @@ public abstract class ArchUnitBase
     protected static readonly Assembly DomainAssembly = typeof(IDomaninAssemblyMarker).Assembly;
     protected static readonly Assembly InfrastructureAssembly = typeof(IInfrastructureAssemblyMarker).Assembly;
 
-    protected static readonly Architecture Architecture = new ArchLoader()
+    protected static readonly ArchUnitNET.Domain.Architecture Architecture = new ArchLoader()
         .LoadAssemblies(PresentationAssembly, ApplicationAssembly, DomainAssembly, InfrastructureAssembly)
         .Build();
 

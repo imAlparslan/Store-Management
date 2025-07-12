@@ -1,3 +1,18 @@
 
 
+POST {{BaseAddress}}/shops
+Content-Type: application/json
+
+{
+    "name": "shop name",
+    "description": "shop description",
+    "city":"city",
+    "street":"street",
+    "groupIds":[
+      
+    ]
+}
+
+###
+
 GET {{BaseAddress}}/shops/

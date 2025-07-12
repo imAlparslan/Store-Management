@@ -5,6 +5,12 @@ public class StockErrors
     private StockErrors()
     {
     }
+    public static readonly Error StockNotFound =
+        new Error("Invalid.Stock.StockNotFound", ErrorType.NotFound, "Stock not found");
+
+    public static readonly Error StockItemAlreadyExists =
+        new Error("Invalid.Stock.ItemAlreadyExists", ErrorType.NotUpdated, "Stock already have this item");
+
     public static readonly Error StockItemNotFound =
         new Error("Invalid.Stock.StockItemNotFound", ErrorType.NotFound, "Given 'stock item' not found.");
 
@@ -16,6 +22,7 @@ public class StockErrors
 
     public static readonly Error InsufficientStockError =
         new Error("Invalid.Stock.InsufficientStock", ErrorType.Validation, "Insufficient stock available for the operation.");
+
     public static readonly Error InvalidCapacityError =
         new Error("Invalid.Stock.Capacity", ErrorType.Validation, "Given 'capacity' is invalid.");
 
