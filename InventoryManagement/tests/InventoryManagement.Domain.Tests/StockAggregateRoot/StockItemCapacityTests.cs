@@ -9,7 +9,7 @@ public class StockItemCapacityTests
     {
         var defaultStock = StockFactory.CreateEmpty();
         var defaultItem = StockItemFactory.CreateDefault(initialCapacity: initialCapacity);
-        defaultStock.TryAddItem(defaultItem.ItemId, defaultItem.Quantity.Value, defaultItem.Capacity.Value);
+        defaultStock.TryAddItem(defaultItem);
 
         defaultStock.IncreaseStockItemCapacity(defaultItem.Id, increasedCapacity);
 

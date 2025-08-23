@@ -12,3 +12,5 @@ public static class StockFactory
             new List<Guid>(),
             new List<StockItem>()
         );
+    }
+}

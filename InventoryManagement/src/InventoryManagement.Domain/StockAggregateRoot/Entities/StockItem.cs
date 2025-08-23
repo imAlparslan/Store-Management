@@ -15,14 +15,14 @@ public class StockItem : Entity<StockItemId>
                      StockItemId? id = null) : base(id ?? StockItemId.CreateUnique())
     {
         ItemId = itemId;
-        Quantity = quantity ??= new Quantity(0);
-        Capacity = capacity ??= new Capacity(0);
+        Quantity = quantity ?? new Quantity(0);
+        Capacity = capacity ?? new Capacity(0);
     }
+
     private StockItem()
     {
         // EF Core requires a parameterless constructor for materialization
     }
-
     public void IncreaseQuantity(int amount)
     {
         Quantity.Increase(amount);

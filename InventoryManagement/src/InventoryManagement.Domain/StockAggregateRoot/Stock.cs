@@ -37,12 +37,12 @@ public sealed class Stock : AggregateRoot<StockId>
         item.IncreaseCapacity(amount);
     }
 
-    public bool TryAddItem(ItemId itemId, int initialQuantity, int initialCapacity)
+    public bool TryAddItem(StockItem stockItem)
     {
-        if (_stockItems.Any(x => x.ItemId == itemId))
+        if (_stockItems.Any(x => x.ItemId == stockItem.ItemId))
             return false;
 
-        _stockItems.Add(new StockItem(itemId, new Quantity(initialQuantity), new Capacity(initialCapacity)));
+        _stockItems.Add(stockItem);
 
         return true;
     }

@@ -16,5 +16,13 @@
     <ProjectReference Include="..\..\..\SharedKernel\SharedKernel.Application.Common\SharedKernel.Application.Common.csproj" />
     <ProjectReference Include="..\InventoryManagement.Domain\InventoryManagement.Domain.csproj" />
   </ItemGroup>
+	
+  <ItemGroup>
+   <InternalsVisibleTo Include="InventoryManagement.Application.Tests" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <Folder Include="Behaviors\" />
+  </ItemGroup>
 
 </Project>

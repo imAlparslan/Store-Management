@@ -1,5 +1,6 @@
 ﻿using InventoryManagement.Application.Common;
 using InventoryManagement.Domain.StockAggregateRoot;
+using InventoryManagement.Domain.StockAggregateRoot.Entities;
 using InventoryManagement.Domain.StockAggregateRoot.Errors;
 
 namespace InventoryManagement.Application.Stocks.Commands.AddStockItem;
@@ -15,8 +16,8 @@ internal sealed class AddStockItemCommandHandler(IStockRepository stockRepositor
         {
             return StockErrors.StockNotFound;
         }
-
-        var result = stock.TryAddItem(request.ItemId, request.InitialQuantity, request.InitialCapacity);
+        var stockItem = new StockItem(request.ItemId, new(request.InitialQuantity), new(request.InitialCapacity));
+        var result = stock.TryAddItem(stockItem);
       
         if (!result)
         {
