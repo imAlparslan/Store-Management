@@ -1,5 +1,6 @@
 using InventoryManagement.Application.Extensions;
 using InventoryManagement.Infrastructure.Extensions;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference(options =>
+    {
+        options.WithTitle("Inventory Management API");
+    });
 }
 
 app.UseHttpsRedirection();
