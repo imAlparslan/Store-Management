@@ -12,7 +12,7 @@ public class ShopDeletedIntegrationEventConsumer(ILogger<ShopDeletedIntegrationE
     private readonly ILogger<ShopDeletedIntegrationEventConsumer> _logger = logger;
     public async Task Consume(ConsumeContext<ShopDeletedIntegrationEvent> context)
     {
-        var stock = await _stockRepository.GetStockByStoreId(context.Message.ShopId);
+        var stock = await _stockRepository.GetStockByStoreIdAsync(context.Message.ShopId);
         if (stock is null)
         {
             _logger.LogInformation($"stock not found with given store Id {context.Message.ShopId}");

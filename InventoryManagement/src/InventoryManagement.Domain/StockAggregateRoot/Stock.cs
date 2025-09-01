@@ -5,6 +5,7 @@ using InventoryManagement.Domain.StockAggregateRoot.Errors;
 using InventoryManagement.Domain.StockAggregateRoot.Exceptions;
 using InventoryManagement.Domain.StockAggregateRoot.ValueObjects;
 namespace InventoryManagement.Domain.StockAggregateRoot;
+
 public sealed class Stock : AggregateRoot<StockId>
 {
     public StoreId StoreId { get; init; }
@@ -36,7 +37,14 @@ public sealed class Stock : AggregateRoot<StockId>
 
         item.IncreaseCapacity(amount);
     }
+    public bool TryAddGroup(Guid groupId)
+    {
+        if (_groupIds.Contains(groupId))
+            return false;
 
+        _groupIds.Add(groupId);
+        return true;
+    }
     public bool TryAddItem(StockItem stockItem)
     {
         if (_stockItems.Any(x => x.ItemId == stockItem.ItemId))

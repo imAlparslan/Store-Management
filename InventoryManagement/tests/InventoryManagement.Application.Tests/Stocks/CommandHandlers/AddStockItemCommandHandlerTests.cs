@@ -24,8 +24,8 @@ public class AddStockItemCommandHandlerTests
         var stock = StockFactory.CreateValid();
         var stockItem = StockItemFactory.CreateValid();
         var command = new AddStockItemCommand(stock.Id, stockItem.Id, 10, 10);
-        _stockRepository.GetStockByStockId(Arg.Any<StockId>()).ReturnsForAnyArgs(stock);
-        _stockRepository.UpdateStock(Arg.Any<Stock>(),default).ReturnsForAnyArgs(stock);
+        _stockRepository.GetStockByStockIdAsync(Arg.Any<StockId>()).ReturnsForAnyArgs(stock);
+        _stockRepository.UpdateStockAsync(Arg.Any<Stock>(),default).ReturnsForAnyArgs(stock);
        
         var result = await _handler.Handle(command, default);
 
@@ -38,7 +38,7 @@ public class AddStockItemCommandHandlerTests
     public async Task Handler_Returns_NotFoundError_WhenStockNotFound()
     {
         var command = new AddStockItemCommand(Guid.CreateVersion7(), Guid.CreateVersion7());
-        _stockRepository.GetStockByStockId(Arg.Any<StockId>()).ReturnsNullForAnyArgs();
+        _stockRepository.GetStockByStockIdAsync(Arg.Any<StockId>()).ReturnsNullForAnyArgs();
 
         var result = await _handler.Handle(command, default);
 
@@ -56,7 +56,7 @@ public class AddStockItemCommandHandlerTests
         var stock = StockFactory.CreateValid();
         stock.TryAddItem(stockItem);
         var command = new AddStockItemCommand(stock.Id, stockItem.ItemId, 10, 10);
-        _stockRepository.GetStockByStockId(Arg.Any<StockId>()).ReturnsForAnyArgs(stock);
+        _stockRepository.GetStockByStockIdAsync(Arg.Any<StockId>()).ReturnsForAnyArgs(stock);
 
         var result = await _handler.Handle(command, default);
 
