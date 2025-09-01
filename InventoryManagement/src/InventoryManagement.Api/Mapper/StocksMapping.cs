@@ -1,5 +1,9 @@
 ﻿using InventoryManagement.Application.Stocks.Commands.AddStockItem;
+using InventoryManagement.Application.Stocks.Commands.IncreaseStockCapacity;
 using InventoryManagement.Application.Stocks.Queries.GetAllStocksByGroupId;
+using InventoryManagement.Application.Stocks.Queries.GetStockById;
+using InventoryManagement.Application.Stocks.Queries.GetStockByStoreId;
+using InventoryManagement.Contracts;
 using InventoryManagement.Contracts.Stocks;
 using InventoryManagement.Domain.StockAggregateRoot;
 
@@ -21,4 +25,13 @@ public static class StocksMapping
 
     public static GetAllStocksByGroupIdQuery MapToQuery(this GetAllStocksByGroupIdRequest request)
         => new GetAllStocksByGroupIdQuery(request.GroupId);
+
+    public static IncreaseStockItemCapacityCommand MapToCommand(this IncreaseStockCapacityRequest request, Guid stockId)
+        => new IncreaseStockItemCapacityCommand(stockId, request.ItemId, request.Amount);
+
+    public static GetStockByStoreIdQuery MapToQuery(this GetStocksByStoreIdRequest request)
+        => new GetStockByStoreIdQuery(request.StoreId);
+
+    public static GetStockByIdQuery MapToQuery(this GetStockByIdRequest request)
+        => new GetStockByIdQuery(request.StockId);
 }

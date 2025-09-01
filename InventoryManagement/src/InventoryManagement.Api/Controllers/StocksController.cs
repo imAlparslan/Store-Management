@@ -35,4 +35,41 @@ public class StocksController(IMediator mediator) : BaseApiController
             stocks => Ok(stocks.Select(stock => stock.MapToResponse())),
             Problem);
     }
+
+    [HttpPut(StockEndpoints.IncreaseStockCapacity)]
+    public async Task<IActionResult> IncreaseStockCapacity(Guid id, IncreaseStockCapacityRequest request)
+    {
+        var command = request.MapToCommand(id);
+
+        var result = await _mediator.Send(command);
+
+        return result.Match(
+            stock => Ok(stock.MapToResponse()),
+            Problem
+        );
+    }
+    [HttpGet(StockEndpoints.GetStockById)]
+    public async Task<IActionResult> GetStocksById(GetStockByIdRequest request)
+    {
+        var query = request.MapToQuery();
+
+        var result = await _mediator.Send(query);
+
+        return result.Match(
+            stock => Ok(stock!.MapToResponse()),
+            Problem);
+    }
+
+    [HttpGet(StockEndpoints.GetStocksByStoreId)]
+    public async Task<IActionResult> GetStocksByStoreId([FromQuery] GetStocksByStoreIdRequest request)
+    {
+        var query = request.MapToQuery();
+
+        var result = await _mediator.Send(query);
+
+        return result.Match(
+            stock => Ok(stock!.MapToResponse()),
+            Problem);
+    }
+
 }
