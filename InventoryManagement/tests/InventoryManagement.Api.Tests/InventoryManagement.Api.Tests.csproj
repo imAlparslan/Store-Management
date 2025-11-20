@@ -12,6 +12,17 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="xunit" />
     <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="Shouldly" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+    <PackageReference Include="Testcontainers" />
+    <PackageReference Include="Testcontainers.MsSql" />
+
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/InventoryManagement.Api/InventoryManagement.Api.csproj" />
+    <ProjectReference Include="../../src/InventoryManagement.Infrastructure/InventoryManagement.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -46,7 +46,7 @@ public class StockRepository(InventoryDbContext dbContext, IUnitOfWorkManager un
 
     public async Task<Stock?> GetStockByStockIdAsync(StockId stockId, CancellationToken cancellation = default)
     {
-        return await _dbContext.Stocks.FindAsync([stockId], cancellation);
+        return await _dbContext.Stocks.Include(x => x.StockItems).FirstOrDefaultAsync(x => x.Id == stockId, cancellation);
     }
 
     public async Task<Stock?> GetStockByStoreIdAsync(StoreId storeId, CancellationToken cancellation = default)
