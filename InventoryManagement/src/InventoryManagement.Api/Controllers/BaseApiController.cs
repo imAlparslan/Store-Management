@@ -25,6 +25,7 @@ public abstract class BaseApiController : ControllerBase
         var statusCode = error.Type switch
         {
             ErrorType.Validation => StatusCodes.Status400BadRequest,
+            ErrorType.NotUpdated => StatusCodes.Status400BadRequest,
             ErrorType.NotDeleted => StatusCodes.Status404NotFound,
             ErrorType.NotFound => StatusCodes.Status404NotFound,
             _ => StatusCodes.Status500InternalServerError
