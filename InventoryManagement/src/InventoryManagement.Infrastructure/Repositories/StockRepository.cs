@@ -35,6 +35,13 @@ public class StockRepository(InventoryDbContext dbContext, IUnitOfWorkManager un
         return await _dbContext.Stocks.AsNoTracking().ToListAsync(cancellation);
     }
 
+    public async Task<List<Stock>> GetAllStocksByGroupId(Guid groupId, CancellationToken cancellation = default)
+    {
+        return await _dbContext.Stocks.AsNoTracking()
+            .Where(x => x.GroupIds.Contains(groupId))
+            .ToListAsync(cancellation);
+    }
+
     public async Task<Stock?> GetStockByStockId(StockId stockId, CancellationToken cancellation = default)
     {
         return await _dbContext.Stocks.FindAsync([stockId], cancellation);

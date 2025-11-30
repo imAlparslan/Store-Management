@@ -8,6 +8,7 @@ public interface IStockRepository
     Task<Stock> InsertShopAsync(Stock stock, CancellationToken cancellation = default);
     Task<Stock?> GetStockByStockId(StockId stockId, CancellationToken cancellation = default);
     Task<Stock?> GetStockByStoreId(StoreId storeId, CancellationToken cancellation = default);
+    Task<List<Stock>> GetAllStocksByGroupId(Guid groupId, CancellationToken cancellation = default);
     Task<IEnumerable<Stock>> GetAllStocksAsync(CancellationToken cancellation = default);
     Task<Stock> UpdateStock(Stock stock, CancellationToken cancellation = default);
     Task<bool> DeleteStockAsync(Stock stock, CancellationToken cancellation = default);
