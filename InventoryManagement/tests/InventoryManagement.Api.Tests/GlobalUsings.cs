@@ -1,0 +1,13 @@
+global using InventoryManagement.Api.Tests.Common;
+global using InventoryManagement.Api.Tests.Fixtures;
+global using InventoryManagement.Contracts.Stocks;
+global using InventoryManagement.Domain.StockAggregateRoot;
+global using InventoryManagement.Domain.StockAggregateRoot.Entities;
+global using InventoryManagement.Domain.StockAggregateRoot.Errors;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.AspNetCore.Mvc;
+global using Shouldly;
+global using System.Net;
+global using System.Net.Http.Json;
+global using static InventoryManagement.Api.ApiEndpoints;
+global using static InventoryManagement.Api.Tests.Common.InvalidData;

@@ -10,7 +10,8 @@ internal class AddStockItemCommandValidator : AbstractValidator<AddStockItemComm
 
         RuleFor(x => x.ItemId).NotEmpty();
 
-        RuleFor(x => x).CapacityMustGratherThanQuantity()
+        RuleFor(x => x).CapacityMustGreaterThanQuantity()
+            .OverridePropertyName(x => x.InitialCapacity)
             .WithMessage(StockErrors.InsufficientCapacityError.Description)
             .WithErrorCode(StockErrors.InsufficientCapacityError.Code);
 
@@ -27,8 +28,8 @@ internal class AddStockItemCommandValidator : AbstractValidator<AddStockItemComm
 
 public static class CapacityOverflowValidation
 {
-    public static IRuleBuilderOptions<AddStockItemCommand, AddStockItemCommand> CapacityMustGratherThanQuantity(this IRuleBuilder<AddStockItemCommand, AddStockItemCommand> ruleBuilder)
+    public static IRuleBuilderOptions<AddStockItemCommand, AddStockItemCommand> CapacityMustGreaterThanQuantity(this IRuleBuilder<AddStockItemCommand, AddStockItemCommand> ruleBuilder)
     {
-        return ruleBuilder.Must(x => x.InitialCapacity > x.InitialQuantity);
+        return ruleBuilder.Must(x => x.InitialCapacity >= x.InitialQuantity);
     }
 }

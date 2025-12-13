@@ -6,6 +6,7 @@ using InventoryManagement.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace InventoryManagement.Infrastructure.Repositories;
+
 public class StockRepository(InventoryDbContext dbContext, IUnitOfWorkManager unitOfWorkManager)
     : IStockRepository
 {
@@ -35,19 +36,20 @@ public class StockRepository(InventoryDbContext dbContext, IUnitOfWorkManager un
         return await _dbContext.Stocks.AsNoTracking().ToListAsync(cancellation);
     }
 
-    public async Task<List<Stock>> GetAllStocksByGroupId(Guid groupId, CancellationToken cancellation = default)
+    public async Task<IEnumerable<Stock>> GetAllStocksByGroupIdAsync(Guid groupId, CancellationToken cancellation = default)
     {
         return await _dbContext.Stocks.AsNoTracking()
             .Where(x => x.GroupIds.Contains(groupId))
             .ToListAsync(cancellation);
     }
 
-    public async Task<Stock?> GetStockByStockId(StockId stockId, CancellationToken cancellation = default)
+
+    public async Task<Stock?> GetStockByStockIdAsync(StockId stockId, CancellationToken cancellation = default)
     {
-        return await _dbContext.Stocks.FindAsync([stockId], cancellation);
+        return await _dbContext.Stocks.Include(x => x.StockItems).FirstOrDefaultAsync(x => x.Id == stockId, cancellation);
     }
 
-    public async Task<Stock?> GetStockByStoreId(StoreId storeId, CancellationToken cancellation = default)
+    public async Task<Stock?> GetStockByStoreIdAsync(StoreId storeId, CancellationToken cancellation = default)
     {
         return await _dbContext.Stocks.AsNoTracking()
             .FirstOrDefaultAsync(x => x.StoreId == storeId, cancellation);
@@ -63,7 +65,7 @@ public class StockRepository(InventoryDbContext dbContext, IUnitOfWorkManager un
         return stock;
     }
 
-    public async Task<Stock> UpdateStock(Stock stock, CancellationToken cancellation = default)
+    public async Task<Stock> UpdateStockAsync(Stock stock, CancellationToken cancellation = default)
     {
         _dbContext.Stocks.Update(stock);
         if (!_unitOfWorkManager.IsUnitOfWorkManagerStarted())

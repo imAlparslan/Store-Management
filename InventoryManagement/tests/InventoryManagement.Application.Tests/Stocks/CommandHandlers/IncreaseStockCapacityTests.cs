@@ -29,8 +29,8 @@ public class IncreaseStockCapacityTests
         var stock = StockFactory.CreateValid();
         stock.TryAddItem(stockItem);
         var command = new IncreaseStockItemCapacityCommand(stock.Id, stockItem.Id, 100);
-        _stockRepository.GetStockByStockId(Arg.Any<StockId>(), default).ReturnsForAnyArgs(stock);
-        _stockRepository.UpdateStock(Arg.Any<Stock>(), default).ReturnsForAnyArgs(stock);
+        _stockRepository.GetStockByStockIdAsync(Arg.Any<StockId>(), default).ReturnsForAnyArgs(stock);
+        _stockRepository.UpdateStockAsync(Arg.Any<Stock>(), default).ReturnsForAnyArgs(stock);
 
         var result = await _handler.Handle(command, default);
 

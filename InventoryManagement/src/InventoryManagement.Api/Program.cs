@@ -1,5 +1,6 @@
 using InventoryManagement.Application.Extensions;
 using InventoryManagement.Infrastructure.Extensions;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 

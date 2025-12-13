@@ -1,5 +1,5 @@
-﻿using InventoryManagement.Domain.StockAggregateRoot;
+using InventoryManagement.Domain.StockAggregateRoot;
 
-namespace InventoryManagement.Application.Stocks.Queries.GetStockByGroupId;
+namespace InventoryManagement.Application.Stocks.Queries.GetAllStocksByGroupId;
 
-public sealed record GetAllStocksByGroupIdQuery(Guid GroupId) : IQuery<Result<List<Stock>>>;
+public sealed record GetAllStocksByGroupIdQuery(Guid GroupId) : IQuery<Result<IEnumerable<Stock>>>;

@@ -10,7 +10,7 @@ internal sealed class IncreaseStockItemCapacityCommandHandler(IStockRepository s
 
     public async Task<Result<Stock>> Handle(IncreaseStockItemCapacityCommand request, CancellationToken cancellationToken)
     {
-        var stock = await _stockRepository.GetStockByStockId(request.StockId,cancellationToken);
+        var stock = await _stockRepository.GetStockByStockIdAsync(request.StockId,cancellationToken);
        
         if(stock is null)
         {
@@ -24,6 +24,6 @@ internal sealed class IncreaseStockItemCapacityCommandHandler(IStockRepository s
 
         stock.IncreaseStockItemCapacity(request.StockItemId, request.Amount);
 
-        return await _stockRepository.UpdateStock(stock, cancellationToken);
+        return await _stockRepository.UpdateStockAsync(stock, cancellationToken);
     }
 }

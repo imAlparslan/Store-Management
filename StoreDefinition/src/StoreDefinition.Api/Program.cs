@@ -1,3 +1,4 @@
+using Scalar.AspNetCore;
 using StoreDefinition.Application.Extensions;
 using StoreDefinition.Infrastructure.Extension;
 
@@ -14,7 +15,11 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi("doc");
+    app.MapOpenApi();
+    app.MapScalarApiReference(options =>
+    {
+        options.WithTitle("Store Definition API");
+    });
 }
 
 app.UseHttpsRedirection();

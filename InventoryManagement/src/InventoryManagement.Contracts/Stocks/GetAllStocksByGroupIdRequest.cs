@@ -1,2 +1,3 @@
-﻿namespace InventoryManagement.Contracts.Stocks;
+namespace InventoryManagement.Contracts.Stocks;
+
 public sealed record GetAllStocksByGroupIdRequest(Guid GroupId);

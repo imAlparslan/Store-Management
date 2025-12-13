@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+using FluentValidation;
+using InventoryManagement.Application.Stocks.Queries.GetAllStocksByGroupId;
 
 namespace InventoryManagement.Application.Stocks.Queries.GetStockByGroupId;
 

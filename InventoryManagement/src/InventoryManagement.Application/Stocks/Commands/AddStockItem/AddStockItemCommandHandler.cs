@@ -10,7 +10,7 @@ internal sealed class AddStockItemCommandHandler(IStockRepository stockRepositor
 
     public async Task<Result<Stock>> Handle(AddStockItemCommand request, CancellationToken cancellationToken)
     {
-        var stock = await _stockRepository.GetStockByStockId(request.StockId, cancellationToken);
+        var stock = await _stockRepository.GetStockByStockIdAsync(request.StockId, cancellationToken);
 
         if (stock is null)
         {
@@ -23,6 +23,6 @@ internal sealed class AddStockItemCommandHandler(IStockRepository stockRepositor
         {
             return StockErrors.StockItemAlreadyExists;
         }
-        return await _stockRepository.UpdateStock(stock, cancellationToken);
+        return await _stockRepository.UpdateStockAsync(stock, cancellationToken);
     }
 }
