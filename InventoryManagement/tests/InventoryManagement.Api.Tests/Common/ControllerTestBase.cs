@@ -1,5 +1,3 @@
-using InventoryManagement.Domain.StockAggregateRoot;
-using InventoryManagement.Domain.StockAggregateRoot.Entities;
 using InventoryManagement.Domain.StockAggregateRoot.ValueObjects;
 using InventoryManagement.Infrastructure.Persistence;
 using Microsoft.Extensions.DependencyInjection;
