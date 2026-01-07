@@ -1,6 +1,4 @@
-using System;
-
-namespace InventoryManagement.Api.Tests;
+namespace InventoryManagement.Api.Tests.StocksController;
 
 public class IncreaseStockCapacityTests
 {

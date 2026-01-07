@@ -33,5 +33,5 @@ public static class StocksMapping
         => new GetStockByStoreIdQuery(request.StoreId);
 
     public static GetStockByIdQuery MapToQuery(this GetStockByIdRequest request)
-        => new GetStockByIdQuery(request.StockId);
+        => new GetStockByIdQuery(request.Id);
 }

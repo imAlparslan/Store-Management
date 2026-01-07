@@ -23,7 +23,6 @@ public class StocksController(IMediator mediator) : BaseApiController
             Problem);
     }
 
-
     [HttpGet(StockEndpoints.GetAllStocksByGroupId)]
     public async Task<IActionResult> GetAllStocksByGroupId([FromQuery] GetAllStocksByGroupIdRequest request)
     {
@@ -49,7 +48,7 @@ public class StocksController(IMediator mediator) : BaseApiController
         );
     }
     [HttpGet(StockEndpoints.GetStockById)]
-    public async Task<IActionResult> GetStocksById(GetStockByIdRequest request)
+    public async Task<IActionResult> GetStocksById([FromRoute] GetStockByIdRequest request)
     {
         var query = request.MapToQuery();
 
