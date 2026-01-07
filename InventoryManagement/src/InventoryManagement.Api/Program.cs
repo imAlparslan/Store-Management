@@ -20,9 +20,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.MapScalarApiReference(options =>
+
+    app.UseSwaggerUI(opt =>
     {
-        options.WithTitle("Inventory Management API");
+        opt.SwaggerEndpoint("/openapi/v1.json", "v1");
     });
 }
 

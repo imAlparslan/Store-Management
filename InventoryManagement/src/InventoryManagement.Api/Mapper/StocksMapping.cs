@@ -24,7 +24,7 @@ public static class StocksMapping
         => new AddStockItemCommand(request.StockId, request.ItemId, request.InitialQuantity, request.InitialCapacity);
 
     public static GetAllStocksByGroupIdQuery MapToQuery(this GetAllStocksByGroupIdRequest request)
-        => new GetAllStocksByGroupIdQuery(request.GroupId);
+            => new GetAllStocksByGroupIdQuery(request.GroupId);
 
     public static IncreaseStockItemCapacityCommand MapToCommand(this IncreaseStockCapacityRequest request, Guid stockId)
         => new IncreaseStockItemCapacityCommand(stockId, request.ItemId, request.Amount);

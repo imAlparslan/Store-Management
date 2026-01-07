@@ -23,6 +23,8 @@
 	
   <ItemGroup>
     <Folder Include="Behaviors\" />
+    <Folder Include="Stocks\Queries\GetStockByStockId\" />
+    <Folder Include="Stocks\Queries\GetStockByStoreId\" />
   </ItemGroup>
 
 </Project>

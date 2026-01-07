@@ -1,4 +1,5 @@
 using InventoryManagement.Application.Stocks.Queries.GetAllStocksByGroupId;
+using InventoryManagement.Application.Stocks.Queries.GetStockByGroupId;
 using InventoryManagement.Application.Tests.Common;
 
 namespace InventoryManagement.Application.Tests.Stocks.Validators;
