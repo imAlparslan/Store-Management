@@ -1,0 +1,93 @@
+name: Build
+run-name: ${{ github.actor }} - build all solutions
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  build-sharedkernel:
+    name: Build SharedKernel
+    runs-on: [self-hosted]
+    steps:
+      - name: Check out repository 
+        uses: actions/checkout@v5
+      - name: Setup .NET from global.json
+        uses: actions/setup-dotnet@v5
+        with:
+          global-json-file: global.json
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-packages-${{ runner.os }}-${{ hashFiles('**/Directory.Packages.props') }}
+          restore-keys: |
+            nuget-packages-${{ runner.os }}-
+      - name: Restore SharedKernel solution
+        run: dotnet restore SharedKernel/SharedKernel.slnx
+      - name: Build SharedKernel solution
+        run: dotnet build SharedKernel/SharedKernel.slnx --configuration Release --no-restore
+
+  build-catalogmanagement:
+    name: Build CatalogManagement
+    runs-on: [self-hosted]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+      - name: Setup .NET from global.json
+        uses: actions/setup-dotnet@v5
+        with:
+          global-json-file: global.json
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-packages-${{ runner.os }}-${{ hashFiles('**/Directory.Packages.props') }}
+          restore-keys: |
+            nuget-packages-${{ runner.os }}-
+      - name: Restore CatalogManagement solution
+        run: dotnet restore CatalogManagement/CatalogManagement.slnx
+      - name: Build CatalogManagement solution
+        run: dotnet build CatalogManagement/CatalogManagement.slnx --configuration Release --no-restore
+
+  build-inventorymanagement:
+    name: Build InventoryManagement
+    runs-on: [self-hosted]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+      - name: Setup .NET from global.json
+        uses: actions/setup-dotnet@v5
+        with:
+          global-json-file: global.json
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-packages-${{ runner.os }}-${{ hashFiles('**/Directory.Packages.props') }}
+          restore-keys: |
+            nuget-packages-${{ runner.os }}-
+      - name: Restore InventoryManagement solution
+        run: dotnet restore InventoryManagement/InventoryManagement.slnx
+      - name: Build InventoryManagement solution
+        run: dotnet build InventoryManagement/InventoryManagement.slnx --configuration Release --no-restore
+
+  build-storedefinition:
+    name: Build StoreDefinition
+    runs-on: [self-hosted]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+      - name: Setup .NET from global.json
+        uses: actions/setup-dotnet@v5
+        with:
+          global-json-file: global.json
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-packages-${{ runner.os }}-${{ hashFiles('**/Directory.Packages.props') }}
+          restore-keys: |
+            nuget-packages-${{ runner.os }}-
+      - name: Restore StoreDefinition solution
+        run: dotnet restore StoreDefinition/StoreDefinition.slnx
+      - name: Build StoreDefinition solution
+        run: dotnet build StoreDefinition/StoreDefinition.slnx --configuration Release --no-restore
