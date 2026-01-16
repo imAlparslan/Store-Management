@@ -14,7 +14,7 @@ internal class IncreaseStockItemCapacityCommandValidator : AbstractValidator<Inc
             .NotEmpty();
 
         RuleFor(x => x.Amount)
-            .GreaterThanOrEqualTo(0)
+            .GreaterThan(0)
             .WithMessage(StockErrors.InvalidCapacityError.Description)
             .WithErrorCode(StockErrors.InvalidCapacityError.Code);
     }

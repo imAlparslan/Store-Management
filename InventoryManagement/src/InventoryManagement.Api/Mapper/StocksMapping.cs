@@ -27,11 +27,11 @@ public static class StocksMapping
             => new GetAllStocksByGroupIdQuery(request.GroupId);
 
     public static IncreaseStockItemCapacityCommand MapToCommand(this IncreaseStockCapacityRequest request, Guid stockId)
-        => new IncreaseStockItemCapacityCommand(stockId, request.ItemId, request.Amount);
+        => new IncreaseStockItemCapacityCommand(stockId, request.StockItemId, request.Amount);
 
     public static GetStockByStoreIdQuery MapToQuery(this GetStocksByStoreIdRequest request)
         => new GetStockByStoreIdQuery(request.StoreId);
 
     public static GetStockByIdQuery MapToQuery(this GetStockByIdRequest request)
-        => new GetStockByIdQuery(request.StockId);
+        => new GetStockByIdQuery(request.Id);
 }
