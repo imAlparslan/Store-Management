@@ -1,6 +1,8 @@
 name: GitHub Actions Test
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: [push]
+on:
+  push:
+  workflow_dispatch:
 jobs:
   Test-GitHub-Actions:
     runs-on: self-hosted
