@@ -10,9 +10,9 @@ internal sealed class IncreaseStockItemCapacityCommandHandler(IStockRepository s
 
     public async Task<Result<Stock>> Handle(IncreaseStockItemCapacityCommand request, CancellationToken cancellationToken)
     {
-        var stock = await _stockRepository.GetStockByStockIdAsync(request.StockId,cancellationToken);
-       
-        if(stock is null)
+        var stock = await _stockRepository.GetStockByStockIdAsync(request.StockId, cancellationToken);
+
+        if (stock is null)
         {
             return StockErrors.StockNotFound;
         }

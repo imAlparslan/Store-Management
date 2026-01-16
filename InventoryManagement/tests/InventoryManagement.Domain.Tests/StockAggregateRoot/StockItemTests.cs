@@ -50,6 +50,6 @@ public class StockItemTests
 
         stockItem.Quantity.Value.ShouldBe(expectedQuantity);
     }
-    
-    
+
+
 }

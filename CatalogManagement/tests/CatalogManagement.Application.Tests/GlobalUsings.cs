@@ -11,7 +11,7 @@ global using CatalogManagement.Domain.ProductAggregate.ValueObjects;
 global using CatalogManagement.Domain.ProductGroupAggregate.Errors;
 global using CatalogManagement.Domain.ProductGroupAggregate.Exceptions;
 global using CatalogManagement.Domain.ProductGroupAggregate.ValueObjects;
-global using Shouldly;
 global using NSubstitute;
 global using NSubstitute.ReturnsExtensions;
 global using SharedKernel.Common.Results;
+global using Shouldly;

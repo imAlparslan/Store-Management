@@ -38,4 +38,3 @@ public class StockItemConfiguration : IEntityTypeConfiguration<StockItem>
 
     }
 }
-

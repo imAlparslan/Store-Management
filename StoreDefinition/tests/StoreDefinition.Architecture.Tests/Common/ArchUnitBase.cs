@@ -45,4 +45,3 @@ public abstract class ArchUnitBase
         .ResideInAssembly(DomainAssembly)
         .As(LayerNames.DomainLayer);
 }
-

@@ -1,3 +1,3 @@
-﻿global using Shouldly;
-global using NSubstitute;
+﻿global using NSubstitute;
+global using Shouldly;
 global using static StoreDefinition.Application.Tests.Common.InvalidData;

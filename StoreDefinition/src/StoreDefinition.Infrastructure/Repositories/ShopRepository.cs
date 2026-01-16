@@ -72,7 +72,7 @@ public sealed class ShopRepository(StoreDefinitionDbContext dbContext, IUnitOfWo
 
     public async Task<List<Guid>> GetShopGroupIdsByShopIdAsync(ShopId shopId, CancellationToken cancellation = default)
     {
-        var result =  await _dbContext.Stores.AsNoTracking()
+        var result = await _dbContext.Stores.AsNoTracking()
             .Where(x => x.Id == shopId)
             .Select(x => x.GroupIds.ToList())
             .FirstOrDefaultAsync(cancellation);

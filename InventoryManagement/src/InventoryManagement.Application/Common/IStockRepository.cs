@@ -13,4 +13,4 @@ public interface IStockRepository
     Task<Stock> UpdateStockAsync(Stock stock, CancellationToken cancellation = default);
     Task<bool> DeleteStockAsync(Stock stock, CancellationToken cancellation = default);
     Task<IEnumerable<Stock>> GetAllStocksByGroupIdAsync(Guid groupId, CancellationToken cancellation = default);
-} 
+}

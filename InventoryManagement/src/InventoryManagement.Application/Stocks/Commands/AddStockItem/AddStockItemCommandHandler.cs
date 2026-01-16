@@ -18,7 +18,7 @@ internal sealed class AddStockItemCommandHandler(IStockRepository stockRepositor
         }
         var stockItem = new StockItem(request.ItemId, new(request.InitialQuantity), new(request.InitialCapacity));
         var result = stock.TryAddItem(stockItem);
-      
+
         if (!result)
         {
             return StockErrors.StockItemAlreadyExists;

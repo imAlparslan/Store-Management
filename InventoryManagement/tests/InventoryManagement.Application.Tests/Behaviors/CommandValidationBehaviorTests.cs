@@ -1,13 +1,13 @@
 ﻿using FluentValidation;
-using InventoryManagement.Application.Stocks.Commands.AddStockItem;
-using InventoryManagement.Application.Tests.Factories.StockItemFactories;
-using MediatR;
-using SharedKernel.Common.Results;
 using FluentValidation.Results;
+using InventoryManagement.Application.Stocks.Commands.AddStockItem;
+using InventoryManagement.Application.Tests.Factories.StockFactories;
+using InventoryManagement.Application.Tests.Factories.StockItemFactories;
+using InventoryManagement.Domain.StockAggregateRoot;
+using MediatR;
 using NSubstitute.Extensions;
 using SharedKernel.Application.Common.Behaviors;
-using InventoryManagement.Domain.StockAggregateRoot;
-using InventoryManagement.Application.Tests.Factories.StockFactories;
+using SharedKernel.Common.Results;
 
 namespace InventoryManagement.Application.Tests.Behaviors;
 public class CommandValidationBehaviorTests

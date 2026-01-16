@@ -1,6 +1,6 @@
 ﻿namespace InventoryManagement.Arhitecture.Tests.DomainLayerRules;
 
-public class DomainLayerDependencyTests :ArchUnitBase
+public class DomainLayerDependencyTests : ArchUnitBase
 {
 
     [Fact]
@@ -41,4 +41,3 @@ public class DomainLayerDependencyTests :ArchUnitBase
 
     }
 }
-

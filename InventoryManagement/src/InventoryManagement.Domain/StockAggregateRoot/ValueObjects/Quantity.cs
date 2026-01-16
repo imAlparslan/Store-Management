@@ -46,11 +46,30 @@ public class Quantity : ValueObject
     {
         yield return Value;
     }
-    
+
     public static bool operator ==(Quantity left, int right)
         => left.Value == right;
-    
+
     public static bool operator !=(Quantity left, int right)
         => left.Value != right;
-    
+
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(this, obj))
+        {
+            return true;
+        }
+
+        if (ReferenceEquals(obj, null))
+        {
+            return false;
+        }
+
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
 }

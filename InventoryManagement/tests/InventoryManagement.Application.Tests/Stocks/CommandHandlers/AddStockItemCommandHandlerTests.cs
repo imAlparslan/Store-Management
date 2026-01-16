@@ -25,8 +25,8 @@ public class AddStockItemCommandHandlerTests
         var stockItem = StockItemFactory.CreateValid();
         var command = new AddStockItemCommand(stock.Id, stockItem.Id, 10, 10);
         _stockRepository.GetStockByStockIdAsync(Arg.Any<StockId>()).ReturnsForAnyArgs(stock);
-        _stockRepository.UpdateStockAsync(Arg.Any<Stock>(),default).ReturnsForAnyArgs(stock);
-       
+        _stockRepository.UpdateStockAsync(Arg.Any<Stock>(), default).ReturnsForAnyArgs(stock);
+
         var result = await _handler.Handle(command, default);
 
         result.IsSuccess.ShouldBeTrue();

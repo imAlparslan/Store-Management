@@ -1,4 +1,6 @@
-﻿namespace StoreDefinition.Api.Tests.ShopsController;
+﻿using StoreDefinition.Contracts.Shops;
+
+namespace StoreDefinition.Api.Tests.ShopsController;
 
 [Collection(nameof(ShopsControllerCollectionFixture))]
 public class CreateShopControllerTests(StoreDefinitionApiFactory apiFactory)

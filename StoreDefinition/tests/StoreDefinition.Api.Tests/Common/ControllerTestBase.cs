@@ -19,7 +19,7 @@ public abstract class ControllerTestBase : IAsyncLifetime
     {
         CreateShopRequest request = ShopsRequestFactory.CreateShopCreateRequest();
         var response = await _client.PostAsJsonAsync(ShopsBaseAddress, request);
-        return await response.Content.ReadFromJsonAsync<ShopResponse>() 
+        return await response.Content.ReadFromJsonAsync<ShopResponse>()
             ?? throw new InvalidOperationException("Failed to create shop");
     }
 
@@ -27,7 +27,7 @@ public abstract class ControllerTestBase : IAsyncLifetime
     {
         CreateGroupRequest request = GroupRequestFactory.CreateGroupCreateRequest();
         var response = await _client.PostAsJsonAsync(GroupsBaseAddress, request);
-        return await response.Content.ReadFromJsonAsync<GroupResponse>() 
+        return await response.Content.ReadFromJsonAsync<GroupResponse>()
             ?? throw new InvalidOperationException("Failed to create group");
     }
     protected async Task AddShopToGroup(Guid shopId, Guid groupId)

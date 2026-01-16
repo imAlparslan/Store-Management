@@ -75,4 +75,3 @@ public sealed class Product : AggregateRoot<ProductId>
 
     }
 }
-

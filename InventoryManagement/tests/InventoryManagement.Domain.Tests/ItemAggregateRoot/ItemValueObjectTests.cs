@@ -23,7 +23,7 @@ public class ItemValueObjectTests
     {
         var createProductDefinition = () => new ProductDefinition(
             name: Constants.ValidProductName,
-            code: invalid!, 
+            code: invalid!,
             definition: Constants.ValidProductDefinition);
 
         Should.Throw<DomainException>(createProductDefinition)
@@ -43,7 +43,7 @@ public class ItemValueObjectTests
 
         Should.Throw<DomainException>(createProductDefinition)
             .ShouldSatisfyAllConditions(
-                x => x.Message.ShouldBe(ItemErrors.InvalidProductDefinition.Description), 
+                x => x.Message.ShouldBe(ItemErrors.InvalidProductDefinition.Description),
                 x => x.Code.ShouldBe(ItemErrors.InvalidProductDefinition.Code));
     }
 }

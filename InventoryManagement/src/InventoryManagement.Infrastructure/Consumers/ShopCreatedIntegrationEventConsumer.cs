@@ -41,4 +41,3 @@ public class ShopCreatedIntegrationEventConsumer(IStockRepository stockRepositor
         _logger.LogInformation($"Stock Inserted - Stock Id: {stock.Id.Value}");
     }
 }
-

@@ -10,4 +10,3 @@ internal class ShopIdConverter : ValueConverter<StockId, Guid>
     {
     }
 }
-

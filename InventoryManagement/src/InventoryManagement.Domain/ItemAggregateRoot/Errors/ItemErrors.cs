@@ -13,4 +13,3 @@
     public static readonly Error InvalidProductDefinition =
         new Error("Invalid.Item.InvalidProductDefinition", ErrorType.Validation, "Given 'product definition' is invalid.");
 }
-

@@ -11,4 +11,3 @@ internal class ItemIdConverter : ValueConverter<ItemId, Guid>
     {
     }
 }
-

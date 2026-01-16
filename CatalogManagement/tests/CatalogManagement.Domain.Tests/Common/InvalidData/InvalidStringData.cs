@@ -1,7 +1,7 @@
 
 namespace CatalogManagement.Domain.Tests.Common.InvalidData;
 
-public class InvalidStringData: TheoryData<string>
+public class InvalidStringData : TheoryData<string>
 {
     public InvalidStringData()
     {

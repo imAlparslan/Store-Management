@@ -6,7 +6,7 @@ public sealed class ProductGroupId : BaseId
     }
     private ProductGroupId()
     {
-        
+
     }
     public static ProductGroupId CreateUnique() => new ProductGroupId(Guid.NewGuid());
 

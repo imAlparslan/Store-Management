@@ -11,7 +11,7 @@ public class Item : AggregateRoot<ItemId>
     public Item(ProductId productId,
                 ProductDefinition productDefinition,
                 bool isDefaultStockItem,
-                ItemId? id = null) :base(id ?? ItemId.CreateUnique())
+                ItemId? id = null) : base(id ?? ItemId.CreateUnique())
     {
         ProductId = productId;
         ProductDefinition = productDefinition;

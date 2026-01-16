@@ -10,4 +10,3 @@ public interface IItemRepository
     Task<Item?> GetItemById(ItemId itemId, CancellationToken cancellationToken = default);
     Task<Item> UpdateItemAsync(Item item, CancellationToken cancellationToken = default);
 }
-

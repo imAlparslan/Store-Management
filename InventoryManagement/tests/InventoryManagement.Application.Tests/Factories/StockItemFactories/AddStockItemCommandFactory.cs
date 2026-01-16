@@ -9,7 +9,7 @@ internal class AddStockItemCommandFactory
         int? initialQuantity = null,
         int? initialCapacity = null)
         => new AddStockItemCommand(
-            stockId ?? Guid.CreateVersion7(), 
+            stockId ?? Guid.CreateVersion7(),
             itemId ?? Guid.CreateVersion7(),
             initialQuantity ?? 10,
             initialCapacity ?? 10);

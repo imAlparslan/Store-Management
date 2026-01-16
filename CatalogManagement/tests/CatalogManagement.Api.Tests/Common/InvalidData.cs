@@ -9,12 +9,12 @@ public static class InvalidData
             AddRange(Guid.Empty, null);
         }
     }
-    
+
     public class InvalidStrings : TheoryData<string>
     {
         public InvalidStrings()
         {
             AddRange("", " ", null!);
         }
-    } 
+    }
 }

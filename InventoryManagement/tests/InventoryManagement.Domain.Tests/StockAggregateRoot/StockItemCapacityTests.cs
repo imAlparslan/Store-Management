@@ -16,7 +16,7 @@ public class StockItemCapacityTests
         var item = defaultStock.StockItems.First(x => x.Id == defaultItem.Id);
         item.Capacity.Value.ShouldBe(expectedCapacity);
     }
-   
+
     [Fact]
     public void IncreaseStockItemCapacity_ShouldThrowException_WhenStockItemDoesNotExist()
     {

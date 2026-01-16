@@ -21,4 +21,3 @@ public class BaseId : ValueObject
         return Value.ToString();
     }
 }
-

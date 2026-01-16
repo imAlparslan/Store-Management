@@ -6,5 +6,3 @@ public sealed record AddStockItemCommand(Guid StockId,
                                          int InitialQuantity = 0,
                                          int InitialCapacity = 0)
                                          : ICommand<Result<Stock>>;
-
-

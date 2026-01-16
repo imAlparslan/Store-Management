@@ -14,4 +14,3 @@ public class ShopCreatedIntegrationEventPublisher(IEventPublisher publisher)
         await _publisher.PublishAsync(shopCreatedIntegrationEvent);
     }
 }
-

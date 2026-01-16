@@ -23,4 +23,3 @@ public class ShopDeletedIntegrationEventConsumer(ILogger<ShopDeletedIntegrationE
         _logger.LogInformation($"Stock deleted {stock.Id}");
     }
 }
-

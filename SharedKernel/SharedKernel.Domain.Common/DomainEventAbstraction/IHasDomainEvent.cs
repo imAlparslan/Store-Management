@@ -5,4 +5,3 @@ public interface IHasDomainEvent
     public Queue<IDomainEvent> GetDomainEvents();
     public void ClearDomainEvents();
 }
-

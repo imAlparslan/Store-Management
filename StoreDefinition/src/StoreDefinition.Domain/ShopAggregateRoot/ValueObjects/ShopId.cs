@@ -6,7 +6,7 @@ public sealed class ShopId : BaseId
     }
     private ShopId()
     {
-        
+
     }
     public static ShopId CreateUnique()
     {

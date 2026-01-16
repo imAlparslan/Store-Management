@@ -37,7 +37,7 @@ public abstract class ArchUnitBase
         .That()
         .ResideInAssembly(DomainAssembly)
         .As(LayerNames.DomainLayer);
-    
+
     protected static readonly IObjectProvider<IType> InfrastructureLayer =
         ArchRuleDefinition.Types()
         .That()
@@ -45,4 +45,3 @@ public abstract class ArchUnitBase
         .As(LayerNames.InfrastructureLayer);
 
 }
-

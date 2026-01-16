@@ -14,4 +14,3 @@ public class InfrastructureDependenctTests : ArchUnitBase
 
     }
 }
-
