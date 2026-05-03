@@ -485,3 +485,5 @@ $RECYCLE.BIN/
 
 .vscode
 .local
+
+*.lscache
